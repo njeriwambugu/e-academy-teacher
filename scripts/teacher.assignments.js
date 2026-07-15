@@ -28,10 +28,6 @@ function uniqueBy(items, keyFn) {
   });
 }
 
-function optionHTML({ value, label, selectedValue, escapeHTML }) {
-  return `<option value="${escapeHTML(value)}" ${String(value) === String(selectedValue) ? "selected" : ""}>${escapeHTML(label)}</option>`;
-}
-
 function debounce(fn, delay = 120) {
   let timer = 0;
   return (...args) => {
@@ -72,7 +68,7 @@ export function createAssignmentsFeature(deps) {
     classGroup: "",
     classId: "",
     status: "",
-    assignmentUid: "",
+    date: "", // YYYY-MM-DD picked from the calendar branch
   };
 
   let currentDetailPanel = "overview";
@@ -140,7 +136,7 @@ export function createAssignmentsFeature(deps) {
       if (filters.classGroup && row.classGroup !== filters.classGroup) return false;
       if (filters.classId && String(row.classId) !== String(filters.classId)) return false;
       if (filters.status && row.status !== filters.status) return false;
-      if (filters.assignmentUid && row.uid !== filters.assignmentUid) return false;
+      if (filters.date && String(row.deployed).slice(0, 10) !== filters.date) return false;
       if (!search) return true;
       return [row.name, row.subjectName, row.className, row.classGroup, row.classStream, row.strand, row.status]
         .join(" ")
@@ -156,12 +152,12 @@ export function createAssignmentsFeature(deps) {
   }
 
   function setBranch(branch) {
-    Object.assign(filters, { branch, subjectId: "", classGroup: "", classId: "", status: "", assignmentUid: "" });
+    Object.assign(filters, { branch, subjectId: "", classGroup: "", classId: "", status: "", date: "" });
   }
 
   function setCrumb(level) {
     if (level === "all") return setBranch("");
-    if (["subject", "class", "status", "assignment"].includes(level)) return setBranch(level);
+    if (["subject", "class", "status", "date"].includes(level)) return setBranch(level);
     if (level === "classGroup") Object.assign(filters, { classId: "" });
   }
 
@@ -170,7 +166,6 @@ export function createAssignmentsFeature(deps) {
     if (filters.branch === "subject") filters.subjectId = value;
     if (filters.branch === "class") filters.classGroup ? filters.classId = value : filters.classGroup = value;
     if (filters.branch === "status") filters.status = value;
-    if (filters.branch === "assignment") filters.assignmentUid = value;
   }
 
   function currentFilterOptions(rows) {
@@ -178,7 +173,7 @@ export function createAssignmentsFeature(deps) {
       { value: "subject", label: "Subject" },
       { value: "class", label: "Class" },
       { value: "status", label: "Status" },
-      { value: "assignment", label: "Assignment" },
+      { value: "date", label: "Date" },
     ];
     if (filters.branch === "subject") return uniqueOptions(rows, "subjectId", "subjectName");
     if (filters.branch === "class" && !filters.classGroup) return uniqueOptions(rows, "classGroup");
@@ -186,12 +181,10 @@ export function createAssignmentsFeature(deps) {
       return uniqueOptions(rows.filter((r) => r.classGroup === filters.classGroup), "classId", "classStream");
     }
     if (filters.branch === "status") return uniqueOptions(rows, "status");
-    if (filters.branch === "assignment") return rows.map((row) => ({ value: row.uid, label: row.name }));
     return [];
   }
 
   function currentLevelLabel() {
-    const row = getRowByUid(filters.assignmentUid);
     if (!filters.branch) return "Filter";
     if (filters.branch === "subject") return filters.subjectId ? getSubjectName(filters.subjectId) : "Subject";
     if (filters.branch === "class") {
@@ -199,7 +192,7 @@ export function createAssignmentsFeature(deps) {
       return filters.classGroup || "Class";
     }
     if (filters.branch === "status") return filters.status || "Status";
-    if (filters.branch === "assignment") return row?.name || "Assignment";
+    if (filters.branch === "date") return filters.date ? formatDate(filters.date) : "Date";
     return "Filter";
   }
 
@@ -211,7 +204,7 @@ export function createAssignmentsFeature(deps) {
     if (filters.branch === "class" && filters.classGroup) items.push({ key: "classGroup", label: filters.classGroup });
     if (filters.branch === "class" && filters.classId) items.push({ key: "classValue", label: getAllRows().find((r) => r.classId === filters.classId)?.classStream || getAllRows().find((r) => r.classId === filters.classId)?.className || "Stream" });
     if (filters.branch === "status" && filters.status) items.push({ key: "statusValue", label: filters.status });
-    if (filters.branch === "assignment" && filters.assignmentUid) items.push({ key: "assignmentValue", label: getRowByUid(filters.assignmentUid)?.name || "Assignment" });
+    if (filters.branch === "date" && filters.date) items.push({ key: "dateValue", label: formatDate(filters.date) });
     return items;
   }
 
@@ -221,10 +214,20 @@ export function createAssignmentsFeature(deps) {
     const crumbs = $("#assignmentFilterCrumbs");
     if (label) label.textContent = currentLevelLabel();
     if (menu) {
-      const options = currentFilterOptions(allRows);
-      menu.innerHTML = options.length
-        ? options.map((opt) => `<button type="button" role="menuitem" data-tree-filter="${escapeHTML(opt.value)}">${escapeHTML(opt.label)}</button>`).join("")
-        : `<p class="muted">No deeper options.</p>`;
+      if (filters.branch === "date") {
+        // calendar replaces the old per-assignment list
+        menu.innerHTML = `
+          <div class="level-menu-date">
+            <span class="level-menu-date-label">Deployed on</span>
+            <input type="date" id="assignmentDateFilter" value="${escapeHTML(filters.date)}" aria-label="Filter assignments by deployed date" />
+            ${filters.date ? `<button type="button" class="level-menu-date-clear" data-date-clear>Clear date</button>` : ""}
+          </div>`;
+      } else {
+        const options = currentFilterOptions(allRows);
+        menu.innerHTML = options.length
+          ? options.map((opt) => `<button type="button" role="menuitem" data-tree-filter="${escapeHTML(opt.value)}">${escapeHTML(opt.label)}</button>`).join("")
+          : `<p class="muted">No deeper options.</p>`;
+      }
     }
     if (crumbs) {
       crumbs.innerHTML = crumbItems().map((item, index, arr) => `
@@ -527,12 +530,35 @@ export function createAssignmentsFeature(deps) {
     });
 
     levelMenu?.addEventListener("click", (e) => {
+      const clearBtn = e.target.closest("[data-date-clear]");
+      if (clearBtn) {
+        filters.date = "";
+        listPager.reset();
+        renderList();
+        // keep the calendar visible so another date can be picked
+        levelMenu.classList.add("open");
+        levelButton?.setAttribute("aria-expanded", "true");
+        return;
+      }
+
       const item = e.target.closest("[data-tree-filter]");
       if (!item) return;
       chooseFilter(item.dataset.treeFilter);
+      listPager.reset();
+      renderList();
+
+      // entering the date branch shows the calendar — leave the menu open
+      const keepOpen = filters.branch === "date" && !filters.date;
+      levelMenu.classList.toggle("open", keepOpen);
+      levelButton?.setAttribute("aria-expanded", String(keepOpen));
+    });
+
+    levelMenu?.addEventListener("change", (e) => {
+      if (e.target?.id !== "assignmentDateFilter") return;
+      filters.date = e.target.value || "";
+      listPager.reset();
       levelMenu.classList.remove("open");
       levelButton?.setAttribute("aria-expanded", "false");
-      listPager.reset();
       renderList();
     });
 

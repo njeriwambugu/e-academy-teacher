@@ -3394,6 +3394,56 @@ button {
     outline: 0;
 }
 
+/* calendar branch inside the level-picker menu */
+.level-menu-date {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+}
+
+.level-menu-date-label {
+    color: var(--muted, #6e7593);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.level-menu-date input[type="date"] {
+    width: 100%;
+    min-height: 42px;
+    padding: 0 12px;
+    border: 1px solid var(--line, #e4e8f1);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ink, #121936);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.level-menu-date input[type="date"]:focus-visible {
+    outline: 0;
+    border-color: var(--brand-orange-600, #f06405);
+    box-shadow: 0 0 0 3px rgba(240, 100, 5, .12);
+}
+
+.level-menu-date-clear {
+    min-height: 36px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(240, 100, 5, .1);
+    color: var(--brand-orange-600, #f06405);
+    font-weight: 900;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: background 160ms ease;
+}
+
+.level-menu-date-clear:hover {
+    background: rgba(240, 100, 5, .18);
+}
+
 .assignment-filter-crumbs {
     display: flex;
     flex-wrap: wrap;
