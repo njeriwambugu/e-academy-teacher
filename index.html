@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Esoma Academy - Teachers</title>
+
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="stylesheet" href="./styles/tmain.css" />
+
+
+</head>
+
+<body>
+  <!-- mobile top bar -->
+  <header class="app-header">
+    <div class="brand-mark" aria-label="ESOMA Academy">
+      <img class="logo" src="assets/images/school-logo-v.png" alt="ESOMA Academy">
+    </div>
+    <div class="header-actions">
+      <button class="user-menu" id="teacherMobileProfileBtn" aria-expanded="false"
+        aria-controls="teacherMobileProfileDropdown">
+        <span class="avatar" aria-hidden="true">
+          <img src="assets/icons/user.svg" alt="avatar" class="icon">
+        </span>
+        <span class="profile-copy">
+          <strong>Teacher</strong>
+        </span>
+        <img src="assets/icons/arrow_down.svg" alt="dropdown" class="chevron">
+      </button>
+      <div class="profile-dropdown" id="teacherMobileProfileDropdown" role="menu" aria-label="Profile menu">
+
+        <button class="logout" id="teacherMobileLogoutBtn" type="button" role="menuitem">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.2"
+            aria-hidden="true">
+            <path d="M9 18l-6-6 6-6" />
+            <path d="M3 12h13" />
+            <path d="M14 4h5v16h-5" />
+          </svg>
+          <span>Log Out</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="teacher-app" id="teacherApp">
+
+    <!-- sidebar -->
+    <aside class="sidebar" aria-label="Teacher navigation">
+
+      <div class="brand-block" aria-label="ESOMA Academy">
+        <img class="teacher-logo" src="./assets/images/school-logo-v.png" alt="ESOMA Academy" />
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Teacher sections">
+
+        <button class="nav-item active" type="button" data-teacher-nav="dashboard">
+          <span class="nav-icon" aria-hidden="true"></span>
+          <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item" type="button" data-teacher-nav="students">
+          <span class="nav-icon" aria-hidden="true"></span>
+          <span>Students</span>
+        </button>
+
+        <button class="nav-item" type="button" data-teacher-nav="assignments">
+          <span class="nav-icon" aria-hidden="true"></span>
+          <span>Assignments</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="logout" id="teacherLogoutBtn" type="button"> <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"
+              aria-hidden="true">
+              <path d="M9 18l-6-6 6-6"></path>
+              <path d="M3 12h13"></path>
+              <path d="M14 4h5v16h-5"></path>
+            </svg>
+          </span>
+          <span>Log Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main" aria-label="Teacher portal content">
+
+      <div class="topbar">
+        <div class="breadcrumb-row">
+          <button class="breadcrumb-back breadcrumb-back-standalone" id="teacherClassBack" type="button" hidden>
+            <span aria-hidden="true">←</span> Back
+          </button>
+          <div class="breadcrumb" id="teacherBreadcrumb">
+            <span>Dashboard</span>
+          </div>
+        </div>
+      </div>
+
+
+      <section class="view active" id="teacherDashboardView" aria-label="Teacher dashboard">
+        <div class="dashboard-header">
+          <div>
+            <p class="page-subtitle welcome-pill">
+              Welcome back, <span id="teacherDashboardName"></span>
+            </p>
+          </div>
+          <!--<button class="button" id="teacherSwitchAccountBtn" type="button">
+            Switch to Parent Account
+          </button>-->
+
+        </div>
+        <div class="stats">
+          <article class="stat">
+            <div>
+              <div class="stat-label">Total Classes</div>
+              <div class="stat-value" id="teacherTotalClasses"></div>
+            </div>
+          </article>
+          <article class="stat">
+            <div>
+              <div class="stat-label">Total Students</div>
+              <div class="stat-value" id="teachersTotalStudents"></div>
+            </div>
+          </article>
+          <article class="stat">
+            <div>
+              <div class="stat-label">Total Subjects</div>
+              <div class="stat-value" id="teacherTotalSubjects"></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="section">
+
+          <div class="section-head">
+            <h2>My Subjects</h2>
+          </div>
+
+          <div class="card-grid" id="teacherSubjectsGrid" aria-label="Teacher subjects"></div>
+
+          <div class="card card-pad" id="teacherNoSubjects" hidden>
+            <h3 class="card-title">
+              No subjects assigned yet
+            </h3>
+
+            <p class="card-meta">
+              Once subjects are assigned to your account,
+              they will appear here.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- students -->
+      <section class="view" id="teacherStudentsView" aria-label="Teacher students">
+
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Students</h1>
+          </div>
+        </div>
+
+        <div class="student-overview" id="studentOverview" aria-label="Student overview"></div>
+
+        <!-- search -->
+        <div class="students-toolbar">
+
+          <label class="student-search">
+            <input type="search" id="studentSearchInput" placeholder="Search student name..." />
+          </label>
+
+        </div>
+
+        <!-- grade filters -->
+        <div class="student-grade-filters" id="studentGradeFilters"></div>
+
+        <!-- table (uses the shared admin .table styling) -->
+        <div class="table">
+          <table>
+
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Class</th>
+                <th>Invite</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="studentsTableBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+      <!-- student profile (full page view — teachers are view-only) -->
+      <section class="view" id="teacherStudentProfileView" aria-label="Student profile">
+        <div class="profile-shell">
+          <section class="profile-hero student-profile-hero">
+            <div class="profile-title">
+              <div>
+                <h1 id="profileName">Timothy</h1>
+                <p id="profileSummary">Student information is ready for review.</p>
+              </div>
+              <div class="profile-badges">
+                <span class="profile-badge" id="profileClassBadge">Grade 4 East</span>
+                <span class="profile-badge" id="profileInviteBadge">Invite Accepted</span>
+                <span class="profile-badge" id="profileActiveBadge">Active</span>
+              </div>
+            </div>
+            <article class="profile-card student-profile-card">
+              <div class="teacher-profile-avatar">
+                <img src="assets/icons/student.svg" alt="student-avatar">
+              </div>
+              <div class="profile-info-grid">
+                <div class="profile-info-row editable-row">
+                  <span>Student Name / Nickname</span>
+                  <strong id="profileInfoName">Timothy</strong>
+
+                </div>
+                <div class="profile-info-row"><span>Parent/Guardian Name</span><strong id="profileGuardian">Kevin
+                    Mutiso</strong></div>
+                <div class="profile-info-row"><span>Parent/Guardian Contact</span><strong
+                    id="profileContact">0721859532</strong></div>
+                <div class="profile-info-row editable-row">
+                  <span>Class</span>
+                  <strong id="profileClassName">Grade 4 East</strong>
+
+                </div>
+              </div>
+            </article>
+          </section>
+          
+          <div class="profile-metrics">
+            <article class="profile-metric">
+              <img src="assets/icons/online-presence.svg" alt="" aria-hidden="true">
+              <div class="metric-copy">
+                <strong id="profileEngagement">-</strong>
+                <span>Engagement</span>
+              </div>
+            </article>
+            <article class="profile-metric">
+              <img src="assets/icons/high-performance.svg" alt="" aria-hidden="true">
+              <div class="metric-copy">
+                <strong id="profilePerformance">85%</strong>
+                <span>Performance Average</span>
+              </div>
+            </article>
+            <article class="profile-metric">
+              <img src="assets/icons/book.svg" alt="" aria-hidden="true">
+              <div class="metric-copy">
+                <strong id="profileBestSubject">CRE</strong>
+                <span>Strongest Subject</span>
+              </div>
+            </article>
+          </div>
+
+
+          <section class="performance-panel">
+            <div class="panel-head">
+              <h2 class="panel-title">Assignments Performance</h2>
+              <span class="profile-badge">Across deployed assignments</span>
+            </div>
+            <div class="table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Attempts</th>
+                    <th>Time Taken (Avg)</th>
+                    <th>Score (Avg)</th>
+                  </tr>
+                </thead>
+                <tbody id="profilePerformanceBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+        </div>
+      </section>
+
+      <!-- Assignments -->
+      <section class="view" id="teacherAssignmentsView" aria-label="Teacher assignments">
+        <div id="teacherAssignmentsListView">
+          <div class="page-header assignments-page-header">
+            <div>
+              <h1 class="page-title">Assignments</h1>
+            </div>
+          </div>
+
+          <section class="assignment-command-center assignment-tree-filter" aria-label="Assignment filters">
+            <div class="assignment-tree-search">
+              <label class="assignment-search">
+                <span class="sr-only">Search assignments</span>
+                <input type="search" id="assignmentSearchInput" placeholder="Search assignments..." />
+              </label>
+              <div class="assignment-level-picker">
+                <button type="button" class="assignment-level-btn" id="assignmentLevelButton" aria-expanded="false" aria-controls="assignmentLevelMenu">
+                  <span id="assignmentLevelLabel">Filter</span>
+                  <svg class="assignment-level-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 7.5 10 12l4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="assignment-level-menu" id="assignmentLevelMenu" role="menu"></div>
+              </div>
+            </div>
+            <nav class="assignment-filter-crumbs" id="assignmentFilterCrumbs" aria-label="Assignment filter path"></nav>
+          </section>
+
+          <div class="assignment-results-meta" id="assignmentResultsMeta"></div>
+
+          <div class="table assignment-table-shell">
+            <table aria-label="Deployed assignments">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Average Score</th>
+                </tr>
+              </thead>
+              <tbody id="teacherAssignmentsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="assignment-profile" id="teacherAssignmentProfile" hidden>
+          <section class="assignment-profile-hero">
+            <div>
+              <p class="assignment-profile-kicker">Assignment Report</p>
+              <h1 id="assignmentProfileTitle">Assignment</h1>
+              <p id="assignmentProfileSubtitle">Performance details are ready for review.</p>
+            </div>
+            <span class="student-status active" id="assignmentProfileStatus">Active</span>
+          </section>
+
+          <div class="segmented assignment-detail-segments" id="assignmentDetailSegments" role="tablist" aria-label="Assignment report sections">
+            <button class="segment active" type="button" data-assignment-detail-panel="overview">Overview</button>
+            <button class="segment" type="button" data-assignment-detail-panel="learners">Learners</button>
+          </div>
+
+          <div class="assignment-detail-panel active" data-assignment-detail-content="overview">
+            <div class="assignment-insight-pills" id="assignmentInsightPills" aria-label="Assignment performance summary"></div>
+
+            <div class="assignment-detail-layout">
+              <section class="assignment-detail-card assignment-info-card">
+                <div class="section-head">
+                  <h2>Assignment information</h2>
+                </div>
+                <div class="assignment-detail-meta" id="assignmentProfileMeta"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="assignment-detail-panel" data-assignment-detail-content="learners">
+            <section class="assignment-detail-card">
+              <div class="section-head">
+                <h2>Students who did this assignment</h2>
+                <span class="profile-badge" id="assignmentLearnerCount">0 learners</span>
+              </div>
+              <div class="table assignment-students-table">
+                <table aria-label="Assignment student performance">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Status</th>
+                      <th>Score</th>
+                      <th>Time Taken</th>
+                    </tr>
+                  </thead>
+                  <tbody id="assignmentStudentsBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- Class Detail -->
+      <section class="view" id="teacherClassView" aria-label="Teacher class">
+
+        <div class="page-header">
+          <div>
+            <h1 class="page-title" id="teacherClassTitle">
+              Class
+            </h1>
+
+            <p class="page-subtitle" id="teacherClassSubtitle"></p>
+          </div>
+        </div>
+
+        <div class="segmented class-segmented" id="teacherClassSegments" role="tablist" aria-label="Class sections">
+          <button class="segment active" type="button" data-panel="info">
+            Class Info
+          </button>
+
+          <button class="segment" type="button" data-panel="analysis">
+            Analysis
+          </button>
+
+          <button class="segment" type="button" data-panel="assignments">
+            Assignments
+          </button>
+        </div>
+
+        <!-- Info panel -->
+        <div class="class-panel active" data-class-panel="info">
+          <div class="detail-stats class-stat-grid class-info-stats" id="teacherClassInfoStats"></div>
+          <div class="section">
+            <div class="section-head">
+              <h2>Records of Assignments</h2>
+            </div>
+            <div class="table">
+              <table aria-label="Assignment records">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Average Score</th>
+                  </tr>
+                </thead>
+                <tbody id="teacherClassAssignmentsBody"></tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Analysis segment/panel -->
+        <div class="class-panel" data-class-panel="analysis">
+          <div class="card card-pad chart-card">
+            <div class="section-head">
+              <h2>Class Performance</h2>
+            </div>
+            <p class="muted" id="teacherChartCaption">
+              Performance Overview for the Last 6 Months
+            </p>
+            <div class="chart-wrap" id="teacherClassChart"></div>
+          </div>
+        </div>
+
+        <!-- Assignments panel -->
+        <div class="class-panel" data-class-panel="assignments">
+          <!--<div class="detail-stats class-stat-grid assignment-overview-stats" id="teacherAssignmentStats"></div>-->
+          <div id="teacherAssignmentList">
+            <div class="segmented sub-segmented" id="teacherAssignmentSubSegments" role="tablist"
+              aria-label="Assignment groups">
+              <button class="segment active" type="button" data-subpanel="strands">
+                Strands &amp; Sub-Strands
+              </button>
+              <button class="segment" type="button" data-subpanel="mixed">
+                Mixed Exercises
+              </button>
+
+            </div>
+
+            <!-- Strands/sub-starnds sub-segment/panel -->
+            <div class="assignment-subpanel active" data-assignment-panel="strands">
+              <div class="section-head">
+                <h2>Strands and Sub-Strands</h2>
+              </div>
+              <div class="accordion" id="teacherStrandsAccordion"></div>
+
+            </div>
+
+            <!-- mixed exercises panel -->
+            <div class="assignment-subpanel" data-assignment-panel="mixed">
+              <div class="section-head">
+                <h2>Mixed Exercises</h2>
+              </div>
+              <div class="accordion" id="teacherMixedAccordion"></div>
+            </div>
+          </div><!-- /#teacherAssignmentList -->
+
+          <!-- Class Assignments cards layer -->
+          <div class="assignment-drill" id="teacherAssignmentCards" hidden>
+            <button type="button" class="link-back" id="teacherAssignmentCardsBack">&#8592; Back to Strands &amp;
+              Sub-Strands</button>
+            <div class="section-head">
+              <h2 id="teacherAssignmentCardsTitle">Class Assignments</h2>
+            </div>
+            <div class="assignment-card-grid" id="teacherAssignmentCardGrid"></div>
+          </div>
+
+          <!-- Assignment detail layer -->
+          <div class="assignment-drill" id="teacherAssignmentDetail" hidden>
+            <button type="button" class="link-back" id="teacherAssignmentDetailBack">&#8592; Back to Class
+              Assignments</button>
+            <div class="assignment-detail-card">
+              <div class="assignment-detail-head">
+                <h2 id="teacherAssignmentDetailName">Assignment</h2>
+                <button type="button" class="btn-assign" id="teacherAssignToLearners">Assign To Learners</button>
+              </div>
+              <div class="assignment-detail-meta" id="teacherAssignmentDetailMeta"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- premium mobile bottom nav -->
+  <nav class="teacher-bottom-nav" id="teacherBottomNav" aria-label="Teacher bottom navigation" style="--active-index: 0;">
+    <span class="nav-notch" aria-hidden="true"></span>
+    <span class="nav-float" aria-hidden="true"><span class="nav-float-icon">⌂</span></span>
+    <button type="button" class="active" data-teacher-nav="dashboard" data-nav-index="0" data-nav-icon="⌂" aria-label="Dashboard">
+      <span class="nav-icon" aria-hidden="true">⌂</span>
+      <span class="nav-label">Dashboard</span>
+    </button>
+    <button type="button" data-teacher-nav="students" data-nav-index="1" data-nav-icon="👥" aria-label="Students">
+      <span class="nav-icon" aria-hidden="true">👥</span>
+      <span class="nav-label">Students</span>
+    </button>
+    <button type="button" data-teacher-nav="assignments" data-nav-index="2" data-nav-icon="✦" aria-label="Assignments">
+      <span class="nav-icon" aria-hidden="true">✦</span>
+      <span class="nav-label">Assignments</span>
+    </button>
+  </nav>
+
+  <!-- select class modal -->
+  <div class="modal-layer" id="teacherSelectClassModal" aria-hidden="true">
+    <div class="modal-form" role="dialog" aria-modal="true" aria-labelledby="teacherSelectClassTitle">
+      <div class="modal-head">
+        <div>
+          <h2 id="teacherSelectClassTitle">
+            Select the class below
+          </h2>
+          <p class="modal-note" id="teacherSelectClassMeta">
+            Choose a class to continue.
+          </p>
+        </div>
+        <button class="modal-close" type="button" data-close-modal aria-label="Close modal">
+          X
+        </button>
+      </div>
+      <div class="form-grid">
+        <div class="option-list" id="teacherClassOptions" aria-label="Class options"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="button soft" type="button" data-close-modal>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared modal engine (same file as admin/scripts/modal.js).
+       Must load BEFORE the module scripts so window.Modals exists. -->
+  <script src="./scripts/modal.js"></script>
+  <script type="module" src="./scripts/teacher-app.js"></script>
+  <script src="./scripts/teacher.mobile-profile.js"></script>
+
+</body>
+
+</html>
