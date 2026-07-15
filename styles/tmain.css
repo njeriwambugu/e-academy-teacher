@@ -220,6 +220,7 @@ button {
         linear-gradient(180deg, rgba(255, 255, 255, .94), rgba(255, 255, 255, .78));
     backdrop-filter: blur(12px);
     overflow: hidden;
+    transition: width 250ms ease, padding 250ms ease;
 }
 
 .teacher-app .main {
@@ -230,6 +231,58 @@ button {
     margin-left: 250px;
     padding: 32px;
     overflow-x: hidden;
+    transition: margin-left 250ms ease;
+}
+
+/* sidebar collapse (desktop only — sidebar is display:none <=880px) */
+.sidebar-toggle {
+    align-self: flex-end;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    margin-top: -10px;
+    border: 1px solid rgba(226, 231, 242, .95);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink-2, #26325d);
+    box-shadow: 0 8px 18px rgba(31, 39, 72, .08);
+    cursor: pointer;
+    transition: transform 250ms ease, box-shadow 160ms ease;
+}
+
+.sidebar-toggle:hover {
+    box-shadow: 0 12px 24px rgba(31, 39, 72, .14);
+}
+
+.teacher-app.sidebar-collapsed .sidebar {
+    width: 72px;
+    padding: 16px 10px;
+}
+
+.teacher-app.sidebar-collapsed .main {
+    margin-left: 72px;
+}
+
+.teacher-app.sidebar-collapsed .sidebar-toggle {
+    align-self: center;
+    transform: rotate(180deg);
+}
+
+.teacher-app.sidebar-collapsed .brand-block .teacher-logo {
+    width: 44px;
+}
+
+.teacher-app.sidebar-collapsed .nav-item,
+.teacher-app.sidebar-collapsed .sidebar-footer .logout {
+    justify-content: center;
+    padding: 0;
+    gap: 0;
+}
+
+.teacher-app.sidebar-collapsed .nav-item > span:not(.nav-icon),
+.teacher-app.sidebar-collapsed .sidebar-footer .logout > span:not(.nav-icon) {
+    display: none;
 }
 
 .avatar {
@@ -1831,9 +1884,11 @@ button {
     text-align: left;
 }
 
-/* Sidebar: pin the Log Out button to the very bottom. */
+/* Sidebar: pin the footer buttons to the very bottom. */
 .sidebar-footer {
     margin-top: auto;
+    display: grid;
+    gap: 6px;
 }
 
 /* ---- Select-class modal: scrollable dialog + options list ---- */
@@ -4204,7 +4259,10 @@ button {
     .teacher-bottom-nav::before,
     .teacher-bottom-nav .nav-notch,
     .teacher-bottom-nav .nav-float,
-    .teacher-bottom-nav .nav-icon {
+    .teacher-bottom-nav .nav-icon,
+    .teacher-app .sidebar,
+    .teacher-app .main,
+    .sidebar-toggle {
         transition: none !important;
     }
 }

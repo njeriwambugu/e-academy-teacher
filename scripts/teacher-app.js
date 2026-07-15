@@ -1348,6 +1348,37 @@ function bindLogout() {
   });
 }
 
+function bindSidebarToggle() {
+  const app = $("#teacherApp") || document.querySelector(".teacher-app");
+  const toggle = $("#sidebarToggleBtn");
+  if (!app || !toggle) return;
+
+  const apply = (collapsed) => {
+    app.classList.toggle("sidebar-collapsed", collapsed);
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+    toggle.setAttribute("aria-label", collapsed ? "Expand sidebar" : "Collapse sidebar");
+    $$(".sidebar .nav-item, .sidebar-footer .logout").forEach((btn) => {
+      const label = btn.querySelector("span:not(.nav-icon)")?.textContent.trim() || "";
+      if (collapsed) btn.setAttribute("title", label);
+      else btn.removeAttribute("title");
+    });
+  };
+
+  apply(localStorage.getItem("teacher.sidebar-collapsed") === "1");
+
+  toggle.addEventListener("click", () => {
+    const collapsed = !app.classList.contains("sidebar-collapsed");
+    localStorage.setItem("teacher.sidebar-collapsed", collapsed ? "1" : "0");
+    apply(collapsed);
+  });
+}
+
+function bindSwitchAdmin() {
+  $("#teacherSwitchAdminBtn")?.addEventListener("click", () => {
+    window.location.href = "../e-academy-admin-main/e-academy-admin-main/index.html";
+  });
+}
+
 function initializeTeacherDashboard() {
   renderTeacherName();
   renderTeacherTotals();
@@ -1373,6 +1404,8 @@ function initializeTeacherDashboard() {
   bindClassPanels();
   bindAccordions();
   bindLogout();
+  bindSidebarToggle();
+  bindSwitchAdmin();
 
   handleRoute();
 }

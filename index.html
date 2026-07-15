@@ -53,6 +53,12 @@
         <img class="teacher-logo" src="./assets/images/school-logo-v.png" alt="ESOMA Academy" />
       </div>
 
+      <button class="sidebar-toggle" id="sidebarToggleBtn" type="button" aria-label="Collapse sidebar" aria-expanded="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 6l-6 6 6 6"></path>
+        </svg>
+      </button>
+
       <nav class="sidebar-nav" aria-label="Teacher sections">
 
         <button class="nav-item active" type="button" data-teacher-nav="dashboard">
@@ -93,6 +99,17 @@
       </nav>
 
       <div class="sidebar-footer">
+        <button class="logout switch-admin" id="teacherSwitchAdminBtn" type="button">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 16V4"></path>
+              <path d="M3 8l4-4 4 4"></path>
+              <path d="M17 8v12"></path>
+              <path d="M21 16l-4 4-4-4"></path>
+            </svg>
+          </span>
+          <span>Switch to Admin</span>
+        </button>
         <button class="logout" id="teacherLogoutBtn" type="button"> <span class="nav-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"
               aria-hidden="true">
@@ -127,9 +144,6 @@
               Welcome back, <span id="teacherDashboardName"></span>
             </p>
           </div>
-          <!--<button class="button" id="teacherSwitchAccountBtn" type="button">
-            Switch to Parent Account
-          </button>-->
 
         </div>
         <div class="stats">
