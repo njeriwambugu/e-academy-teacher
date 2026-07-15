@@ -1025,7 +1025,7 @@ function syncBottomNav(nav) {
   const active = $(`#teacherBottomNav [data-teacher-nav="${nav}"]`);
   if (!bottomNav || !active) return;
   bottomNav.style.setProperty("--active-index", active.dataset.navIndex || "0");
-  if (bottomNavFloatIcon) bottomNavFloatIcon.textContent = active.dataset.navIcon || "";
+  if (bottomNavFloatIcon) bottomNavFloatIcon.innerHTML = active.querySelector(".nav-icon")?.innerHTML || "";
 }
 
 function addNavRipple(button, event) {

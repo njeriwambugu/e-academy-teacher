@@ -85,16 +85,16 @@ button {
     --text-sm: 13px;
     --focus: color-mix(in srgb, var(--accent), white 35%);
 
-    --mobile-nav-bg: #0D0D0D;
-    --mobile-nav-active: #F5A623;
-    --mobile-nav-inactive: #fff;
+    --mobile-nav-bg: #172653;
+    --mobile-nav-active: #F59E0B;
+    --mobile-nav-inactive: #EEF4FF;
     --mobile-nav-h: 74px;
     --mobile-nav-radius: 28px;
     --mobile-nav-float: 62px;
     --mobile-nav-dur: 430ms;
     --mobile-nav-ease: cubic-bezier(.2, .9, .2, 1);
-    --mobile-nav-shadow: 0 18px 44px rgba(0, 0, 0, .34);
-    --mobile-nav-float-shadow: 0 14px 30px rgba(245, 166, 35, .28), 0 12px 28px rgba(0, 0, 0, .28);
+    --mobile-nav-shadow: 0 18px 42px rgba(23, 38, 83, .28);
+    --mobile-nav-float-shadow: 0 18px 36px rgba(23, 38, 83, .22), 0 10px 28px rgba(240, 100, 5, .18);
 
     --analytics-bg: #F7F8FC;
     --analytics-card: #FFFFFF;
@@ -2786,66 +2786,6 @@ button {
     }
 }
 
-@media (max-width: 880px) {
-    .teacher-bottom-nav {
-        position: fixed;
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        height: 72px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-        padding: 8px;
-        border: 1px solid rgba(255, 255, 255, .22);
-        border-radius: 26px;
-        background:
-            linear-gradient(135deg, rgba(16, 26, 58, .88), rgba(33, 48, 77, .72)),
-            rgba(16, 26, 58, .82);
-        -webkit-backdrop-filter: blur(18px);
-        backdrop-filter: blur(18px);
-        box-shadow: 0 18px 44px rgba(16, 26, 58, .28);
-        z-index: 999;
-    }
-
-    .teacher-bottom-nav button {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        border: 0;
-        border-radius: 18px;
-        background: transparent;
-        color: rgba(255, 255, 255, .66);
-        font-weight: 900;
-        position: relative;
-    }
-
-    .teacher-bottom-nav button.active {
-        color: #101a3a;
-        background: linear-gradient(180deg, #fff, #eef3ff);
-        box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
-    }
-
-    .teacher-bottom-nav button.active::after {
-        content: "";
-        position: absolute;
-        bottom: 6px;
-        width: 28px;
-        height: 3px;
-        border-radius: 999px;
-        background: var(--brand-orange-600, #f06405);
-    }
-
-    .teacher-bottom-nav .nav-label {
-        font-size: 11px;
-        font-weight: 900;
-        letter-spacing: .01em;
-    }
-}
-
 #teacherSelectClassModal #teacherClassOptions.option-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     max-height: 60vh;
@@ -3108,7 +3048,7 @@ button {
         align-items: center;
         padding: 0;
         border-radius: var(--mobile-nav-radius);
-        background: var(--mobile-nav-bg);
+        background: linear-gradient(135deg, #172653 0%, #223C7A 58%, #F06405 145%);
         box-shadow: var(--mobile-nav-shadow);
         z-index: 1100;
         isolation: isolate;
@@ -3156,8 +3096,8 @@ button {
         place-items: center;
         border: 7px solid #fff;
         border-radius: 50%;
-        background: var(--mobile-nav-bg);
-        color: var(--mobile-nav-active);
+        background: linear-gradient(135deg, #172653 0%, #1F3A78 52%, #F06405 135%);
+        color: #FFC857;
         box-shadow: var(--mobile-nav-float-shadow);
         transform: translate3d(-50%, 0, 0) scale(1);
         transition:
@@ -3173,10 +3113,16 @@ button {
     }
 
     .teacher-bottom-nav .nav-float-icon {
-        font-size: 27px;
+        display: grid;
+        place-items: center;
         line-height: 1;
         transform: translateZ(0);
         animation: nav-icon-pop var(--mobile-nav-dur) cubic-bezier(.2, 1.5, .35, 1) both;
+    }
+
+    .teacher-bottom-nav .nav-float-icon svg {
+        width: 26px;
+        height: 26px;
     }
 
     .teacher-bottom-nav button {
@@ -3216,17 +3162,21 @@ button {
         width: 28px;
         height: 28px;
         color: currentColor;
-        font-size: 24px;
         line-height: 1;
         transition: transform 260ms cubic-bezier(.2, 1.3, .32, 1), color 260ms ease, opacity 220ms ease;
         will-change: transform;
     }
 
+    .teacher-bottom-nav .nav-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
     .teacher-bottom-nav .nav-label {
         max-width: 100%;
         color: currentColor;
-        font-size: 10px;
-        font-weight: 850;
+        font-size: 11.5px;
+        font-weight: 950;
         letter-spacing: .01em;
         opacity: .74;
         transform: translateY(2px);
@@ -3941,26 +3891,6 @@ button {
     .assignment-level-menu { left: auto !important; right: 0 !important; width: min(260px, 78vw) !important; }
 }
 
-:root {
-    --mobile-nav-bg: #172653;
-    --mobile-nav-active: #F59E0B;
-    --mobile-nav-inactive: #EEF4FF;
-    --mobile-nav-shadow: 0 18px 42px rgba(23, 38, 83, .28);
-    --mobile-nav-float-shadow: 0 18px 36px rgba(23, 38, 83, .22), 0 10px 28px rgba(240, 100, 5, .18);
-}
-
-@media (max-width: 880px) {
-    .teacher-bottom-nav { background: linear-gradient(135deg, #172653 0%, #223C7A 58%, #F06405 145%) !important; }
-    .teacher-bottom-nav .nav-notch { background: #172653 !important; }
-    .teacher-bottom-nav .nav-float {
-        background: linear-gradient(135deg, #172653 0%, #1F3A78 52%, #F06405 135%) !important;
-        color: #FFC857 !important;
-    }
-    .teacher-bottom-nav .nav-float-icon { font-size: 29px; }
-    .teacher-bottom-nav .nav-label { font-size: 11.5px !important; font-weight: 950 !important; }
-    .teacher-bottom-nav .nav-icon { font-size: 25px; }
-}
-
 .accordion-sign {
     width: 22px; height: 22px; border-radius: 999px; background: #EAF6FB;
     display: inline-grid; place-items: center;
@@ -4265,7 +4195,16 @@ button {
 @media (prefers-reduced-motion: reduce) {
     .teacher-app .view.view-entering:not(.view-loading),
     .teacher-app .view.view-loading::after,
-    .is-button-loading::after {
+    .is-button-loading::after,
+    .teacher-bottom-nav .nav-float-icon,
+    .teacher-bottom-nav .nav-ripple {
         animation: none !important;
+    }
+
+    .teacher-bottom-nav::before,
+    .teacher-bottom-nav .nav-notch,
+    .teacher-bottom-nav .nav-float,
+    .teacher-bottom-nav .nav-icon {
+        transition: none !important;
     }
 }
