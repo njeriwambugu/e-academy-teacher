@@ -333,23 +333,6 @@ button {
 
 @media (max-width:880px) {
 
-    .teacher-topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        padding: 12px 16px;
-        background: #fff;
-        border-bottom: 1px solid var(--line);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
-    }
-
-    .teacher-topbar .teacher-logo {
-        width: 90px;
-    }
-
     .teacher-app .sidebar {
         display: none;
     }
@@ -376,14 +359,6 @@ button {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 28px;
-}
-
-.teacher-app .view {
-    display: none;
-}
-
-.teacher-app .view.active {
-    display: block;
 }
 
 .back-link {
@@ -885,39 +860,7 @@ button {
    Scope: modal popup/class buttons only. Subject cards untouched.
    ========================================================= */
 
-@keyframes modal-layer-in {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes modal-pop-in {
-    from {
-        opacity: 0;
-        transform: translateY(18px) scale(0.96);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes modal-pop-out {
-    from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-
-    to {
-        opacity: 0;
-        transform: translateY(12px) scale(0.985);
-    }
-}
+/* modal keyframes live in main.css (modal-layer-in etc.) */
 
 /* class modal selection/option buttons */
 #teacherClassOptions,
@@ -1037,56 +980,14 @@ button {
         flex-direction: column-reverse;
     }
 
-    .modal-actions .btn {
+    .modal-actions .button {
         width: 100%;
-    }
-}
-
-/* ==================================================
-   MOBILE LAYOUT
-================================================== */
-
-@media (max-width: 880px) {
-
-    .teacher-app .sidebar {
-        display: none;
-    }
-
-    .teacher-app .main {
-        width: 100%;
-        margin-left: 0;
-        padding: 16px 16px 90px;
-    }
-
-    .teacher-topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        padding: 12px 16px;
-        background: #fff;
-        border-bottom: 1px solid var(--line);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
-    }
-
-    .teacher-topbar .teacher-logo {
-        width: 90px;
     }
 }
 
 /* ==================================================
    PAGE STRUCTURE
 ================================================== */
-
-.teacher-app .view {
-    display: none;
-}
-
-.teacher-app .view.active {
-    display: block;
-}
 
 .page-header {
     display: flex;
@@ -1748,17 +1649,12 @@ button {
     margin-bottom: 22px;
 }
 
-.profile-card,
-.profile-summary-card {
+.profile-card {
     background: #fff;
     border: 1px solid var(--line);
     border-radius: 18px;
     padding: 22px 24px;
     box-shadow: var(--shadow);
-}
-
-.profile-summary-card {
-    margin-bottom: 4px;
 }
 
 .profile-card-title {
@@ -2044,7 +1940,7 @@ button {
 }
 .assignment-card-name,
 .assignment-card-skills,
-.btn-view-assignment,
+.assignment-card .button,
 .assignment-card-icon {
     position: relative;
     z-index: 2;
@@ -2073,20 +1969,14 @@ button {
     letter-spacing: .04em;
 }
 
-.btn-view-assignment {
+/* reuses main.css .button; blue delta for card CTA */
+.assignment-card .button {
     margin-top: auto;
-    appearance: none;
-    border: 0;
-    border-radius: 12px;
-    padding: 10px 14px;
-    font: inherit;
-    font-weight: 800;
-    color: #fff;
     background: linear-gradient(180deg, #2b6fb3, #1f5d9c);
     cursor: pointer;
 }
 
-.btn-view-assignment:hover {
+.assignment-card .button:hover {
     filter: brightness(1.05);
 }
 
@@ -2111,19 +2001,13 @@ button {
     margin: 0;
 }
 
-.btn-assign {
-    appearance: none;
-    border: 0;
-    border-radius: 12px;
-    padding: 11px 18px;
-    font: inherit;
-    font-weight: 800;
-    color: #fff;
+/* reuses main.css .button; orange delta for assign CTA */
+.assignment-detail-head .button {
     background: linear-gradient(180deg, #f48221, #f06405);
     cursor: pointer;
 }
 
-.btn-assign:hover {
+.assignment-detail-head .button:hover {
     filter: brightness(1.05);
 }
 
@@ -2192,43 +2076,26 @@ button {
    profile rebuilt to match the admin design.
 ================================================== */
 
-/* ---- 1) Student search input (was unstyled) ---- */
-.students-toolbar {
+/* ---- 1) Student search — reuses main.css .toolbar/.search; deltas only ---- */
+#teacherStudentsView .toolbar {
     margin-bottom: 18px;
 }
 
-.student-search {
-    height: 48px;
+#teacherStudentsView .search {
     max-width: 420px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0 16px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: #fff;
-    box-shadow: 0 10px 24px rgba(29, 37, 72, .05);
     transition: border-color .2s ease, box-shadow .2s ease;
 }
 
-.student-search:focus-within {
+#teacherStudentsView .search:focus-within {
     border-color: var(--brand-navy-700);
     box-shadow: 0 0 0 3px rgba(23, 38, 83, .12);
 }
 
-.student-search input,
-#studentSearchInput {
-    width: 100%;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: var(--ink);
+#teacherStudentsView .search input {
     font-size: 14px;
-    font-weight: 700;
 }
 
-.student-search input::placeholder,
-#studentSearchInput::placeholder {
+#teacherStudentsView .search input::placeholder {
     color: var(--muted);
     font-weight: 600;
 }
@@ -2527,64 +2394,7 @@ button {
     font-weight: 800;
 }
 
-#teacherStudentProfileView .assignment-summary-grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 12px;
-}
-
-#teacherStudentProfileView .assignment-summary-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px;
-    border: 1px solid rgba(226, 231, 242, .9);
-    background: linear-gradient(135deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .76));
-    padding: 14px;
-    display: grid;
-    gap: 6px;
-    box-shadow: 0 14px 28px rgba(31, 39, 72, .07);
-}
-
-#teacherStudentProfileView .assignment-summary-card::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 4px;
-    background: var(--brand-navy-700);
-}
-
-#teacherStudentProfileView .assignment-summary-card.done::after {
-    background: #2e9e6b;
-}
-
-#teacherStudentProfileView .assignment-summary-card.retake::after {
-    background: #e0a83e;
-}
-
-#teacherStudentProfileView .assignment-summary-card.pending::after {
-    background: #5b8def;
-}
-
-#teacherStudentProfileView .assignment-summary-card.ongoing::after {
-    background: #8a6cf0;
-}
-
-#teacherStudentProfileView .assignment-summary-card.overdue::after {
-    background: #e06a5b;
-}
-
-#teacherStudentProfileView .assignment-summary-label {
-    color: #697296;
-    font-size: 13px;
-    font-weight: 800;
-}
-
-#teacherStudentProfileView .assignment-summary-value {
-    color: #101735;
-    font-size: 26px;
-    font-weight: 900;
-    line-height: 1;
-}
+/* .assignment-summary-* styles live in main.css */
 
 #teacherStudentProfileView .performance-panel .table {
     margin: 0;
@@ -2730,18 +2540,13 @@ button {
     box-shadow: 0 14px 34px rgba(29, 37, 72, .07);
 }
 
-.assignment-search {
+/* assignments search — reuses main.css .search; deltas only */
+.assignment-tree-search .search {
     min-height: 52px;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    border: 1px solid var(--line, #e4e8f1);
     border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 10px 24px rgba(29, 37, 72, .04);
 }
 
-.assignment-search::before {
+.assignment-tree-search .search::before {
     content: "";
     width: 18px;
     height: 18px;
@@ -2752,64 +2557,18 @@ button {
     mask: url("../assets/icons/search.svg") center / contain no-repeat;
 }
 
-.assignment-search:focus-within,
-.assignment-filter-field:focus-within {
+.assignment-tree-search .search:focus-within {
     border-color: var(--brand-orange-600, #f06405);
     box-shadow: 0 0 0 3px rgba(240, 100, 5, .12);
 }
 
-.assignment-search input {
-    width: 100%;
-    min-width: 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: var(--ink, #121936);
+.assignment-tree-search .search input {
     font-weight: 800;
 }
 
-.assignment-search input::placeholder {
+.assignment-tree-search .search input::placeholder {
     color: var(--muted, #6e7593);
     font-weight: 650;
-}
-
-.assignment-filter-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(150px, 1fr));
-    gap: 12px;
-}
-
-.assignment-filter-field {
-    display: grid;
-    gap: 6px;
-    padding: 10px 12px;
-    border: 1px solid var(--line, #e4e8f1);
-    border-radius: 16px;
-    background: rgba(255, 255, 255, .92);
-    transition: border-color .2s ease, box-shadow .2s ease;
-}
-
-.assignment-filter-field-wide {
-    grid-column: span 2;
-}
-
-.assignment-filter-field span {
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    color: var(--muted, #6e7593);
-}
-
-.assignment-filter-field select {
-    width: 100%;
-    min-width: 0;
-    min-height: 32px;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: var(--ink, #121936);
-    font-weight: 850;
 }
 
 .assignment-results-meta {
@@ -2882,12 +2641,10 @@ button {
 }
 
 @media (max-width: 980px) {
-    .assignment-filter-grid,
     .assignment-detail-layout {
         grid-template-columns: 1fr 1fr;
     }
 
-    .assignment-filter-field-wide,
     .assignment-detail-layout {
         grid-column: 1 / -1;
     }
@@ -2900,13 +2657,8 @@ button {
         border-radius: 18px;
     }
 
-    .assignment-filter-grid,
     .assignment-detail-layout {
         grid-template-columns: 1fr;
-    }
-
-    .assignment-filter-field-wide {
-        grid-column: auto;
     }
 
     .assignment-profile-hero {
@@ -3029,7 +2781,6 @@ button {
 }
 
 @media (min-width: 881px) {
-    .teacher-topbar,
     .teacher-bottom-nav {
         display: none !important;
     }
@@ -3159,13 +2910,11 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+/* variant of main.css .stat — markup uses "stat class-stat-card"; bg/radius/shadow come from .stat */
 #teacherClassView .class-stat-card {
     min-height: clamp(86px, 13vw, 116px);
     padding: clamp(12px, 2.6vw, 22px) clamp(10px, 2.4vw, 24px);
-    border-radius: 18px;
-    background: var(--bc, var(--brand-gradient));
     color: #fff;
-    box-shadow: 0 22px 45px rgba(31, 39, 72, 0.11);
 }
 
 #teacherClassView .class-stat-card .stat-value {
@@ -3541,7 +3290,7 @@ button {
     box-shadow: 0 14px 34px rgba(29, 37, 72, .07);
 }
 
-.assignment-tree-search .assignment-search {
+.assignment-tree-search .search {
     min-height: 42px;
     padding: 0 10px;
     border: 0;
@@ -4234,7 +3983,7 @@ button {
     box-shadow: 0 14px 30px rgba(23, 38, 83, .08) !important;
 }
 .assignment-card-overlay, .assignment-card-icon { display: none !important; }
-.btn-view-assignment { background: #2B6FB3 !important; border-radius: 13px; min-height: 42px; font-size: 14px; }
+.assignment-card .button { border-radius: 13px; min-height: 42px; height: auto; font-size: 14px; }
 
 .assignment-deploy-placeholder {
     min-height: min(52vh, 420px); display: grid; align-content: center; justify-items: center; gap: 12px;

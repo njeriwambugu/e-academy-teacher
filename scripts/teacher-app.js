@@ -778,7 +778,7 @@ function showAssignmentCards(strandIdx, subIdx) {
 <article class="assignment-card">
   <h3 class="assignment-card-name">${escapeHTML(a.name)}</h3>
   <p class="assignment-card-skills"><span class="assignment-card-label">Skills Covered</span>${escapeHTML(a.skills.join(", "))}</p>
-  <button type="button" class="btn-view-assignment" data-assignment-id="${escapeHTML(a.id)}">View Assignment Page</button>
+  <button type="button" class="button" data-assignment-id="${escapeHTML(a.id)}">View Assignment Page</button>
 </article>`)
         .join("")
       : `<p class="muted">No assignments available for this sub-strand yet.</p>`;
