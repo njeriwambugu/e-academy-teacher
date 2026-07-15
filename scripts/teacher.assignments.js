@@ -2,8 +2,6 @@
 import { runButtonAction } from "./ui-state.js";
 import { createPager, refreshTable } from "./table-utils.js";
 
-const DEFAULT_FILTER = "all";
-
 function hashString(value = "") {
   return String(value).split("").reduce((sum, char) => {
     return (sum * 31 + char.charCodeAt(0)) >>> 0;
@@ -58,7 +56,6 @@ export function createAssignmentsFeature(deps) {
     escapeHTML,
     formatDate,
     openStudentProfile,
-    goToNav,
   } = deps;
 
   const filters = {
@@ -601,8 +598,6 @@ export function createAssignmentsFeature(deps) {
       const btn = e.target.closest("[data-assignment-open]");
       if (btn) runButtonAction(btn, () => openDetail(btn.dataset.assignmentOpen));
     });
-
-    $("#teacherAssignmentProfileBack")?.addEventListener("click", () => goToNav("assignments"));
 
     $("#assignmentDetailSegments")?.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-assignment-detail-panel]");

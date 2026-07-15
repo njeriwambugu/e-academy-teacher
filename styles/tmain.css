@@ -2692,33 +2692,21 @@ button {
     box-shadow: 0 14px 34px rgba(29, 37, 72, .07);
 }
 
-/* assignments search — reuses main.css .search; deltas only */
-.assignment-tree-search .search {
-    min-height: 52px;
-    border-radius: 16px;
+/* assignments toolbar — reuses main.css .toolbar/.search; deltas only */
+.assignment-command-center .toolbar {
+    margin-bottom: 0;
 }
 
-.assignment-tree-search .search::before {
-    content: "";
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-    background: currentColor;
-    color: var(--muted, #6e7593);
-    -webkit-mask: url("../assets/icons/search.svg") center / contain no-repeat;
-    mask: url("../assets/icons/search.svg") center / contain no-repeat;
-}
-
-.assignment-tree-search .search:focus-within {
+.assignment-command-center .search:focus-within {
     border-color: var(--brand-orange-600, #f06405);
     box-shadow: 0 0 0 3px rgba(240, 100, 5, .12);
 }
 
-.assignment-tree-search .search input {
+.assignment-command-center .search input {
     font-weight: 800;
 }
 
-.assignment-tree-search .search input::placeholder {
+.assignment-command-center .search input::placeholder {
     color: var(--muted, #6e7593);
     font-weight: 650;
 }
@@ -3364,31 +3352,10 @@ button {
 
 
 /* ==================================================
-   Assignment tree filter — eFarm360-style scalable hierarchy
+   Assignment tree filter — cascading hierarchy + date branch
 ================================================== */
 .assignment-tree-filter {
     gap: 10px;
-}
-
-.assignment-tree-search {
-    min-height: 58px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-    border: 1px solid rgba(226, 231, 242, .96);
-    border-radius: 18px;
-    background: #fff;
-    box-shadow: 0 14px 34px rgba(29, 37, 72, .07);
-}
-
-.assignment-tree-search .search {
-    min-height: 42px;
-    padding: 0 10px;
-    border: 0;
-    border-radius: 12px;
-    box-shadow: none;
 }
 
 .assignment-level-picker {
@@ -3534,10 +3501,6 @@ button {
 }
 
 @media (max-width: 640px) {
-    .assignment-tree-search {
-        grid-template-columns: 1fr;
-    }
-
     .assignment-level-btn {
         width: 100%;
     }
@@ -3964,10 +3927,6 @@ button {
     font-size: 13.5px;
 }
 
-.assignment-tree-search {
-    grid-template-columns: minmax(0, 1fr) auto !important;
-}
-
 .assignment-level-btn {
     min-width: 116px;
     color: var(--brand-navy-900, #101B3D) !important;
@@ -3975,18 +3934,7 @@ button {
     box-shadow: 0 12px 24px rgba(86, 164, 198, .22) !important;
 }
 
-.assignment-level-arrow {
-    width: 18px;
-    height: 18px;
-    color: #05070A;
-    flex: 0 0 auto;
-}
-
 @media (max-width: 640px) {
-    .assignment-tree-search {
-        grid-template-columns: minmax(0, 1fr) auto !important;
-    }
-
     .assignment-level-btn {
         width: auto !important;
         min-width: 104px;

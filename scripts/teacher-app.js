@@ -1014,27 +1014,6 @@ function renderStudentProfilePage(studentId) {
   const bestSubject = $("#profileBestSubject");
   if (bestSubject) bestSubject.textContent = profile.strongestSubject || "\u2014";
 
-  const summaryEl = $("#profileAssignmentSummary");
-  if (summaryEl) {
-    const s = profile.summary || {};
-    const chips = [
-      { key: "done", cap: "Done", num: s.done || 0 },
-      { key: "retake", cap: "Retake", num: s.retake || 0 },
-      { key: "pending", cap: "Pending", num: s.pending || 0 },
-      { key: "ongoing", cap: "Ongoing", num: s.ongoing || 0 },
-      { key: "overdue", cap: "Overdue", num: s.overdue || 0 },
-    ];
-    summaryEl.innerHTML = chips
-      .map(
-        (c) => `
-        <article class="assignment-summary-card ${c.key}">
-          <div class="assignment-summary-label">${escapeHTML(c.cap)}</div>
-          <div class="assignment-summary-value">${escapeHTML(c.num)}</div>
-        </article>`
-      )
-      .join("");
-  }
-
   const perfBody = $("#profilePerformanceBody");
   if (perfBody) {
     const rows = profile.performance || [];
