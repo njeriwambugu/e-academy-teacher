@@ -202,6 +202,9 @@ function renderSubjects() {
           class="subject-card"
           data-subject="${escapeHTML(subject.id)}"
         >
+          <span class="subject-doodles" aria-hidden="true">
+            ${subjectDoodles(subject.id).map((glyph) => `<i>${escapeHTML(glyph)}</i>`).join("")}
+          </span>
           <img
             class="subject-icon"
             src="${escapeHTML(subject.icon)}"
@@ -219,6 +222,19 @@ function renderSubjects() {
       `;
     })
     .join("");
+}
+
+// Faint background glyphs per subject — decorative only.
+const SUBJECT_DOODLES = {
+  MAT: ["+", "×", "−", "=", "÷", "%"],
+  ENG: ["✎", "❝", "Aa", "¶", "❞", "&"],
+  KIS: ["✎", "❝", "Ss", "!", "❞", "Aa"],
+  SCI: ["⚛", "🧬", "⚗", "☢", "⚙", "✦"],
+  SOC: ["☀", "⛰", "♻", "✦", "☂", "✈"],
+};
+
+function subjectDoodles(subjectId) {
+  return SUBJECT_DOODLES[subjectId] || ["✦", "✎", "☀", "+", "❝", "%"];
 }
 
 let studentGradeFilter = "all";//students view

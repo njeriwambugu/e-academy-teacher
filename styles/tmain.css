@@ -795,16 +795,40 @@ button {
     z-index: 0;
 }
 
+/* faint subject-themed glyphs spread across the card */
+.subject-doodles {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    color: #1b2440;
+    opacity: .07;
+}
+
+.subject-doodles i {
+    position: absolute;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 22px;
+}
+
+.subject-doodles i:nth-child(1) { top: 8%; left: 6%; transform: rotate(-14deg); font-size: 26px; }
+.subject-doodles i:nth-child(2) { top: 14%; right: 30%; transform: rotate(10deg); }
+.subject-doodles i:nth-child(3) { top: 42%; left: 24%; transform: rotate(6deg); font-size: 18px; }
+.subject-doodles i:nth-child(4) { bottom: 30%; left: 4%; transform: rotate(-8deg); font-size: 28px; }
+.subject-doodles i:nth-child(5) { bottom: 12%; right: 12%; transform: rotate(12deg); }
+.subject-doodles i:nth-child(6) { bottom: 8%; left: 44%; transform: rotate(-6deg); font-size: 17px; }
+
+/* hover = pure zoom; the icon stays still */
 #teacherSubjectsGrid .subject-card:hover,
 #teacherSubjectsGrid .subject-card:focus-visible {
-    transform: translateY(-6px) scale(1.01);
+    transform: scale(1.03);
     box-shadow: 0 26px 56px rgba(31, 39, 72, 0.24);
     outline: none;
-    filter: saturate(1.06);
 }
 
 #teacherSubjectsGrid .subject-card:active {
-    transform: translateY(-2px) scale(.995);
+    transform: scale(.99);
 }
 
 #teacherSubjectsGrid .subject-name {
@@ -862,13 +886,7 @@ button {
     background: transparent;
     box-shadow: none;
     position: relative;
-    transform: rotate(-5deg) translate(8px, 8px);
-    transition: transform 180ms ease;
-}
-
-#teacherSubjectsGrid .subject-card:hover .subject-icon,
-#teacherSubjectsGrid .subject-card:focus-visible .subject-icon {
-    transform: rotate(0deg) translate(4px, 2px) scale(1.04);
+    transform: translate(4px, 2px);
 }
 
 /* Tablet */
@@ -906,7 +924,7 @@ button {
     #teacherSubjectsGrid .subject-icon {
         width: 94px;
         height: 86px;
-        transform: rotate(-2deg) translate(7px, 7px);
+        transform: translate(4px, 2px);
     }
 }
 
@@ -937,17 +955,26 @@ button {
     width: 100%;
     display: grid;
     gap: 14px;
-    border-radius: 14px;
-    color: var(--grade-text) !important;
+    border-radius: 16px;
+    color: #1b2440;
+    font-weight: 900;
     cursor: pointer;
     grid-template-columns: 1fr;
     justify-items: center;
     text-align: center;
     min-height: 64px;
     padding: 14px 16px;
-    background: #fff !important;
-    border: 1px solid var(--line, #c7c8ca);
-    box-shadow: 2px 2px 2px rgba(35, 37, 42, 0.203);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(245, 249, 255, .88));
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    box-shadow: 0 10px 22px rgba(5, 9, 23, 0.14), inset 0 -2px 0 rgba(137, 190, 221, 0.42);
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+#teacherClassOptions .class-option-btn:hover,
+#teacherClassOptions .class-option-btn:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 28px rgba(5, 9, 23, 0.2), inset 0 -2px 0 rgba(137, 190, 221, 0.42);
+    outline: 0;
 }
 
 /*students page*/
@@ -973,26 +1000,38 @@ button {
     display: none;
 }
 
+/* buttons match the admin .tab spec */
 .grade-filter-btn {
-    border: none;
-    border-radius: 14px;
-    padding: 12px 18px;
-    background: #fff;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
-    cursor: pointer;
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    border-radius: 16px;
+    color: #1b2440;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(245, 249, 255, .88));
+    font-size: 14px;
+    font-weight: 900;
     white-space: nowrap;
-    font-weight: 700;
-    color: var(--text-dark);
-    transition: .2s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    box-shadow: 0 10px 22px rgba(5, 9, 23, 0.18), inset 0 -2px 0 rgba(137, 190, 221, 0.42);
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
 }
 
 .grade-filter-btn:hover {
     transform: translateY(-2px);
+    box-shadow: 0 16px 28px rgba(5, 9, 23, 0.22), inset 0 -2px 0 rgba(137, 190, 221, 0.42);
 }
 
 .grade-filter-btn.active {
-    background: var(--brand-gradient);
     color: #fff;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .04)),
+        rgba(33, 48, 77, 0.92);
+    border-color: rgba(255, 255, 255, 0.38);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 16px 30px rgba(5, 9, 23, 0.28);
 }
 
 .grade-filter-btn .arrow {
@@ -1290,24 +1329,39 @@ button {
     transform: translateY(-1px);
 }
 
+/* status pills mirror the admin .invite-status / .status-dot design */
 .student-status {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 6px 10px;
+    min-height: 32px;
+    padding: 0 12px;
     border-radius: 999px;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 950;
+}
+
+.student-status::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #22b85d;
 }
 
 .student-status.active {
-    background: rgba(47, 158, 68, .12);
-    color: var(--success);
+    color: #126b9e;
+    background: #dff3fb;
 }
 
 .student-status.pending {
-    background: rgba(240, 140, 0, .12);
-    color: var(--warning);
+    color: #8a5b11;
+    background: #fff0c8;
+}
+
+.student-status.pending::before {
+    background: #f2a22c;
 }
 
 
@@ -1375,31 +1429,51 @@ button {
     }
 }
 
+/* Back button — single consolidated style: compact pill, top-left of the
+   breadcrumb row on every sub-view. Icon-only below 640px. */
 .breadcrumb-back {
-    margin-left: auto;
+    margin: 0;
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
+    min-height: 38px;
+    padding: 8px 14px;
     border: 1px solid rgba(226, 231, 242, .95);
+    border-radius: 999px;
     background: #fff;
     color: var(--accent-deep, #21304d);
     font-weight: 900;
     font-size: 13px;
-    padding: 8px 14px;
-    border-radius: 12px;
     cursor: pointer;
     white-space: nowrap;
-    transition: .2s ease;
+    box-shadow: 0 8px 18px rgba(31, 39, 72, .08);
+    transition: transform 160ms ease, background 160ms ease, color 160ms ease, box-shadow 160ms ease;
 }
 
-.breadcrumb-back:hover {
+.breadcrumb-back:hover,
+.breadcrumb-back:focus-visible {
     background: var(--brand-gradient);
     color: #fff;
     transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(31, 39, 72, .16);
+    outline: 0;
 }
 
 .breadcrumb-back[hidden] {
     display: none;
+}
+
+@media (max-width: 640px) {
+    .breadcrumb-back .back-label {
+        display: none;
+    }
+
+    .breadcrumb-back {
+        width: 38px;
+        padding: 0;
+    }
 }
 
 .teacher-app .stats .stat-value {
@@ -1637,7 +1711,7 @@ button {
     }
 }
 
-/* ---- Clickable student name (no more initials avatar) ---- */
+/* ---- Clickable student name — mirrors admin .student-link colours ---- */
 .student-name-btn {
     border: 0;
     background: transparent;
@@ -1646,17 +1720,19 @@ button {
     text-align: left;
     cursor: pointer;
     font: inherit;
-    color: inherit;
+    color: #20284f;
 }
 
 .student-name-btn .student-info strong {
+    font-weight: 950;
     transition: color .15s ease;
 }
 
-.student-name-btn:hover .student-info strong {
-    color: var(--theme-deep);
+.student-name-btn:hover .student-info strong,
+.student-name-btn:focus-visible .student-info strong {
+    color: #60428f; /* admin --theme-deep */
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 4px;
 }
 
 /* ==================================================
@@ -2658,6 +2734,7 @@ button {
     overflow-x: auto;
 }
 
+/* assignment names mirror admin .student-link colours */
 .assignment-name-link {
     appearance: none;
     border: 0;
@@ -2665,13 +2742,15 @@ button {
     padding: 0;
     display: grid;
     gap: 4px;
-    color: var(--ink, #121936);
+    color: #20284f;
     text-align: left;
+    cursor: pointer;
 }
 
 .assignment-name-link strong {
-    color: var(--brand-navy-800, #172653);
-    font-weight: 900;
+    color: #20284f;
+    font-weight: 950;
+    transition: color .15s ease;
 }
 
 .assignment-name-link span {
@@ -2682,7 +2761,7 @@ button {
 
 .assignment-name-link:hover strong,
 .assignment-name-link:focus-visible strong {
-    color: var(--brand-orange-600, #f06405);
+    color: #60428f; /* admin --theme-deep */
     text-decoration: underline;
     text-underline-offset: 4px;
 }
@@ -2839,15 +2918,6 @@ button {
         gap: 7px;
     }
 
-    .teacher-app .breadcrumb-back {
-        margin-left: 0;
-        width: auto;
-        min-height: 34px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, .96);
-        box-shadow: 0 8px 18px rgba(31, 39, 72, .08);
-    }
 }
 
 /* ==================================================
@@ -2869,19 +2939,6 @@ button {
     overflow-y: auto;
     padding: 4px 4px 6px;
     align-content: start;
-}
-
-#teacherClassOptions .class-option-btn,
-#teacherClassOptions .option-btn.class-option-btn {
-    transition: none !important;
-    animation: none !important;
-}
-
-#teacherClassOptions .class-option-btn:hover,
-#teacherClassOptions .class-option-btn:focus-visible {
-    transform: none !important;
-    border-color: var(--brand-orange-600, #f06405);
-    box-shadow: 2px 2px 2px rgba(35, 37, 42, 0.203);
 }
 
 @media (max-width: 460px) {
@@ -3509,7 +3566,6 @@ button {
 #teacherClassOptions .option-btn.class-option-btn {
     min-height: 58px;
     overflow: visible;
-    background: #fff !important;
 }
 
 .assignment-link-cta {
@@ -3586,10 +3642,6 @@ button {
 /* ==================================================
    Student profile assignment links + standalone back button
 ================================================== */
-.breadcrumb-back-standalone {
-    margin: 10px 0 18px;
-    width: fit-content;
-}
 
 .profile-assignment-link {
     appearance: none;
@@ -3612,12 +3664,6 @@ button {
 }
 
 @media (max-width: 880px) {
-    .breadcrumb-back-standalone {
-        margin: 8px 0 14px;
-        min-height: 34px;
-        padding: 7px 12px;
-        border-radius: 999px;
-    }
 }
 
 .assignment-detail-segments {
@@ -4069,14 +4115,6 @@ button {
     min-width: 0;
 }
 
-.breadcrumb-back-standalone,
-.teacher-app .breadcrumb-back {
-    margin: 0;
-    min-height: 38px;
-    flex: 0 0 auto;
-    border-radius: 999px;
-}
-
 .teacher-app .view.active {
     animation: none !important;
 }
@@ -4318,6 +4356,24 @@ button {
             linear-gradient(#fff, #fff) 0 444px / 100% 360px no-repeat,
             var(--bg, #f6f7fb);
     }
+}
+
+/* Hand cursor on every interactive element */
+.nav-item,
+.segment,
+.accordion-head,
+.substrand-row,
+.logout,
+.user-menu,
+.assignment-level-btn,
+.assignment-level-menu button,
+.assignment-filter-crumbs button,
+.grade-option,
+.table-page-btn:not(:disabled):not(.active),
+.student-action-btn,
+.subject-card,
+.breadcrumb .crumb {
+    cursor: pointer;
 }
 
 /* ==================================================
