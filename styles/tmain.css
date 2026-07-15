@@ -3653,14 +3653,6 @@ button {
     text-transform: uppercase;
 }
 
-.analytics-value {
-    color: var(--analytics-text);
-    font-size: clamp(44px, 5vw, 56px);
-    font-weight: 850;
-    letter-spacing: -.055em;
-    line-height: .95;
-}
-
 .analytics-status {
     color: var(--metric-color, var(--analytics-teal));
     font-size: 13px;
@@ -3668,31 +3660,21 @@ button {
     line-height: 1.2;
 }
 
-.analytics-supporting {
-    color: var(--analytics-muted);
-    font-size: 12.5px;
-    font-weight: 650;
-}
 
-.score-card {
+/* donut metric cards — thick ring, big % centre, value/total subline (reference design) */
+.analytics-card {
     align-items: center;
     text-align: center;
 }
 
-.analytics-card-copy {
-    width: 100%;
-    display: grid;
-    gap: 10px;
-}
-
 .score-ring-variant {
-    --ring-size: 140px;
+    --ring-size: clamp(150px, 14vw, 176px);
     position: relative;
     width: var(--ring-size);
     height: var(--ring-size);
     display: grid;
     place-items: center;
-    margin: -4px auto 4px;
+    margin: -2px auto 6px;
 }
 
 .score-ring-variant svg {
@@ -3706,15 +3688,23 @@ button {
 .score-ring-track,
 .score-ring-progress {
     fill: none;
-    stroke-width: 10px;
+    stroke-width: 14px;
 }
 
 .score-ring-track {
-    stroke: #EEF2F7;
+    stroke: #EFF2F7;
+    filter: drop-shadow(0 2px 3px rgba(15, 23, 42, .06));
+}
+
+.score-ring-dots {
+    fill: none;
+    stroke: #D4DAE5;
+    stroke-width: 2.6px;
+    stroke-linecap: round;
+    stroke-dasharray: .1 19.2;
 }
 
 .score-ring-progress {
-    stroke: url(#scoreRingGradient);
     stroke-linecap: round;
     stroke-dasharray: 302;
     stroke-dashoffset: 302;
@@ -3725,115 +3715,42 @@ button {
     stroke-dashoffset: calc(302 - (302 * var(--target) / 100));
 }
 
-.score-ring-variant strong {
-    color: var(--analytics-text);
-    font-size: clamp(36px, 4vw, 48px);
-    font-weight: 850;
-    letter-spacing: -.055em;
-    line-height: .9;
-}
-
-.score-ring-variant>span {
-    transform: translateY(32px);
-    color: var(--metric-color);
-    font-size: 12px;
-    font-weight: 750;
-}
-
-.analytics-progress {
-    position: relative;
-    height: 13px;
-    overflow: hidden;
-    border-radius: 999px;
-    background: #EEF2F7;
-    box-shadow: inset 0 1px 2px rgba(15, 23, 42, .05);
-}
-
-.analytics-progress-fill {
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 0;
-    border-radius: inherit;
-    background: var(--metric-gradient);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), 0 8px 18px color-mix(in srgb, var(--metric-color), transparent 74%);
-    transition: width 900ms var(--analytics-ease);
-}
-
-.analytics-progress-fill::after {
-    content: "";
-    position: absolute;
-    inset: 1px 4px auto 4px;
-    height: 4px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .32);
-}
-
-.analytics-capsules.is-ready .analytics-progress-fill {
-    width: var(--target);
-}
-
-.timer-visual {
-    width: 46px;
-    height: 46px;
+.score-ring-center {
     display: grid;
-    place-items: center;
-    border-radius: 16px;
-    background: color-mix(in srgb, var(--metric-color), white 88%);
-    color: var(--metric-color);
+    justify-items: center;
+    gap: 2px;
+    max-width: calc(var(--ring-size) - 56px);
 }
 
-.timer-visual::before {
-    content: "";
-    width: 21px;
-    height: 21px;
-    border: 3px solid currentColor;
-    border-radius: 50%;
-    box-shadow: inset 0 0 0 5px #fff;
+.score-ring-center strong {
+    color: var(--analytics-text);
+    font-size: clamp(30px, 3.4vw, 42px);
+    font-weight: 900;
+    letter-spacing: -.05em;
+    line-height: .95;
 }
 
-.timer-visual span {
-    position: absolute;
-    width: 2px;
-    height: 14px;
-    border-radius: 999px;
-    background: currentColor;
-    transform-origin: 50% 100%;
-    animation: stopwatch-hand 1.8s linear infinite;
-}
-
-.time-card .timer-value {
-    font-variant-numeric: tabular-nums;
-}
-
-.time-timeline {
-    height: 8px;
-    overflow: hidden;
-    border-radius: 999px;
-    background: #EEF2F7;
-}
-
-.time-timeline span {
-    display: block;
-    width: 48%;
-    height: 100%;
-    border-radius: inherit;
-    background: var(--metric-gradient);
-    transform: translateX(-100%);
-    animation: time-sweep 1.15s var(--analytics-ease) forwards;
-}
-
-.fraction-value {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 10px;
-    font-variant-numeric: tabular-nums;
-}
-
-.fraction-value em {
-    color: var(--analytics-muted);
-    font-size: .66em;
+.score-ring-center strong em {
+    font-size: .5em;
     font-style: normal;
-    font-weight: 750;
+    font-weight: 900;
+}
+
+.score-ring-center .timer-value {
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-variant-numeric: tabular-nums;
+}
+
+.score-ring-subline {
+    color: var(--analytics-muted);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.score-ring-subline b {
+    color: var(--analytics-text);
+    font-weight: 900;
 }
 
 
@@ -3874,18 +3791,6 @@ button {
     }
 }
 
-@keyframes stopwatch-hand {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes time-sweep {
-    to {
-        transform: translateX(0);
-    }
-}
-
 @media (max-width: 980px) {
     .analytics-capsules {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3913,10 +3818,7 @@ button {
 @media (prefers-reduced-motion: reduce) {
 
     .analytics-card,
-    .analytics-progress-fill,
     .score-ring-progress,
-    .time-timeline span,
-    .timer-visual span,
     .skeleton::after,
     .skeleton-line::after,
     .skeleton-card::after {
@@ -3928,10 +3830,6 @@ button {
     .analytics-capsules.is-ready .analytics-card {
         opacity: 1;
         transform: none;
-    }
-
-    .analytics-capsules.is-ready .analytics-progress-fill {
-        width: var(--target);
     }
 }
 

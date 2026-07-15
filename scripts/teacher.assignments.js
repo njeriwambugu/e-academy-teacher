@@ -327,29 +327,25 @@ export function createAssignmentsFeature(deps) {
     return { text: "Needs Improvement", color: "#F59E0B" };
   }
 
-  function capsuleProgress({ value, label, color, gradient }) {
-    return `
-      <div class="analytics-progress" aria-label="${escapeHTML(label)} ${escapeHTML(value)}%">
-        <span class="analytics-progress-fill" style="--target:${escapeHTML(value)}%; --metric-color:${escapeHTML(color)}; --metric-gradient:${escapeHTML(gradient)};"></span>
-      </div>`;
-  }
-
-  function scoreRing({ value, color, gradient, status }) {
+  function donutRing({ id, value, color, centerHTML, sublineHTML, ariaLabel }) {
     const safeValue = Math.max(0, Math.min(100, Number(value) || 0));
     return `
-      <div class="score-ring-variant" style="--target:${escapeHTML(safeValue)}; --metric-color:${escapeHTML(color)}; --metric-gradient:${escapeHTML(gradient)};" aria-label="Score average ${escapeHTML(safeValue)} percent, ${escapeHTML(status)}">
+      <div class="score-ring-variant" style="--target:${escapeHTML(safeValue)}; --metric-color:${escapeHTML(color)};" aria-label="${escapeHTML(ariaLabel)}">
         <svg viewBox="0 0 120 120" role="img" aria-hidden="true">
           <defs>
-            <linearGradient id="scoreRingGradient" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="${escapeHTML(id)}" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stop-color="${escapeHTML(color)}" stop-opacity=".62" />
               <stop offset="100%" stop-color="${escapeHTML(color)}" />
             </linearGradient>
           </defs>
           <circle class="score-ring-track" cx="60" cy="60" r="48"></circle>
-          <circle class="score-ring-progress" cx="60" cy="60" r="48"></circle>
+          <circle class="score-ring-dots" cx="60" cy="60" r="37"></circle>
+          <circle class="score-ring-progress" cx="60" cy="60" r="48" stroke="url(#${escapeHTML(id)})"></circle>
         </svg>
-        <strong><span data-count-to="${escapeHTML(safeValue)}">0</span>%</strong>
-        <span>${escapeHTML(status)}</span>
+        <span class="score-ring-center">
+          <strong>${centerHTML}</strong>
+          <span class="score-ring-subline">${sublineHTML}</span>
+        </span>
       </div>`;
   }
 
@@ -382,29 +378,45 @@ export function createAssignmentsFeature(deps) {
     const remaining = Math.max(0, total - completed);
     const tone = scoreTone(score);
     const pace = paceLabel(avgSeconds);
+    // avg time shown as a fraction of a fixed 300s pace scale so the ring stays meaningful
+    const timePct = avgSeconds ? Math.min(100, Math.round((avgSeconds / 300) * 100)) : 0;
     el.className = "assignment-insight-pills analytics-capsules";
     el.innerHTML = `
-      <article class="analytics-card score-card" tabindex="0" style="--metric-color:${escapeHTML(tone.color)}; --metric-gradient:${escapeHTML(tone.gradient)};">
-        ${scoreRing({ value: scoreValue, color: tone.color, gradient: tone.gradient, status: tone.status })}
-        <div class="analytics-card-copy">
-          <span class="analytics-title">Score Average</span>
-          <span class="analytics-status" style="color:${escapeHTML(tone.color)}">${escapeHTML(tone.status)}</span>
-          ${capsuleProgress({ value: scoreValue, label: "Score Average", color: tone.color, gradient: tone.gradient })}
-        </div>
+      <article class="analytics-card score-card" tabindex="0" style="--metric-color:${escapeHTML(tone.color)};">
+        ${donutRing({
+          id: "donutScore",
+          value: scoreValue,
+          color: tone.color,
+          centerHTML: `<span data-count-to="${escapeHTML(scoreValue)}">0</span><em>%</em>`,
+          sublineHTML: escapeHTML(tone.status),
+          ariaLabel: `Score average ${scoreValue} percent, ${tone.status}`,
+        })}
+        <span class="analytics-title">Score Average</span>
+        <span class="analytics-status" style="color:${escapeHTML(tone.color)}">${escapeHTML(tone.status)}</span>
       </article>
-      <article class="analytics-card time-card" tabindex="0" style="--metric-color:${escapeHTML(pace.color)}; --metric-gradient:linear-gradient(90deg,#A7F3D0,${escapeHTML(pace.color)});">
-        
-        <strong class="analytics-value timer-value">${escapeHTML(time || "00:00")}</strong>
+      <article class="analytics-card time-card" tabindex="0" style="--metric-color:${escapeHTML(pace.color)};">
+        ${donutRing({
+          id: "donutTime",
+          value: timePct,
+          color: pace.color,
+          centerHTML: `<span class="timer-value">${escapeHTML(time || "—")}</span>`,
+          sublineHTML: escapeHTML(pace.text),
+          ariaLabel: `Average time ${time || "not available"}, ${pace.text}`,
+        })}
         <span class="analytics-title">Average Time</span>
         <span class="analytics-status" style="color:${escapeHTML(pace.color)}">${escapeHTML(pace.text)}</span>
-        <div class="time-timeline"><span></span></div>
       </article>
-      <article class="analytics-card completion-card" tabindex="0" style="--metric-color:#10B981; --metric-gradient:linear-gradient(90deg,#6EE7B7,#10B981);">
-        <strong class="analytics-value fraction-value"><span data-count-to="${escapeHTML(completed)}">0</span><em>/</em>${escapeHTML(total)}</strong>
+      <article class="analytics-card completion-card" tabindex="0" style="--metric-color:#10B981;">
+        ${donutRing({
+          id: "donutCompletion",
+          value: completionPct,
+          color: "#10B981",
+          centerHTML: `<span data-count-to="${escapeHTML(completionPct)}">0</span><em>%</em>`,
+          sublineHTML: `<b><span data-count-to="${escapeHTML(completed)}">0</span></b>/${escapeHTML(total)} completed`,
+          ariaLabel: `Completion ${completed} of ${total}, ${completionPct} percent`,
+        })}
         <span class="analytics-title">Completion Rate</span>
-        <span class="analytics-status"><span data-count-to="${escapeHTML(completionPct)}">0</span>% Completed</span>
-        ${capsuleProgress({ value: completionPct, label: "Completion Rate", color: "#10B981", gradient: "linear-gradient(90deg,#6EE7B7,#10B981)" })}
-        <span class="analytics-supporting">${escapeHTML(remaining)} assignment${remaining === 1 ? "" : "s"} remaining</span>
+        <span class="analytics-status">${escapeHTML(remaining)} assignment${remaining === 1 ? "" : "s"} remaining</span>
       </article>`;
     animateMetricCards(el);
   }
