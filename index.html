@@ -53,8 +53,10 @@
         <img class="teacher-logo" src="./assets/images/school-logo-v.png" alt="ESOMA Academy" />
       </div>
 
-      <button class="sidebar-toggle" id="sidebarToggleBtn" type="button" aria-label="Collapse sidebar" aria-expanded="true">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <button class="sidebar-toggle" id="sidebarToggleBtn" type="button" aria-label="Collapse sidebar"
+        aria-expanded="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
           <path d="M15 6l-6 6 6 6"></path>
         </svg>
       </button>
@@ -63,7 +65,8 @@
 
         <button class="nav-item active" type="button" data-teacher-nav="dashboard">
           <span class="nav-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
               <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
               <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
@@ -75,7 +78,8 @@
 
         <button class="nav-item" type="button" data-teacher-nav="students">
           <span class="nav-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
               <circle cx="10" cy="7" r="4"></circle>
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -87,7 +91,8 @@
 
         <button class="nav-item" type="button" data-teacher-nav="assignments">
           <span class="nav-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <path d="M14 2v6h6"></path>
               <path d="M9 13h6"></path>
@@ -99,9 +104,10 @@
       </nav>
 
       <div class="sidebar-footer">
-        <button class="logout switch-admin" id="teacherSwitchAdminBtn" type="button">
+        <button class="button soft switch-admin" id="teacherSwitchAdminBtn" type="button">
           <span class="nav-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
               <path d="M7 16V4"></path>
               <path d="M3 8l4-4 4 4"></path>
               <path d="M17 8v12"></path>
@@ -191,26 +197,25 @@
 
       <!-- students -->
       <section class="view" id="teacherStudentsView" aria-label="Teacher students">
-
-        <div class="page-header">
-          <div>
-            <h1 class="page-title">Students</h1>
-          </div>
-        </div>
-
         <div class="student-overview" id="studentOverview" aria-label="Student overview"></div>
-
-        <!-- search -->
-        <div class="toolbar">
-
-          <label class="search">
-            <input type="search" id="studentSearchInput" placeholder="Search student name..." />
-          </label>
-
-        </div>
 
         <!-- grade filters -->
         <div class="student-grade-filters" id="studentGradeFilters"></div>
+        <div class="toolbar">
+          <label class="search">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#26325d" stroke-width="1.8">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m16 16 5 5" />
+            </svg>
+            <input type="search" id="studentSearchInput" placeholder="Search student name...">
+          </label>
+          <button type="button" class="button soft table-refresh-btn" id="studentsRefreshBtn" aria-label="Refresh students">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
+              <path d="M21 3v6h-6"></path>
+            </svg>
+          </button>
+        </div>
 
         <!-- table (uses the shared admin .table styling) -->
         <div class="table">
@@ -231,6 +236,8 @@
           </table>
 
         </div>
+
+        <div class="table-pagination" id="studentsPagination" hidden></div>
 
       </section>
 
@@ -271,7 +278,7 @@
               </div>
             </article>
           </section>
-          
+
           <div class="profile-metrics">
             <article class="profile-metric">
               <img src="assets/icons/online-presence.svg" alt="" aria-hidden="true">
@@ -326,23 +333,31 @@
         <div id="teacherAssignmentsListView">
           <div class="page-header assignments-page-header">
             <div>
-              <h1 class="page-title">Assignments</h1>
             </div>
           </div>
 
           <section class="assignment-command-center assignment-tree-filter" aria-label="Assignment filters">
-            <div class="assignment-tree-search">
+            <div class="toolbar">
               <label class="search">
-                <span class="sr-only">Search assignments</span>
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#26325d" stroke-width="1.8">
+                  <circle cx="10.5" cy="10.5" r="6.5" />
+                  <path d="m16 16 5 5" />
+                </svg>
                 <input type="search" id="assignmentSearchInput" placeholder="Search assignments..." />
               </label>
               <div class="assignment-level-picker">
-                <button type="button" class="assignment-level-btn" id="assignmentLevelButton" aria-expanded="false" aria-controls="assignmentLevelMenu">
+                <button type="button" class="assignment-level-btn" id="assignmentLevelButton" aria-expanded="false"
+                  aria-controls="assignmentLevelMenu">
                   <span id="assignmentLevelLabel">Filter</span>
-                  <svg class="assignment-level-arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 7.5 10 12l4.5-4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="assignment-level-menu" id="assignmentLevelMenu" role="menu"></div>
               </div>
+              <button type="button" class="button soft table-refresh-btn" id="assignmentsRefreshBtn" aria-label="Refresh assignments">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
+                  <path d="M21 3v6h-6"></path>
+                </svg>
+              </button>
             </div>
             <nav class="assignment-filter-crumbs" id="assignmentFilterCrumbs" aria-label="Assignment filter path"></nav>
           </section>
@@ -355,11 +370,16 @@
                 <tr>
                   <th>Name</th>
                   <th>Average Score</th>
+                  <th class="col-wide">Subject</th>
+                  <th class="col-wide">Class</th>
+                  <th class="col-wide">Completion</th>
                 </tr>
               </thead>
               <tbody id="teacherAssignmentsBody"></tbody>
             </table>
           </div>
+
+          <div class="table-pagination" id="assignmentsPagination" hidden></div>
         </div>
 
         <div class="assignment-profile" id="teacherAssignmentProfile" hidden>
@@ -372,13 +392,15 @@
             <span class="student-status active" id="assignmentProfileStatus">Active</span>
           </section>
 
-          <div class="segmented assignment-detail-segments" id="assignmentDetailSegments" role="tablist" aria-label="Assignment report sections">
+          <div class="segmented assignment-detail-segments" id="assignmentDetailSegments" role="tablist"
+            aria-label="Assignment report sections">
             <button class="segment active" type="button" data-assignment-detail-panel="overview">Overview</button>
             <button class="segment" type="button" data-assignment-detail-panel="learners">Learners</button>
           </div>
 
           <div class="assignment-detail-panel active" data-assignment-detail-content="overview">
-            <div class="assignment-insight-pills" id="assignmentInsightPills" aria-label="Assignment performance summary"></div>
+            <div class="assignment-insight-pills" id="assignmentInsightPills"
+              aria-label="Assignment performance summary"></div>
 
             <div class="assignment-detail-layout">
               <section class="assignment-detail-card assignment-info-card">
@@ -395,6 +417,12 @@
               <div class="section-head">
                 <h2>Students who did this assignment</h2>
                 <span class="profile-badge" id="assignmentLearnerCount">0 learners</span>
+                <button type="button" class="button soft table-refresh-btn" id="learnersRefreshBtn" aria-label="Refresh learners">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
+                    <path d="M21 3v6h-6"></path>
+                  </svg>
+                </button>
               </div>
               <div class="table assignment-students-table">
                 <table aria-label="Assignment student performance">
@@ -409,6 +437,8 @@
                   <tbody id="assignmentStudentsBody"></tbody>
                 </table>
               </div>
+
+              <div class="table-pagination" id="learnersPagination" hidden></div>
             </section>
           </div>
         </div>
@@ -447,6 +477,12 @@
           <div class="section">
             <div class="section-head">
               <h2>Records of Assignments</h2>
+              <button type="button" class="button soft table-refresh-btn" id="classAssignmentsRefreshBtn" aria-label="Refresh assignment records">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
+                  <path d="M21 3v6h-6"></path>
+                </svg>
+              </button>
             </div>
             <div class="table">
               <table aria-label="Assignment records">
@@ -459,6 +495,8 @@
                 <tbody id="teacherClassAssignmentsBody"></tbody>
               </table>
             </div>
+
+            <div class="table-pagination" id="classAssignmentsPagination" hidden></div>
 
           </div>
         </div>
@@ -538,12 +576,14 @@
   </div>
 
   <!-- premium mobile bottom nav -->
-  <nav class="teacher-bottom-nav" id="teacherBottomNav" aria-label="Teacher bottom navigation" style="--active-index: 0;">
+  <nav class="teacher-bottom-nav" id="teacherBottomNav" aria-label="Teacher bottom navigation"
+    style="--active-index: 0;">
     <span class="nav-notch" aria-hidden="true"></span>
     <span class="nav-float" aria-hidden="true"><span class="nav-float-icon"></span></span>
     <button type="button" class="active" data-teacher-nav="dashboard" data-nav-index="0" aria-label="Dashboard">
       <span class="nav-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
           <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
           <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
@@ -554,7 +594,8 @@
     </button>
     <button type="button" data-teacher-nav="students" data-nav-index="1" aria-label="Students">
       <span class="nav-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
           <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
           <circle cx="10" cy="7" r="4"></circle>
           <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -565,7 +606,8 @@
     </button>
     <button type="button" data-teacher-nav="assignments" data-nav-index="2" aria-label="Assignments">
       <span class="nav-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
           <path d="M14 2v6h6"></path>
           <path d="M9 13h6"></path>

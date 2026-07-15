@@ -494,7 +494,7 @@ function buildAssignments(subjectId) {
     });
   });
 
-  return rows.slice(0, 10);
+  return rows;
 }
 
 function buildClassData(subjectId, classId) {

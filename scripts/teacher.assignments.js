@@ -1,5 +1,6 @@
 
 import { runButtonAction } from "./ui-state.js";
+import { createPager, refreshTable } from "./table-utils.js";
 
 const DEFAULT_FILTER = "all";
 
@@ -77,6 +78,16 @@ export function createAssignmentsFeature(deps) {
   let currentDetailPanel = "overview";
   let allRowsCache = null;
   let rowByIdCache = null;
+  let lastDetailUid = null;
+
+  const listPager = createPager({
+    container: "#assignmentsPagination",
+    onPageChange: () => renderList(),
+  });
+  const learnersPager = createPager({
+    container: "#learnersPagination",
+    onPageChange: () => { if (lastDetailUid) renderDetail(lastDetailUid); },
+  });
 
   function invalidateCache() {
     allRowsCache = null;
@@ -244,11 +255,14 @@ export function createAssignmentsFeature(deps) {
     if (!body) return;
 
     if (!visibleRows.length) {
-      body.innerHTML = `<tr><td colspan="2" class="muted">No assignments match your filters.</td></tr>`;
+      body.innerHTML = `<tr><td colspan="5" class="muted">No assignments match your filters.</td></tr>`;
+      listPager.paginate(visibleRows);
+      listPager.renderControls();
       return;
     }
 
-    body.innerHTML = visibleRows.map((row) => `
+    const pageRows = listPager.paginate(visibleRows);
+    body.innerHTML = pageRows.map((row) => `
         <tr>
           <td>
             <button type="button" class="assignment-name-link" data-assignment-open="${escapeHTML(row.uid)}">
@@ -256,7 +270,11 @@ export function createAssignmentsFeature(deps) {
             </button>
           </td>
           <td>${row.average == null ? "\u2014" : escapeHTML(row.average + "%")}</td>
+          <td class="col-wide">${escapeHTML(row.subjectName)}</td>
+          <td class="col-wide">${escapeHTML(row.className)}</td>
+          <td class="col-wide">${escapeHTML(`${row.completed}/${row.total}`)}</td>
         </tr>`).join("");
+    listPager.renderControls();
   }
 
   function getLearnerRows(row) {
@@ -398,6 +416,11 @@ export function createAssignmentsFeature(deps) {
       return null;
     }
 
+    if (uid !== lastDetailUid) {
+      learnersPager.reset();
+      lastDetailUid = uid;
+    }
+
     const listView = $("#teacherAssignmentsListView");
     const detailView = $("#teacherAssignmentProfile");
     if (listView) listView.hidden = true;
@@ -453,8 +476,9 @@ export function createAssignmentsFeature(deps) {
 
     const studentBody = $("#assignmentStudentsBody");
     if (studentBody) {
+      const pageLearners = learnersPager.paginate(learnerRows);
       studentBody.innerHTML = learnerRows.length
-        ? learnerRows.map((student) => `
+        ? pageLearners.map((student) => `
           <tr>
             <td>
               <button type="button" class="student-name-btn" data-student-id="${escapeHTML(student.id)}">
@@ -466,6 +490,7 @@ export function createAssignmentsFeature(deps) {
             <td>${escapeHTML(student.timeTaken || "\u2014")}</td>
           </tr>`).join("")
         : `<tr><td colspan="4" class="muted">No learners found for this class.</td></tr>`;
+      learnersPager.renderControls();
     }
 
     activateDetailPanel(currentDetailPanel);
@@ -477,6 +502,7 @@ export function createAssignmentsFeature(deps) {
     const levelMenu = $("#assignmentLevelMenu");
     const applySearch = debounce((value) => {
       filters.search = value.trim();
+      listPager.reset();
       renderList();
     });
 
@@ -494,6 +520,7 @@ export function createAssignmentsFeature(deps) {
       chooseFilter(item.dataset.treeFilter);
       levelMenu.classList.remove("open");
       levelButton?.setAttribute("aria-expanded", "false");
+      listPager.reset();
       renderList();
     });
 
@@ -501,7 +528,28 @@ export function createAssignmentsFeature(deps) {
       const crumb = e.target.closest("[data-filter-crumb]");
       if (!crumb || crumb.hasAttribute("aria-current")) return;
       setCrumb(crumb.dataset.filterCrumb);
+      listPager.reset();
       renderList();
+    });
+
+    $("#assignmentsRefreshBtn")?.addEventListener("click", (e) => {
+      refreshTable({
+        button: e.currentTarget,
+        body: "#teacherAssignmentsBody",
+        colCount: 5,
+        before: invalidateCache,
+        render: renderList,
+      });
+    });
+
+    $("#learnersRefreshBtn")?.addEventListener("click", (e) => {
+      refreshTable({
+        button: e.currentTarget,
+        body: "#assignmentStudentsBody",
+        colCount: 4,
+        before: invalidateCache,
+        render: () => { if (lastDetailUid) renderDetail(lastDetailUid); },
+      });
     });
 
     document.addEventListener("click", (e) => {

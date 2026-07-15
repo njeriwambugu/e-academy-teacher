@@ -4,11 +4,21 @@ import { getStudentProfile } from "./student-profile.js";
 import { createSelectClassModal } from "./teacher.modals.js";
 import { createAssignmentsFeature } from "./teacher.assignments.js";
 import { clearButtonLoading, runButtonAction } from "./ui-state.js";
+import { createPager, refreshTable } from "./table-utils.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
 let activeClassData = classMock;
+
+const studentsPager = createPager({
+  container: "#studentsPagination",
+  onPageChange: () => renderStudents(),
+});
+const classAssignmentsPager = createPager({
+  container: "#classAssignmentsPagination",
+  onPageChange: () => renderClassAssignments(activeClassData.assignments || []),
+});
 
 
 
@@ -333,8 +343,8 @@ function renderStudentOverview(allStudents, visibleStudents) {
   const visible = visibleStudents.length;
 
   const cards = [
-    { label: "Visible", value: visible, note: "matching current view" },
-    { label: "Active", value: active, note: "ready for assignments" },
+    { label: "Total Students", value: visible, note: "current view" },
+    { label: "Active", value: active, note: "active students" },
     { label: "Pending", value: pending, note: "invite not accepted" },
   ];
 
@@ -374,10 +384,13 @@ function renderStudents() {
 
   if (!list.length) {
     body.innerHTML = `<tr><td colspan="5" class="muted">No students match your search.</td></tr>`;
+    studentsPager.paginate([]);
+    studentsPager.renderControls();
     return;
   }
 
-  body.innerHTML = list
+  const pageRows = studentsPager.paginate(list);
+  body.innerHTML = pageRows
     .map((student) => {
       const status = student.status === "pending" ? "pending" : "active";
       const statusLabel = status === "pending" ? "Pending" : "Active";
@@ -431,6 +444,7 @@ function bindStudentControls() {
       studentGroupFilter = groupBtn.dataset.gradeGroupFilter;
       studentGradeFilter = "all";
       closeStudentGradeDropdowns(filters);
+      studentsPager.reset();
       renderStudents();
       updateStudentsRouteState();
       return;
@@ -442,6 +456,7 @@ function bindStudentControls() {
     studentGradeFilter = btn.dataset.gradeFilter;
     studentGroupFilter = studentGradeFilter === "all" ? "all" : getClassGroupName(studentGradeFilter);
     closeStudentGradeDropdowns(filters);
+    studentsPager.reset();
     renderStudents();
     updateStudentsRouteState();
   });
@@ -455,6 +470,7 @@ function bindStudentControls() {
 
   $("#studentSearchInput")?.addEventListener("input", (e) => {
     studentSearch = e.target.value.trim();
+    studentsPager.reset();
     renderStudents();
     updateStudentsRouteState();
   });
@@ -463,6 +479,24 @@ function bindStudentControls() {
     const btn = e.target.closest("[data-student-id]");
     if (!btn) return;
     runButtonAction(btn, () => openStudentProfile(btn.dataset.studentId));
+  });
+
+  $("#studentsRefreshBtn")?.addEventListener("click", (e) => {
+    refreshTable({
+      button: e.currentTarget,
+      body: "#studentsTableBody",
+      colCount: 5,
+      render: renderStudents,
+    });
+  });
+
+  $("#classAssignmentsRefreshBtn")?.addEventListener("click", (e) => {
+    refreshTable({
+      button: e.currentTarget,
+      body: "#teacherClassAssignmentsBody",
+      colCount: 2,
+      render: () => renderClassAssignments(activeClassData.assignments || []),
+    });
   });
 }
 
@@ -508,10 +542,13 @@ function renderClassAssignments(assignments) {
 
   if (!assignments?.length) {
     body.innerHTML = `<tr><td colspan="2" class="muted">No assignments recorded yet.</td></tr>`;
+    classAssignmentsPager.paginate([]);
+    classAssignmentsPager.renderControls();
     return;
   }
 
-  body.innerHTML = assignments
+  const pageRows = classAssignmentsPager.paginate(assignments);
+  body.innerHTML = pageRows
     .map((a) => `
         <tr>
           <td>
@@ -522,6 +559,7 @@ function renderClassAssignments(assignments) {
           <td>${a.average == null ? "\u2014" : escapeHTML(a.average + "%")}</td>
         </tr>`)
     .join("");
+  classAssignmentsPager.renderControls();
 }
 
 function renderStrands(strands) {
@@ -852,6 +890,7 @@ function renderClassPage(subjectId, classId) {
 
   activeClassData = getClassMock(subjectId, classId);
   activeAssignmentCtx = { subjectName, className, subjectId, classId: String(classId) };
+  classAssignmentsPager.reset();
   showAssignmentDrill("list");
 
   renderClassStats(activeClassData.stats, activeClassData.assignments);
@@ -1163,6 +1202,7 @@ function handleRoute() {
     studentGroupFilter = params.get("group") || "all";
     studentGradeFilter = params.get("classId") || "all";
     if (studentGradeFilter !== "all") studentGroupFilter = getClassGroupName(studentGradeFilter);
+    studentsPager.reset();
     const searchInput = $("#studentSearchInput");
     if (searchInput && searchInput.value !== studentSearch) searchInput.value = studentSearch;
     if (backBtn) {

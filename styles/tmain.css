@@ -274,15 +274,23 @@ button {
 }
 
 .teacher-app.sidebar-collapsed .nav-item,
-.teacher-app.sidebar-collapsed .sidebar-footer .logout {
+.teacher-app.sidebar-collapsed .sidebar-footer button {
     justify-content: center;
     padding: 0;
     gap: 0;
 }
 
-.teacher-app.sidebar-collapsed .nav-item > span:not(.nav-icon),
-.teacher-app.sidebar-collapsed .sidebar-footer .logout > span:not(.nav-icon) {
+.teacher-app.sidebar-collapsed .nav-item>span:not(.nav-icon),
+.teacher-app.sidebar-collapsed .sidebar-footer button>span:not(.nav-icon) {
     display: none;
+}
+
+.sidebar-footer .switch-admin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
 }
 
 .avatar {
@@ -334,10 +342,10 @@ button {
 
 .nav-item {
     width: 100%;
-    height: 52px;
+    height: 55px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
     padding: 0 14px;
     border: 0;
     border-radius: 14px;
@@ -946,11 +954,19 @@ button {
 
 /* Grade Filters */
 .student-grade-filters {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding: 4px 0 10px;
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(94px, 1fr));
+    align-items: center;
+    gap: 10px;
+    min-height: 0;
+    padding: 12px;
+    margin-bottom: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .24), transparent 18%),
+        linear-gradient(95deg, #172653 0%, #21304d 36%, #7d4f36 68%, #f06405 100%);
+    box-shadow: 0 24px 48px rgba(31, 38, 68, 0.18);
 }
 
 .student-grade-filters::-webkit-scrollbar {
@@ -1949,6 +1965,7 @@ button {
         grid-template-columns: 1fr;
     }
 }
+
 /*sub-strand cards themed*/
 .assignment-card {
     position: relative;
@@ -1962,37 +1979,41 @@ button {
     border-radius: 16px;
     box-shadow: 0 10px 24px rgba(29, 37, 72, 0.06);
 }
-.assignment-card-overlay{
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    overflow:hidden;
-}
-.assignment-card-overlay span{
-    position:absolute;
-    font-size:42px;
-    font-weight:900;
-    opacity:.05;
-}
-.assignment-card-overlay span:nth-child(1){
-    top:10%;
-    left:12%;
+
+.assignment-card-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
 }
 
-.assignment-card-overlay span:nth-child(2){
-    top:18%;
-    right:15%;
+.assignment-card-overlay span {
+    position: absolute;
+    font-size: 42px;
+    font-weight: 900;
+    opacity: .05;
 }
 
-.assignment-card-overlay span:nth-child(3){
-    top:55%;
-    left:25%;
+.assignment-card-overlay span:nth-child(1) {
+    top: 10%;
+    left: 12%;
 }
 
-.assignment-card-overlay span:nth-child(4){
-    bottom:18%;
-    right:12%;
+.assignment-card-overlay span:nth-child(2) {
+    top: 18%;
+    right: 15%;
 }
+
+.assignment-card-overlay span:nth-child(3) {
+    top: 55%;
+    left: 25%;
+}
+
+.assignment-card-overlay span:nth-child(4) {
+    bottom: 18%;
+    right: 12%;
+}
+
 .assignment-card-name,
 .assignment-card-skills,
 .assignment-card .button,
@@ -2131,7 +2152,7 @@ button {
    profile rebuilt to match the admin design.
 ================================================== */
 
-/* ---- 1) Student search — reuses main.css .toolbar/.search; deltas only ---- */
+/* ---- 1) Student search — reuses main.css .toolbar/.search; deltas only ---- 
 #teacherStudentsView .toolbar {
     margin-bottom: 18px;
 }
@@ -2153,7 +2174,7 @@ button {
 #teacherStudentsView .search input::placeholder {
     color: var(--muted);
     font-weight: 600;
-}
+}*/
 
 /* ---- 2) Breadcrumb text colour: links grey, current black ---- */
 .teacher-app .breadcrumb {
@@ -2706,6 +2727,7 @@ button {
 }
 
 @media (max-width: 640px) {
+
     .assignment-command-center,
     .assignment-profile-hero {
         padding: 18px;
@@ -2720,9 +2742,9 @@ button {
         flex-direction: column;
     }
 
-    .assignment-table-shell table,
+    /* assignments list collapses to 2 columns on mobile, so no min width needed */
     .assignment-students-table table {
-        min-width: 760px;
+        min-width: 560px;
     }
 }
 
@@ -2782,8 +2804,8 @@ button {
         width: 100%;
     }
 
-    #teacherStudentsView .student-filter-mobile > .grade-filter-btn,
-    #teacherStudentsView .student-filter-mobile .grade-dropdown > .grade-filter-btn {
+    #teacherStudentsView .student-filter-mobile>.grade-filter-btn,
+    #teacherStudentsView .student-filter-mobile .grade-dropdown>.grade-filter-btn {
         width: 100%;
         min-height: 44px;
         display: inline-flex;
@@ -2927,7 +2949,7 @@ button {
     font-weight: 950;
 }
 
-#teacherClassView [data-class-panel="assignments"] > .assignment-overview-stats {
+#teacherClassView [data-class-panel="assignments"]>.assignment-overview-stats {
     margin-top: 0;
 }
 
@@ -3077,6 +3099,7 @@ button {
         opacity: .25;
         transform: translate3d(0, 12px, 0);
     }
+
     to {
         opacity: 1;
         transform: translate3d(0, 0, 0);
@@ -3269,9 +3292,17 @@ button {
 }
 
 @keyframes nav-icon-pop {
-    0% { transform: translate3d(0, 6px, 0) scale(.86); }
-    62% { transform: translate3d(0, -2px, 0) scale(1.1); }
-    100% { transform: translate3d(0, 0, 0) scale(1); }
+    0% {
+        transform: translate3d(0, 6px, 0) scale(.86);
+    }
+
+    62% {
+        transform: translate3d(0, -2px, 0) scale(1.1);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
 }
 
 
@@ -3538,6 +3569,7 @@ button {
         border-radius: 999px;
     }
 }
+
 .assignment-detail-segments {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3596,8 +3628,13 @@ button {
     transform: translate3d(0, 0, 0);
 }
 
-.analytics-capsules.is-ready .analytics-card:nth-child(2) { transition-delay: 45ms; }
-.analytics-capsules.is-ready .analytics-card:nth-child(3) { transition-delay: 90ms; }
+.analytics-capsules.is-ready .analytics-card:nth-child(2) {
+    transition-delay: 45ms;
+}
+
+.analytics-capsules.is-ready .analytics-card:nth-child(3) {
+    transition-delay: 90ms;
+}
 
 .analytics-card:hover,
 .analytics-card:focus-visible {
@@ -3696,7 +3733,7 @@ button {
     line-height: .9;
 }
 
-.score-ring-variant > span {
+.score-ring-variant>span {
     transform: translateY(32px);
     color: var(--metric-color);
     font-size: 12px;
@@ -3816,7 +3853,7 @@ button {
     position: absolute;
     inset: 0;
     transform: translateX(-100%);
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.72), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .72), transparent);
     animation: skeleton-shimmer 1.25s infinite;
 }
 
@@ -3832,15 +3869,21 @@ button {
 }
 
 @keyframes skeleton-shimmer {
-    to { transform: translateX(100%); }
+    to {
+        transform: translateX(100%);
+    }
 }
 
 @keyframes stopwatch-hand {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes time-sweep {
-    to { transform: translateX(0); }
+    to {
+        transform: translateX(0);
+    }
 }
 
 @media (max-width: 980px) {
@@ -3868,6 +3911,7 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .analytics-card,
     .analytics-progress-fill,
     .score-ring-progress,
@@ -3893,12 +3937,16 @@ button {
 
 
 .assignment-table-shell table,
-#teacherClassView [aria-label="Assignment records"] { table-layout: fixed; }
+#teacherClassView [aria-label="Assignment records"] {
+    table-layout: fixed;
+}
 
 .assignment-table-shell table th,
 .assignment-table-shell table td,
 #teacherClassView [aria-label="Assignment records"] th,
-#teacherClassView [aria-label="Assignment records"] td { padding: 12px 14px !important; }
+#teacherClassView [aria-label="Assignment records"] td {
+    padding: 12px 14px !important;
+}
 
 .assignment-table-shell table thead th,
 #teacherClassView [aria-label="Assignment records"] thead th {
@@ -3913,56 +3961,146 @@ button {
 .assignment-table-shell table th:nth-child(2),
 .assignment-table-shell table td:nth-child(2),
 #teacherClassView [aria-label="Assignment records"] th:nth-child(2),
-#teacherClassView [aria-label="Assignment records"] td:nth-child(2) { text-align: right; font-weight: 950; }
+#teacherClassView [aria-label="Assignment records"] td:nth-child(2) {
+    text-align: right;
+    font-weight: 950;
+}
 
-.assignment-name-link strong { font-size: 13.5px; }
+.assignment-name-link strong {
+    font-size: 13.5px;
+}
 
-.assignment-tree-search { grid-template-columns: minmax(0, 1fr) auto !important; }
+.assignment-tree-search {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+}
+
 .assignment-level-btn {
     min-width: 116px;
     color: var(--brand-navy-900, #101B3D) !important;
     background: #B9DFF0 !important;
     box-shadow: 0 12px 24px rgba(86, 164, 198, .22) !important;
 }
-.assignment-level-arrow { width: 18px; height: 18px; color: #05070A; flex: 0 0 auto; }
+
+.assignment-level-arrow {
+    width: 18px;
+    height: 18px;
+    color: #05070A;
+    flex: 0 0 auto;
+}
 
 @media (max-width: 640px) {
-    .assignment-tree-search { grid-template-columns: minmax(0, 1fr) auto !important; }
-    .assignment-level-btn { width: auto !important; min-width: 104px; padding-inline: 12px; }
-    .assignment-level-menu { left: auto !important; right: 0 !important; width: min(260px, 78vw) !important; }
+    .assignment-tree-search {
+        grid-template-columns: minmax(0, 1fr) auto !important;
+    }
+
+    .assignment-level-btn {
+        width: auto !important;
+        min-width: 104px;
+        padding-inline: 12px;
+    }
+
+    .assignment-level-menu {
+        left: auto !important;
+        right: 0 !important;
+        width: min(260px, 78vw) !important;
+    }
 }
 
 .accordion-sign {
-    width: 22px; height: 22px; border-radius: 999px; background: #EAF6FB;
-    display: inline-grid; place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #EAF6FB;
+    display: inline-grid;
+    place-items: center;
 }
+
 .accordion-sign::before {
-    content: ""; position: static; width: 8px; height: 8px;
-    border-right: 2.4px solid #172653; border-bottom: 2.4px solid #172653;
-    background: transparent; border-radius: 0; transform: translateY(-2px) rotate(45deg);
+    content: "";
+    position: static;
+    width: 8px;
+    height: 8px;
+    border-right: 2.4px solid #172653;
+    border-bottom: 2.4px solid #172653;
+    background: transparent;
+    border-radius: 0;
+    transform: translateY(-2px) rotate(45deg);
     transition: transform 180ms ease;
 }
-.accordion-sign::after { display: none !important; }
-.accordion-item.open .accordion-sign::before { transform: translateY(2px) rotate(225deg); }
 
-.accordion-pills, .substrand-pills { display: inline-flex; align-items: center; gap: 8px; }
-.pill-avg { background: #DDF1FA !important; color: #1F5D86 !important; border: 1px solid rgba(31, 93, 134, .12); }
-.pill-done, .accordion-pills .pill:not(.pill-avg), .substrand-pills .pill:not(.pill-avg) { display: none !important; }
+.accordion-sign::after {
+    display: none !important;
+}
 
-.assignment-card, .assignment-card[class*="grade"], .assignment-card[class*="pp"] {
-    background: #fff !important; border-color: rgba(23, 38, 83, .08) !important;
+.accordion-item.open .accordion-sign::before {
+    transform: translateY(2px) rotate(225deg);
+}
+
+.accordion-pills,
+.substrand-pills {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pill-avg {
+    background: #DDF1FA !important;
+    color: #1F5D86 !important;
+    border: 1px solid rgba(31, 93, 134, .12);
+}
+
+.pill-done,
+.accordion-pills .pill:not(.pill-avg),
+.substrand-pills .pill:not(.pill-avg) {
+    display: none !important;
+}
+
+.assignment-card,
+.assignment-card[class*="grade"],
+.assignment-card[class*="pp"] {
+    background: #fff !important;
+    border-color: rgba(23, 38, 83, .08) !important;
     box-shadow: 0 14px 30px rgba(23, 38, 83, .08) !important;
 }
-.assignment-card-overlay, .assignment-card-icon { display: none !important; }
-.assignment-card .button { border-radius: 13px; min-height: 42px; height: auto; font-size: 14px; }
+
+.assignment-card-overlay,
+.assignment-card-icon {
+    display: none !important;
+}
+
+.assignment-card .button {
+    border-radius: 13px;
+    min-height: 42px;
+    height: auto;
+    font-size: 14px;
+}
 
 .assignment-deploy-placeholder {
-    min-height: min(52vh, 420px); display: grid; align-content: center; justify-items: center; gap: 12px;
-    padding: 34px 20px; text-align: center; border: 1px dashed rgba(43, 111, 179, .28);
-    border-radius: 22px; background: #F7FBFE;
+    min-height: min(52vh, 420px);
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 12px;
+    padding: 34px 20px;
+    text-align: center;
+    border: 1px dashed rgba(43, 111, 179, .28);
+    border-radius: 22px;
+    background: #F7FBFE;
 }
-.assignment-deploy-placeholder h3 { margin: 0; color: var(--brand-navy-900, #101B3D); font-size: clamp(22px, 4vw, 32px); }
-.assignment-deploy-placeholder p { max-width: 560px; margin: 0; color: #58627A; font-weight: 750; line-height: 1.55; }
+
+.assignment-deploy-placeholder h3 {
+    margin: 0;
+    color: var(--brand-navy-900, #101B3D);
+    font-size: clamp(22px, 4vw, 32px);
+}
+
+.assignment-deploy-placeholder p {
+    max-width: 560px;
+    margin: 0;
+    color: #58627A;
+    font-weight: 750;
+    line-height: 1.55;
+}
 
 /* ==================================================
    Teacher UX polish: stable routes, skeletons, buttons
@@ -4004,6 +4142,7 @@ button {
         opacity: .42;
         transform: translate3d(0, 8px, 0);
     }
+
     to {
         opacity: 1;
         transform: translate3d(0, 0, 0);
@@ -4016,7 +4155,7 @@ button {
     pointer-events: none !important;
 }
 
-.is-button-loading > * {
+.is-button-loading>* {
     opacity: 0 !important;
 }
 
@@ -4045,7 +4184,7 @@ button {
     min-height: 420px;
 }
 
-.teacher-app .view.view-loading > * {
+.teacher-app .view.view-loading>* {
     opacity: 0 !important;
     pointer-events: none !important;
 }
@@ -4233,7 +4372,101 @@ button {
     }
 }
 
+/* ==================================================
+   Table pagination + refresh
+================================================== */
+.table-refresh-btn {
+    width: 48px;
+    min-width: 48px;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.section-head .table-refresh-btn {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    margin-left: auto;
+}
+
+.section-head .profile-badge+.table-refresh-btn {
+    margin-left: 12px;
+}
+
+.table-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 14px 2px 0;
+}
+
+.table-pagination-meta {
+    color: var(--muted, #6e7593);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.table-pagination-pages {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.table-page-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--line, #e4e8f1);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink-2, #26325d);
+    font-weight: 900;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.table-page-btn:hover:not(:disabled):not(.active) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(31, 39, 72, .1);
+}
+
+.table-page-btn.active {
+    background: rgba(33, 48, 77, 0.92);
+    border-color: rgba(33, 48, 77, 0.92);
+    color: #fff;
+    cursor: default;
+}
+
+.table-page-btn:disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+.table-pagination-gap {
+    color: var(--muted, #6e7593);
+    font-weight: 900;
+}
+
+/* assignments table: extra columns are desktop-only */
+@media (max-width: 880px) {
+    .assignment-table-shell .col-wide {
+        display: none;
+    }
+
+    .table-pagination {
+        justify-content: center;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
+
     .teacher-app .view.view-entering:not(.view-loading),
     .teacher-app .view.view-loading::after,
     .is-button-loading::after,
