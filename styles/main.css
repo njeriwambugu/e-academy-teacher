@@ -1171,102 +1171,7 @@ body:not(.login-active) .login-page {
   }
 }
 
-.view.loading {
-  position: relative;
-  min-height: 320px;
-}
-
-.view.loading>* {
-  opacity: 0;
-}
-
-.view.loading::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  border-radius: 18px;
-  pointer-events: none;
-  box-shadow: 0 18px 44px rgba(31, 39, 72, 0.08);
-  animation: skeleton-in 260ms cubic-bezier(.18, .72, .2, 1) both;
-}
-
-.view.loading::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 21;
-  pointer-events: none;
-  border-radius: 18px;
-  background: linear-gradient(105deg, transparent 0 38%, rgba(255, 255, 255, .66) 48%, transparent 58% 100%);
-  transform: translateX(-105%);
-  animation: skeleton-sweep 780ms ease-in-out infinite;
-}
-
-#dashboardView.loading::before {
-  background:
-    linear-gradient(#fff, #fff) 0 0 / 31.5% 104px no-repeat,
-    linear-gradient(#fff, #fff) 34.25% 0 / 31.5% 104px no-repeat,
-    linear-gradient(#fff, #fff) 68.5% 0 / 31.5% 104px no-repeat,
-    linear-gradient(90deg, #f5f5f5, #f5f5f5) 0 126px / 100% 74px no-repeat,
-    linear-gradient(#fff, #fff) 0 224px / 52% 48px no-repeat,
-    linear-gradient(#fff, #fff) 54% 224px / 20% 48px no-repeat,
-    linear-gradient(#fff, #fff) 76% 224px / 24% 48px no-repeat,
-    linear-gradient(#fff, #fff) 0 306px / 31.5% 148px no-repeat,
-    linear-gradient(#fff, #fff) 34.25% 306px / 31.5% 148px no-repeat,
-    linear-gradient(#fff, #fff) 68.5% 306px / 31.5% 148px no-repeat,
-    linear-gradient(#fff, #fff) 0 478px / 31.5% 148px no-repeat,
-    linear-gradient(#fff, #fff) 34.25% 478px / 31.5% 148px no-repeat,
-    linear-gradient(#fff, #fff) 68.5% 478px / 31.5% 148px no-repeat;
-}
-
-#detailView.loading::before {
-  background:
-    linear-gradient(90deg, #f5f5f5, #f5f5f5) 0 0 / 100% 214px no-repeat,
-    linear-gradient(#fff, #fff) 0 238px / 31.5% 104px no-repeat,
-    linear-gradient(#fff, #fff) 34.25% 238px / 31.5% 104px no-repeat,
-    linear-gradient(#fff, #fff) 68.5% 238px / 31.5% 104px no-repeat,
-    linear-gradient(#fff, #fff) 0 366px / 46% 48px no-repeat,
-    linear-gradient(#f5f5f5, #f5f5f5) 84% 366px / 16% 48px no-repeat,
-    linear-gradient(#fff, #fff) 0 432px / 80% 48px no-repeat,
-    linear-gradient(#fff, #fff) 82% 432px / 18% 48px no-repeat,
-    linear-gradient(#fff, #fff) 0 502px / 31.5% 96px no-repeat,
-    linear-gradient(#fff, #fff) 34.25% 502px / 31.5% 96px no-repeat,
-    linear-gradient(#fff, #fff) 68.5% 502px / 31.5% 96px no-repeat,
-    linear-gradient(#f5f5f5, #f5f5f5) 0 622px / 100% 54px no-repeat,
-    linear-gradient(#fff, #fff) 0 676px / 100% 248px no-repeat;
-}
-
-#studentProfileView.loading::before {
-  background:
-    linear-gradient(90deg, #fff, #f5f5f5) 0 0 / 100% 258px no-repeat,
-    linear-gradient(#fff, #fff) 0 282px / 31.5% 148px no-repeat,
-    linear-gradient(#fff, #fff) 34.25% 282px / 31.5% 148px no-repeat,
-    linear-gradient(#fff, #fff) 68.5% 282px / 31.5% 148px no-repeat,
-    linear-gradient(#fff, #fff) 0 456px / 100% 438px no-repeat,
-    linear-gradient(#f5f5f5, #f5f5f5) 24px 736px / calc(50% - 36px) 44px no-repeat,
-    linear-gradient(#f5f5f5, #f5f5f5) calc(50% + 12px) 736px / calc(50% - 36px) 44px no-repeat,
-    linear-gradient(#f5f5f5, #f5f5f5) 24px 794px / calc(50% - 36px) 44px no-repeat,
-    linear-gradient(#f5f5f5, #f5f5f5) calc(50% + 12px) 794px / calc(50% - 36px) 44px no-repeat;
-}
-
-@keyframes skeleton-sweep {
-  to {
-    transform: translateX(105%);
-  }
-}
-
-@keyframes skeleton-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(.985);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
+/* Route skeletons live in tmain.css (.view-loading system). */
 
 .stats {
   display: grid;
@@ -4803,44 +4708,6 @@ tbody tr:last-child td {
     line-height: 1.1;
   }
 
-  #dashboardView.loading::before {
-    background:
-      linear-gradient(#fff, #fff) 0 0 / 100% 86px no-repeat,
-      linear-gradient(#fff, #fff) 0 108px / 100% 86px no-repeat,
-      linear-gradient(#fff, #fff) 0 216px / 100% 86px no-repeat,
-      linear-gradient(90deg, color-mix(in srgb, var(--theme), white 24%), color-mix(in srgb, var(--theme-deep), white 38%)) 0 326px / 100% 68px no-repeat,
-      linear-gradient(#fff, #fff) 0 420px / 100% 48px no-repeat,
-      linear-gradient(#fff, #fff) 0 492px / 100% 138px no-repeat,
-      linear-gradient(#fff, #fff) 0 654px / 100% 138px no-repeat,
-      linear-gradient(#fff, #fff) 0 816px / 100% 138px no-repeat;
-  }
-
-  #detailView.loading::before {
-    background:
-      linear-gradient(90deg, color-mix(in srgb, var(--theme-soft), white 18%), color-mix(in srgb, var(--theme), white 42%)) 0 0 / 100% 332px no-repeat,
-      linear-gradient(#fff, #fff) 0 356px / 100% 86px no-repeat,
-      linear-gradient(#fff, #fff) 0 464px / 100% 86px no-repeat,
-      linear-gradient(#fff, #fff) 0 572px / 100% 86px no-repeat,
-      linear-gradient(#fff, #fff) 0 690px / 100% 48px no-repeat,
-      linear-gradient(#fff, #fff) 0 760px / 100% 48px no-repeat,
-      linear-gradient(#fff, #fff) 0 830px / 100% 96px no-repeat,
-      linear-gradient(#fff, #fff) 0 948px / 100% 96px no-repeat,
-      linear-gradient(#fff, #fff) 0 1066px / 100% 96px no-repeat,
-      linear-gradient(rgba(244, 130, 33, .45), rgba(244, 130, 33, .45)) 0 1190px / 100% 54px no-repeat,
-      linear-gradient(#fff, #fff) 0 1244px / 100% 320px no-repeat;
-  }
-
-  #studentProfileView.loading::before {
-    background:
-      linear-gradient(90deg, #fff, color-mix(in srgb, var(--theme-soft), white 56%)) 0 0 / 100% 470px no-repeat,
-      linear-gradient(#fff, #fff) 0 492px / 100% 118px no-repeat,
-      linear-gradient(#fff, #fff) 0 632px / 100% 118px no-repeat,
-      linear-gradient(#fff, #fff) 0 772px / 100% 118px no-repeat,
-      linear-gradient(#fff, #fff) 0 914px / 100% 520px no-repeat,
-      linear-gradient(color-mix(in srgb, var(--theme-soft), white 50%), color-mix(in srgb, var(--theme-soft), white 50%)) 18px 1260px / calc(100% - 36px) 42px no-repeat,
-      linear-gradient(color-mix(in srgb, var(--theme-soft), white 50%), color-mix(in srgb, var(--theme-soft), white 50%)) 18px 1316px / calc(100% - 36px) 42px no-repeat,
-      linear-gradient(color-mix(in srgb, var(--theme-soft), white 50%), color-mix(in srgb, var(--theme-soft), white 50%)) 18px 1372px / calc(100% - 36px) 42px no-repeat;
-  }
 }
 
 /* Mobile table responsiveness */

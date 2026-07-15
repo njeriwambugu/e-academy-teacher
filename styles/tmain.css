@@ -3802,8 +3802,7 @@ button {
 
 .skeleton,
 .skeleton-line,
-.skeleton-card,
-.metric-skeleton {
+.skeleton-card {
     position: relative;
     overflow: hidden;
     border-radius: 14px;
@@ -3812,8 +3811,7 @@ button {
 
 .skeleton::after,
 .skeleton-line::after,
-.skeleton-card::after,
-.metric-skeleton::after {
+.skeleton-card::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -3822,26 +3820,15 @@ button {
     animation: skeleton-shimmer 1.25s infinite;
 }
 
-.metric-skeleton {
-    min-height: 236px;
-    border: 1px solid var(--analytics-border);
-    border-radius: var(--analytics-radius);
-    background: #fff;
-    box-shadow: var(--analytics-shadow);
+/* table refresh skeleton rows (see scripts/table-utils.js skeletonRows) */
+.skeleton-row td {
+    padding: 14px 12px;
 }
 
-.metric-skeleton::before {
-    content: "";
-    position: absolute;
-    left: 28px;
-    right: 28px;
-    top: 28px;
-    bottom: 28px;
-    border-radius: 18px;
-    background:
-        linear-gradient(#EEF2F7 0 0) 0 0 / 44% 14px no-repeat,
-        linear-gradient(#EEF2F7 0 0) 0 44px / 62% 52px no-repeat,
-        linear-gradient(#EEF2F7 0 0) 0 128px / 100% 14px no-repeat;
+.skeleton-row .skeleton-line {
+    display: block;
+    height: 14px;
+    border-radius: 8px;
 }
 
 @keyframes skeleton-shimmer {
@@ -3888,8 +3875,7 @@ button {
     .timer-visual span,
     .skeleton::after,
     .skeleton-line::after,
-    .skeleton-card::after,
-    .metric-skeleton::after {
+    .skeleton-card::after {
         animation: none !important;
         transition: none !important;
     }
