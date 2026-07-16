@@ -1541,7 +1541,6 @@ button {
     transform: rotate(180deg);
 }
 
-/* Selected class option uses the solid theme colour (not the gradient). */
 .grade-option.selected {
     background: var(--brand-navy-900);
     color: #fff;
@@ -1571,7 +1570,6 @@ button {
     }
 }
 
-/* 7) Students table on phones: Name + Class + profile action (3 columns). */
 @media (max-width: 768px) {
 
     /* re-show the Class column (3rd), which the earlier rule hid */
@@ -4027,15 +4025,121 @@ button {
     line-height: 1.55;
 }
 
-.assignment-deploy-placeholder .deploy-assign-btn {
-    min-width: 180px;
-    margin-top: 8px;
+/* floating action button for deployment */
+.deploy-fab {
+    position: fixed;
+    right: 26px;
+    bottom: 26px;
+    z-index: 950;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 56px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 999px;
+    color: #fff;
+    background: var(--brand-gradient);
+    font-weight: 950;
+    font-size: 14px;
+    letter-spacing: .05em;
     text-transform: uppercase;
-    letter-spacing: .04em;
+    box-shadow: 0 18px 38px rgba(23, 38, 83, .32), 0 8px 18px rgba(240, 100, 5, .22);
     cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
-/* deployment modal fields */
+.deploy-fab:hover,
+.deploy-fab:focus-visible {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 24px 48px rgba(23, 38, 83, .38), 0 10px 22px rgba(240, 100, 5, .26);
+    outline: 0;
+}
+
+@media (max-width: 880px) {
+    /* clear the floating bottom nav */
+    .deploy-fab {
+        right: 16px;
+        bottom: 128px;
+    }
+}
+
+/* learner highlight cards on the deployment page — two per row */
+.deploy-insights {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.deploy-insight-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 4px;
+    min-height: 108px;
+    align-content: center;
+    padding: 16px 18px;
+    border: 1px solid rgba(226, 231, 242, .95);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 14px 30px rgba(29, 37, 72, .07);
+}
+
+.deploy-insight-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: var(--insight-color, #14B8A6);
+}
+
+.deploy-insight-card.top { --insight-color: #10B981; }
+.deploy-insight-card.lowest { --insight-color: #EF4444; }
+.deploy-insight-card.fastest { --insight-color: #2B6FB3; }
+.deploy-insight-card.slowest { --insight-color: #F59E0B; }
+
+.deploy-insight-title {
+    color: var(--insight-color, #14B8A6);
+    font-size: 11px;
+    font-weight: 950;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.deploy-insight-name {
+    color: var(--ink, #121936);
+    font-size: 16px;
+    font-weight: 950;
+}
+
+.deploy-insight-main {
+    color: var(--brand-navy-900, #101a3a);
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1;
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+}
+
+.deploy-insight-note {
+    color: var(--muted, #6e7593);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 750;
+}
+
+@media (max-width: 640px) {
+    .deploy-insights {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* deployment modal fields — one field per row on every screen size */
+#teacherDeployModal .form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
 .deploy-field {
     display: grid;
     gap: 6px;

@@ -26,7 +26,16 @@ export const teachers = [
       { id: 5115, subjectId: "ART", classId: 3, role: "Assistant" },
       { id: 5116, subjectId: "ART", classId: 7, role: "Main" },
       { id: 5117, subjectId: "ENV", classId: 12, role: "Main" },
-      { id: 5118, subjectId: "ENV", classId: 13, role: "Co-Teacher" }
+      { id: 5118, subjectId: "ENV", classId: 13, role: "Co-Teacher" },
+      { id: 5119, subjectId: "COMP", classId: 12, role: "Main" },
+      { id: 5120, subjectId: "COMP", classId: 11, role: "Co-Teacher" },
+      { id: 5121, subjectId: "SS", classId: 11, role: "Main" },
+      { id: 5122, subjectId: "SS", classId: 12, role: "Assistant" },
+      { id: 5123, subjectId: "INT", classId: 3, role: "Main" },
+      { id: 5124, subjectId: "AGRI", classId: 12, role: "Main" },
+      { id: 5125, subjectId: "AGRI", classId: 3, role: "Co-Teacher" },
+      { id: 5126, subjectId: "PTECH", classId: 11, role: "Main" },
+      { id: 5127, subjectId: "IRE", classId: 3, role: "Assistant" }
     ]
 
   },

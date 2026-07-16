@@ -615,6 +615,30 @@ export function createAssignmentsFeature(deps) {
     });
   }
 
+  // extremes for the deployment page insight cards
+  function getLearnerStats(uid) {
+    const row = getRowByUid(uid);
+    if (!row) return null;
+
+    const completed = getLearnerRows(row).filter((learner) => learner.completed);
+    if (!completed.length) return null;
+
+    const toSeconds = (t) => {
+      const [h, m, s] = String(t || "0:0:0").split(":").map(Number);
+      return h * 3600 + m * 60 + s;
+    };
+    const byScore = [...completed].sort((a, b) => b.score - a.score);
+    const byTime = [...completed].sort((a, b) => toSeconds(a.timeTaken) - toSeconds(b.timeTaken));
+
+    return {
+      average: row.average,
+      top: byScore[0],
+      lowest: byScore[byScore.length - 1],
+      fastest: byTime[0],
+      slowest: byTime[byTime.length - 1],
+    };
+  }
+
   return {
     bind,
     renderList,
@@ -622,5 +646,6 @@ export function createAssignmentsFeature(deps) {
     openDetail,
     activateDetailPanel,
     invalidateCache,
+    getLearnerStats,
   };
 }

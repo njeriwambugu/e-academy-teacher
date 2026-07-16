@@ -889,6 +889,29 @@ function showMixedCards(mixedIdx) {
   );
 }
 
+function deployInsightCardsHTML(uid) {
+  const stats = uid ? assignmentsFeature?.getLearnerStats(uid) : null;
+  if (!stats) return "";
+
+  const cards = [
+    { cls: "top", title: "Top Performer", name: stats.top.name, main: `${stats.top.score}%`, note: `Class average ${stats.average == null ? "—" : stats.average + "%"}` },
+    { cls: "lowest", title: "Lowest Score", name: stats.lowest.name, main: `${stats.lowest.score}%`, note: `Class average ${stats.average == null ? "—" : stats.average + "%"}` },
+    { cls: "fastest", title: "Least Time Taken", name: stats.fastest.name, main: stats.fastest.timeTaken, note: `Scored ${stats.fastest.score}% • Class avg ${stats.average == null ? "—" : stats.average + "%"}` },
+    { cls: "slowest", title: "Most Time Taken", name: stats.slowest.name, main: stats.slowest.timeTaken, note: `Scored ${stats.slowest.score}% • Class avg ${stats.average == null ? "—" : stats.average + "%"}` },
+  ];
+
+  return `
+    <div class="deploy-insights" aria-label="Learner highlights">
+      ${cards.map((c) => `
+        <article class="deploy-insight-card ${c.cls}">
+          <span class="deploy-insight-title">${escapeHTML(c.title)}</span>
+          <strong class="deploy-insight-name">${escapeHTML(c.name)}</strong>
+          <span class="deploy-insight-main">${escapeHTML(c.main)}</span>
+          <em class="deploy-insight-note">${escapeHTML(c.note)}</em>
+        </article>`).join("")}
+    </div>`;
+}
+
 function openAssignmentDetail(id) {
   const a = activeSubstrandAssignments.find((x) => x.id === id);
   if (!a) return;
@@ -905,8 +928,15 @@ function openAssignmentDetail(id) {
       <section class="assignment-deploy-placeholder">
         <h3>${escapeHTML(a.name)}</h3>
         <p>This opens the assignment deployment flow. The backend can connect the real learner assignment screen here.</p>
-        <button type="button" class="button deploy-assign-btn" data-deploy-assign="${escapeHTML(a.name)}">Assign</button>
-      </section>`;
+      </section>
+      ${deployInsightCardsHTML(a.uid)}
+      <button type="button" class="deploy-fab" data-deploy-assign="${escapeHTML(a.name)}" aria-label="Assign ${escapeHTML(a.name)} to learners">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 2L11 13"></path>
+          <path d="M22 2l-7 20-4-9-9-4z"></path>
+        </svg>
+        <span>Assign</span>
+      </button>`;
   }
 
   showAssignmentDrill("detail");
