@@ -811,17 +811,26 @@ button {
     position: absolute;
     font-style: normal;
     font-weight: 900;
-    font-size: 22px;
+    font-size: 21px;
+    line-height: 1;
 }
 
-.subject-doodles i:nth-child(1) { top: 8%; left: 6%; transform: rotate(-14deg); font-size: 26px; }
-.subject-doodles i:nth-child(2) { top: 18%; right: 30%; transform: rotate(10deg); }
-.subject-doodles i:nth-child(3) { top: 42%; left: 24%; transform: rotate(6deg); font-size: 18px; }
-.subject-doodles i:nth-child(4) { bottom: 18%; left: 30%; transform: rotate(-8deg); font-size: 28px; }
-.subject-doodles i:nth-child(5) { bottom: 12%; right: 12%; transform: rotate(12deg); }
-.subject-doodles i:nth-child(6) { bottom: 18%; left: 44%; transform: rotate(-6deg); font-size: 17px; }
-.subject-doodles i:nth-child(7) { bottom: 18%; left: 44%; transform: rotate(-6deg); font-size: 18px; }
-.subject-doodles i:nth-child(8) { top: 16%; right: 55%; transform: rotate(-12deg); font-size: 19px; }
+/* 15 slots on a loose grid — glyph arrays of any length stay evenly spread */
+.subject-doodles i:nth-child(1)  { top: 6%;  left: 5%;   transform: rotate(-14deg); font-size: 26px; }
+.subject-doodles i:nth-child(2)  { top: 10%; left: 36%;  transform: rotate(9deg);   font-size: 19px; }
+.subject-doodles i:nth-child(3)  { top: 5%;  right: 26%; transform: rotate(-7deg);  font-size: 23px; }
+.subject-doodles i:nth-child(4)  { top: 18%; right: 6%;  transform: rotate(12deg);  font-size: 18px; }
+.subject-doodles i:nth-child(5)  { top: 34%; left: 12%;  transform: rotate(7deg);   font-size: 18px; }
+.subject-doodles i:nth-child(6)  { top: 38%; left: 44%;  transform: rotate(-10deg); font-size: 24px; }
+.subject-doodles i:nth-child(7)  { top: 32%; right: 12%; transform: rotate(5deg);   font-size: 20px; }
+.subject-doodles i:nth-child(8)  { top: 56%; left: 4%;   transform: rotate(-9deg);  font-size: 27px; }
+.subject-doodles i:nth-child(9)  { top: 58%; left: 34%;  transform: rotate(11deg);  font-size: 17px; }
+.subject-doodles i:nth-child(10) { top: 52%; right: 22%; transform: rotate(-5deg);  font-size: 21px; }
+.subject-doodles i:nth-child(11) { bottom: 26%; right: 5%;  transform: rotate(8deg);   font-size: 18px; }
+.subject-doodles i:nth-child(12) { bottom: 10%; left: 14%;  transform: rotate(-12deg); font-size: 22px; }
+.subject-doodles i:nth-child(13) { bottom: 6%;  left: 42%;  transform: rotate(6deg);   font-size: 18px; }
+.subject-doodles i:nth-child(14) { bottom: 12%; right: 28%; transform: rotate(-8deg);  font-size: 25px; }
+.subject-doodles i:nth-child(15) { bottom: 5%;  right: 8%;  transform: rotate(13deg);  font-size: 19px; }
 
 /* hover = pure zoom; the icon stays still */
 #teacherSubjectsGrid .subject-card:hover,
@@ -926,9 +935,9 @@ button {
     }
 
     #teacherSubjectsGrid .subject-icon {
-        width: 94px;
-        height: 86px;
-        transform: translate(4px, 2px);
+        width: min(136px, 100%);
+        height: 108px;
+        transform: translate(6px, 4px);
     }
 }
 
@@ -3053,9 +3062,10 @@ button {
     color: #fff;
 }
 
+/* text sized like the dashboard stat cards */
 #teacherClassView .class-stat-card .stat-value {
     color: #fff;
-    font-size: clamp(26px, 7vw, 46px);
+    font-size: clamp(32px, 9vw, 46px);
     line-height: .95;
     font-weight: 950;
     letter-spacing: -.04em;
@@ -3063,7 +3073,7 @@ button {
 
 #teacherClassView .class-stat-card .stat-label {
     color: #fff;
-    font-size: clamp(10px, 2.7vw, 16px);
+    font-size: clamp(12.5px, 3.4vw, 16px);
     line-height: 1.05;
     font-weight: 950;
 }
@@ -4506,21 +4516,25 @@ button {
     }
 
     .student-overview-card {
-        min-height: 78px;
-        padding: 12px 10px;
+        min-height: 94px;
+        padding: 14px 10px;
         border-radius: 14px;
         text-align: center;
         justify-items: center;
     }
 
+    /* text stays big on phones, like the dashboard stat cards */
     .student-overview-card span {
-        font-size: 9.5px;
+        font-size: 12.5px;
         line-height: 1.15;
     }
 
+    .student-overview-card strong {
+        font-size: clamp(28px, 8.5vw, 38px);
+    }
 
     .student-overview-card em {
-        font-size: 10.5px;
+        font-size: 11.5px;
         line-height: 1.15;
     }
 
