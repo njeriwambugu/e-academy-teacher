@@ -3257,7 +3257,6 @@ button {
         transform: translateZ(0);
     }
 
-    /* no notch / semicircle — only the floating circle sits above the bar */
     .teacher-bottom-nav .nav-notch {
         display: none;
     }
@@ -3270,7 +3269,7 @@ button {
         height: var(--mobile-nav-float);
         display: grid;
         place-items: center;
-        border: 7px solid var(--bg, #f6f7fb);
+        border: 1px solid var(--bg, #f6f7fb);
         border-radius: 50%;
         /* active bubble uses the same theme gradient as the web sidebar's active item */
         background: var(--brand-gradient);
@@ -4121,14 +4120,6 @@ button {
     background:
         linear-gradient(145deg, color-mix(in srgb, var(--insight-color, #14B8A6), white 90%), color-mix(in srgb, var(--insight-color, #14B8A6), white 96%));
     box-shadow: 0 14px 30px color-mix(in srgb, var(--insight-color, #14B8A6), transparent 86%);
-}
-
-.deploy-insight-card::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 6px;
-    background: var(--insight-color, #14B8A6);
 }
 
 .deploy-insight-card.top { --insight-color: #10B981; }
