@@ -4134,6 +4134,18 @@ button {
     }
 }
 
+/* highlights beside the Assignment information card: two per row */
+.assignment-highlights {
+    margin-top: 0;
+    align-content: start;
+}
+
+@media (max-width: 640px) {
+    .assignment-highlights {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* deployment modal fields — one field per row on every screen size */
 #teacherDeployModal .form-grid {
     grid-template-columns: 1fr;

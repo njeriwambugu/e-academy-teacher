@@ -547,7 +547,7 @@ function renderClassAssignments(assignments) {
   if (!body) return;
 
   if (!assignments?.length) {
-    body.innerHTML = `<tr><td colspan="2" class="muted">No assignments recorded yet.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="5" class="muted">No assignments recorded yet.</td></tr>`;
     classAssignmentsPager.paginate([]);
     classAssignmentsPager.renderControls();
     return;
@@ -555,15 +555,22 @@ function renderClassAssignments(assignments) {
 
   const pageRows = classAssignmentsPager.paginate(assignments);
   body.innerHTML = pageRows
-    .map((a) => `
+    .map((a) => {
+      const statusClass = a.status === "Active" ? "active" : "pending";
+      const completion = a.total ? `${a.completed}/${a.total}` : "\u2014";
+      return `
         <tr>
           <td>
             <button type="button" class="assignment-name-link" data-assignment-open="${escapeHTML(`${activeAssignmentCtx.subjectId}::${activeAssignmentCtx.classId}::${a.id}`)}">
               <strong>${escapeHTML(a.name)}</strong>
             </button>
           </td>
+          <td>${escapeHTML(formatDate(a.deployed))}</td>
+          <td><span class="student-status ${statusClass}">${escapeHTML(a.status || "\u2014")}</span></td>
+          <td>${escapeHTML(completion)}</td>
           <td>${a.average == null ? "\u2014" : escapeHTML(a.average + "%")}</td>
-        </tr>`)
+        </tr>`;
+    })
     .join("");
   classAssignmentsPager.renderControls();
 }
@@ -889,29 +896,6 @@ function showMixedCards(mixedIdx) {
   );
 }
 
-function deployInsightCardsHTML(uid) {
-  const stats = uid ? assignmentsFeature?.getLearnerStats(uid) : null;
-  if (!stats) return "";
-
-  const cards = [
-    { cls: "top", title: "Top Performer", name: stats.top.name, main: `${stats.top.score}%`, note: `Class average ${stats.average == null ? "—" : stats.average + "%"}` },
-    { cls: "lowest", title: "Lowest Score", name: stats.lowest.name, main: `${stats.lowest.score}%`, note: `Class average ${stats.average == null ? "—" : stats.average + "%"}` },
-    { cls: "fastest", title: "Least Time Taken", name: stats.fastest.name, main: stats.fastest.timeTaken, note: `Scored ${stats.fastest.score}% • Class avg ${stats.average == null ? "—" : stats.average + "%"}` },
-    { cls: "slowest", title: "Most Time Taken", name: stats.slowest.name, main: stats.slowest.timeTaken, note: `Scored ${stats.slowest.score}% • Class avg ${stats.average == null ? "—" : stats.average + "%"}` },
-  ];
-
-  return `
-    <div class="deploy-insights" aria-label="Learner highlights">
-      ${cards.map((c) => `
-        <article class="deploy-insight-card ${c.cls}">
-          <span class="deploy-insight-title">${escapeHTML(c.title)}</span>
-          <strong class="deploy-insight-name">${escapeHTML(c.name)}</strong>
-          <span class="deploy-insight-main">${escapeHTML(c.main)}</span>
-          <em class="deploy-insight-note">${escapeHTML(c.note)}</em>
-        </article>`).join("")}
-    </div>`;
-}
-
 function openAssignmentDetail(id) {
   const a = activeSubstrandAssignments.find((x) => x.id === id);
   if (!a) return;
@@ -929,7 +913,6 @@ function openAssignmentDetail(id) {
         <h3>${escapeHTML(a.name)}</h3>
         <p>This opens the assignment deployment flow. The backend can connect the real learner assignment screen here.</p>
       </section>
-      ${deployInsightCardsHTML(a.uid)}
       <button type="button" class="deploy-fab" data-deploy-assign="${escapeHTML(a.name)}" aria-label="Assign ${escapeHTML(a.name)} to learners">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M22 2L11 13"></path>

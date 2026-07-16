@@ -512,6 +512,8 @@ export function createAssignmentsFeature(deps) {
     const learnerCount = $("#assignmentLearnerCount");
     if (learnerCount) learnerCount.textContent = `${completedLearners.length}/${learnerRows.length} completed`;
 
+    renderHighlights(row, completedLearners);
+
     const studentBody = $("#assignmentStudentsBody");
     if (studentBody) {
       const pageLearners = learnersPager.paginate(learnerRows);
@@ -615,28 +617,38 @@ export function createAssignmentsFeature(deps) {
     });
   }
 
-  // extremes for the deployment page insight cards
-  function getLearnerStats(uid) {
-    const row = getRowByUid(uid);
-    if (!row) return null;
+  // learner extremes shown on the assignment Overview panel
+  function renderHighlights(row, completedLearners) {
+    const el = $("#assignmentHighlights");
+    if (!el) return;
 
-    const completed = getLearnerRows(row).filter((learner) => learner.completed);
-    if (!completed.length) return null;
+    if (!completedLearners.length) {
+      el.innerHTML = `<p class="muted">Highlights appear once learners complete this assignment.</p>`;
+      return;
+    }
 
     const toSeconds = (t) => {
       const [h, m, s] = String(t || "0:0:0").split(":").map(Number);
       return h * 3600 + m * 60 + s;
     };
-    const byScore = [...completed].sort((a, b) => b.score - a.score);
-    const byTime = [...completed].sort((a, b) => toSeconds(a.timeTaken) - toSeconds(b.timeTaken));
+    const byScore = [...completedLearners].sort((a, b) => b.score - a.score);
+    const byTime = [...completedLearners].sort((a, b) => toSeconds(a.timeTaken) - toSeconds(b.timeTaken));
+    const avgNote = `Class average ${row.average == null ? "—" : row.average + "%"}`;
 
-    return {
-      average: row.average,
-      top: byScore[0],
-      lowest: byScore[byScore.length - 1],
-      fastest: byTime[0],
-      slowest: byTime[byTime.length - 1],
-    };
+    const cards = [
+      { cls: "top", title: "Top Performer", name: byScore[0].name, main: `${byScore[0].score}%`, note: avgNote },
+      { cls: "lowest", title: "Lowest Score", name: byScore[byScore.length - 1].name, main: `${byScore[byScore.length - 1].score}%`, note: avgNote },
+      { cls: "fastest", title: "Least Time Taken", name: byTime[0].name, main: byTime[0].timeTaken, note: `Scored ${byTime[0].score}% • ${avgNote}` },
+      { cls: "slowest", title: "Most Time Taken", name: byTime[byTime.length - 1].name, main: byTime[byTime.length - 1].timeTaken, note: `Scored ${byTime[byTime.length - 1].score}% • ${avgNote}` },
+    ];
+
+    el.innerHTML = cards.map((c) => `
+      <article class="deploy-insight-card ${c.cls}">
+        <span class="deploy-insight-title">${escapeHTML(c.title)}</span>
+        <strong class="deploy-insight-name">${escapeHTML(c.name)}</strong>
+        <span class="deploy-insight-main">${escapeHTML(c.main)}</span>
+        <em class="deploy-insight-note">${escapeHTML(c.note)}</em>
+      </article>`).join("");
   }
 
   return {
@@ -646,6 +658,5 @@ export function createAssignmentsFeature(deps) {
     openDetail,
     activateDetailPanel,
     invalidateCache,
-    getLearnerStats,
   };
 }
