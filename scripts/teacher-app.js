@@ -4,7 +4,7 @@ import { getStudentProfile } from "./student-profile.js";
 import { createSelectClassModal } from "./teacher.modals.js";
 import { createAssignmentsFeature } from "./teacher.assignments.js";
 import { clearButtonLoading, runButtonAction } from "./ui-state.js";
-import { createPager, refreshTable } from "./table-utils.js";
+import { createPager } from "./table-utils.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -224,13 +224,21 @@ function renderSubjects() {
     .join("");
 }
 
-// Faint background glyphs per subject — decorative only.
+// faint background glyphs per subject
 const SUBJECT_DOODLES = {
-  MAT: ["+", "×", "−", "=", "÷", "%"],
-  ENG: ["✎", "❝", "Aa", "¶", "❞", "&"],
+  MAT: ["+", "x", "-", "±", "=", "÷", "%", "2⁷", "𝝅", "√", "⏲", "⃤", "𓍝", "⊿", "i³"],
+  ENG: ["✎", "❝", "Aa", "🗣", "❞", "𓂃✍︎"],
   KIS: ["✎", "❝", "Ss", "!", "❞", "Aa"],
-  SCI: ["⚛", "🧬", "⚗", "☢", "⚙", "✦"],
-  SOC: ["☀", "⛰", "♻", "✦", "☂", "✈"],
+  SCI: ["⚛", "🧬", "⚗", "☢", "⚙", "𓌉◯𓇋"],
+  SS: ["☀", "⛰", "🗺", "⛏", "⛱", "✈", "🏝", "🌤"],
+  INT: ["☀", "⋆⌬", "♻", "✦", "☂", "✈"],
+  COMP: ["🖧", "</>", "🖱", "✦", "☂", "✈"],
+  CRE: ["☀", "⛰", "✞", "✦", "☂", "✈"],
+  IRE: ["☀", "⛰", "♻", "✦", "☂", "✈"],
+  ENV: ["♲", "⛰", "♻", "✦", "☂", "✈"],
+  PTECH: ["☀", "⛰", "♻", "✦", "☂", "✈"],
+  AGRI: ["𓃽𓃽𓀚", "⸙", "°‧ 𓆝 𓆟 𓆞 ·｡", "✦", "☂", "✈"],
+  ART: ["⚽︎", "♫", "𓂃🖌", "𝄞", "🎤︎︎", "⚾︎"]
 };
 
 function subjectDoodles(subjectId) {
@@ -432,6 +440,7 @@ function renderStudents() {
         </tr>`;
     })
     .join("");
+  studentsPager.renderControls();
 }
 
 function closeStudentGradeDropdowns(filters) {
@@ -495,24 +504,6 @@ function bindStudentControls() {
     const btn = e.target.closest("[data-student-id]");
     if (!btn) return;
     runButtonAction(btn, () => openStudentProfile(btn.dataset.studentId));
-  });
-
-  $("#studentsRefreshBtn")?.addEventListener("click", (e) => {
-    refreshTable({
-      button: e.currentTarget,
-      body: "#studentsTableBody",
-      colCount: 5,
-      render: renderStudents,
-    });
-  });
-
-  $("#classAssignmentsRefreshBtn")?.addEventListener("click", (e) => {
-    refreshTable({
-      button: e.currentTarget,
-      body: "#teacherClassAssignmentsBody",
-      colCount: 2,
-      render: () => renderClassAssignments(activeClassData.assignments || []),
-    });
   });
 }
 
@@ -1282,6 +1273,8 @@ function handleRoute() {
     }
     transitionToView("assignments", () => {
       const row = assignmentsFeature?.renderDetail(params.get("assignmentId"));
+      const panel = params.get("panel");
+      if (panel) assignmentsFeature?.activateDetailPanel(panel);
       setBreadcrumb([
         { label: "Dashboard", nav: "dashboard" },
         { label: "Assignments", nav: "assignments" },

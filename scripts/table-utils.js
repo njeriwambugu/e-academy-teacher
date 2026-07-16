@@ -1,10 +1,4 @@
-import { setButtonLoading } from "./ui-state.js";
-
-/*
- * Shared table helpers: pagination, skeleton rows and simulated refresh.
- * Data is synchronous mock, so "refresh" re-renders after a short delay
- * to give the skeleton/spinner feedback users expect.
- */
+/* Shared table pagination helper. */
 
 const PAGE_WINDOW = 1; // numbered pages shown on each side of the current page
 
@@ -79,27 +73,3 @@ export function createPager({ container, pageSize = 8, onPageChange }) {
   };
 }
 
-export function skeletonRows(colCount, rowCount = 8) {
-  const widths = [88, 64, 76, 58, 70, 82, 60, 74];
-  return Array.from({ length: rowCount }, (_, r) => `
-    <tr class="skeleton-row" aria-hidden="true">
-      ${Array.from({ length: colCount }, (_, c) => `
-        <td><span class="skeleton-line" style="width:${widths[(r + c) % widths.length]}%"></span></td>`).join("")}
-    </tr>`).join("");
-}
-
-export function refreshTable({ button, body, colCount, render, before, delay = 500 }) {
-  const tbody = typeof body === "string" ? document.querySelector(body) : body;
-  if (!tbody) return;
-  if (button) setButtonLoading(button, true);
-  tbody.innerHTML = skeletonRows(colCount);
-
-  window.setTimeout(() => {
-    // the user may have navigated away while the skeleton was showing
-    if (tbody.isConnected) {
-      before?.();
-      render();
-    }
-    if (button) setButtonLoading(button, false);
-  }, delay);
-}

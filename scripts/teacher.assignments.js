@@ -1,6 +1,6 @@
 
 import { runButtonAction } from "./ui-state.js";
-import { createPager, refreshTable } from "./table-utils.js";
+import { createPager } from "./table-utils.js";
 
 function hashString(value = "") {
   return String(value).split("").reduce((sum, char) => {
@@ -305,6 +305,13 @@ export function createAssignmentsFeature(deps) {
     $$("[data-assignment-detail-content]").forEach((content) => {
       content.classList.toggle("active", content.dataset.assignmentDetailContent === currentDetailPanel);
     });
+
+    // keep the active panel in the hash so a refresh restores it
+    const params = new URLSearchParams(location.hash.replace(/^#/, ""));
+    if (params.get("view") === "assignment" && params.get("panel") !== currentDetailPanel) {
+      params.set("panel", currentDetailPanel);
+      history.replaceState(null, "", `#${params.toString()}`);
+    }
   }
 
   function openDetail(uid) {
@@ -352,6 +359,7 @@ export function createAssignmentsFeature(deps) {
   function animateMetricCards(root) {
     if (!root) return;
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
     root.querySelectorAll("[data-count-to]").forEach((node) => {
       const target = Number(node.dataset.countTo) || 0;
       if (reduce) {
@@ -367,6 +375,24 @@ export function createAssignmentsFeature(deps) {
       };
       requestAnimationFrame(tick);
     });
+
+    // HH:MM:SS values count up too (time card)
+    root.querySelectorAll("[data-count-duration]").forEach((node) => {
+      const target = Number(node.dataset.countDuration) || 0;
+      if (reduce || !target) {
+        node.textContent = formatDuration(target);
+        return;
+      }
+      const start = performance.now();
+      const tick = (now) => {
+        const progress = Math.min(1, (now - start) / 780);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        node.textContent = formatDuration(Math.round(target * eased));
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+
     requestAnimationFrame(() => root.classList.add("is-ready"));
   }
 
@@ -399,7 +425,9 @@ export function createAssignmentsFeature(deps) {
           id: "donutTime",
           value: timePct,
           color: pace.color,
-          centerHTML: `<span class="timer-value">${escapeHTML(time || "—")}</span>`,
+          centerHTML: avgSeconds
+            ? `<span class="timer-value" data-count-duration="${escapeHTML(avgSeconds)}">00:00:00</span>`
+            : `<span class="timer-value">—</span>`,
           sublineHTML: escapeHTML(pace.text),
           ariaLabel: `Average time ${time || "not available"}, ${pace.text}`,
         })}
@@ -565,26 +593,6 @@ export function createAssignmentsFeature(deps) {
       setCrumb(crumb.dataset.filterCrumb);
       listPager.reset();
       renderList();
-    });
-
-    $("#assignmentsRefreshBtn")?.addEventListener("click", (e) => {
-      refreshTable({
-        button: e.currentTarget,
-        body: "#teacherAssignmentsBody",
-        colCount: 5,
-        before: invalidateCache,
-        render: renderList,
-      });
-    });
-
-    $("#learnersRefreshBtn")?.addEventListener("click", (e) => {
-      refreshTable({
-        button: e.currentTarget,
-        body: "#assignmentStudentsBody",
-        colCount: 4,
-        before: invalidateCache,
-        render: () => { if (lastDetailUid) renderDetail(lastDetailUid); },
-      });
     });
 
     document.addEventListener("click", (e) => {

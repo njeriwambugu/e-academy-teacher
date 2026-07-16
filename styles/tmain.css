@@ -85,7 +85,8 @@ button {
     --text-sm: 13px;
     --focus: color-mix(in srgb, var(--accent), white 35%);
 
-    --mobile-nav-bg: #172653;
+    /* solid blend of the bar's layered navy gradient — used by the notch + cutout */
+    --mobile-nav-bg: #3d4a66;
     --mobile-nav-active: #F59E0B;
     --mobile-nav-inactive: #EEF4FF;
     --mobile-nav-h: 74px;
@@ -1042,7 +1043,7 @@ button {
     position: relative;
 }
 
-.grade-dropdown-menu {
+/*.grade-dropdown-menu {
     position: absolute;
     top: 110%;
     left: 0;
@@ -1053,13 +1054,13 @@ button {
     box-shadow: 0 16px 40px rgba(0, 0, 0, .15);
     display: none;
     z-index: 20;
-}
+}*/
 
 .grade-dropdown.open .grade-dropdown-menu {
     display: block;
 }
 
-.grade-option {
+/*.grade-option {
     width: 100%;
     border: none;
     background: none;
@@ -1072,7 +1073,7 @@ button {
 
 .grade-option:hover {
     background: #f6f7fb;
-}
+}*/
 
 @media (max-width: 720px) {
     .modal-layer {
@@ -1093,9 +1094,7 @@ button {
     }
 }
 
-/* ==================================================
-   PAGE STRUCTURE
-================================================== */
+
 
 .page-header {
     display: flex;
@@ -1429,8 +1428,23 @@ button {
     }
 }
 
-/* Back button — single consolidated style: compact pill, top-left of the
-   breadcrumb row on every sub-view. Icon-only below 640px. */
+/* Back button — floating pill pinned to the top right of the content area.
+   Icon-only below 640px. */
+.floating-back {
+    position: fixed;
+    top: 18px;
+    right: 24px;
+    z-index: 900;
+}
+
+@media (max-width: 880px) {
+    /* sits below the sticky mobile header */
+    .floating-back {
+        top: 74px;
+        right: 14px;
+    }
+}
+
 .breadcrumb-back {
     margin: 0;
     flex: 0 0 auto;
@@ -1969,6 +1983,33 @@ button {
 .table td {
     text-align: center;
     vertical-align: middle;
+}
+
+/* readable table typography on every screen size */
+.table td {
+    font-size: 14.5px;
+}
+
+.table td strong {
+    font-size: 15px;
+}
+
+.table thead th {
+    font-size: 13.5px;
+}
+
+@media (max-width: 880px) {
+    .table td {
+        font-size: 14px;
+    }
+
+    .table td strong {
+        font-size: 14.5px;
+    }
+
+    .table thead th {
+        font-size: 13px;
+    }
 }
 
 .table th:first-child,
@@ -2835,10 +2876,16 @@ button {
     display: none;
 }
 
+/* same responsive grid the admin grade-tabs use */
 .student-filter-desktop {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(94px, 1fr));
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.student-filter-desktop .grade-dropdown .grade-filter-btn {
     width: 100%;
 }
 
@@ -2874,13 +2921,13 @@ button {
     #teacherStudentsView .student-filter-mobile>.grade-filter-btn,
     #teacherStudentsView .student-filter-mobile .grade-dropdown>.grade-filter-btn {
         width: 100%;
-        min-height: 44px;
+        height: 44px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
-        padding: 10px 12px;
-        border-radius: 14px;
+        padding: 0 12px;
+        border-radius: 16px;
         font-size: 13px;
     }
 
@@ -3171,7 +3218,9 @@ button {
         align-items: center;
         padding: 0;
         border-radius: var(--mobile-nav-radius);
-        background: linear-gradient(135deg, #172653 0%, #223C7A 58%, #F06405 145%);
+        background:
+            linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .04)),
+            rgba(33, 48, 77, 0.92);
         box-shadow: var(--mobile-nav-shadow);
         z-index: 1100;
         isolation: isolate;
@@ -3217,10 +3266,11 @@ button {
         height: var(--mobile-nav-float);
         display: grid;
         place-items: center;
-        border: 7px solid #fff;
+        border: 7px solid var(--bg, #f6f7fb);
         border-radius: 50%;
-        background: linear-gradient(135deg, #172653 0%, #1F3A78 52%, #F06405 135%);
-        color: #FFC857;
+        /* active bubble uses the same theme gradient as the web sidebar's active item */
+        background: var(--brand-gradient);
+        color: #fff;
         box-shadow: var(--mobile-nav-float-shadow);
         transform: translate3d(-50%, 0, 0) scale(1);
         transition:
@@ -3813,43 +3863,6 @@ button {
 }
 
 
-.skeleton,
-.skeleton-line,
-.skeleton-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 14px;
-    background: #EEF2F7;
-}
-
-.skeleton::after,
-.skeleton-line::after,
-.skeleton-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .72), transparent);
-    animation: skeleton-shimmer 1.25s infinite;
-}
-
-/* table refresh skeleton rows (see scripts/table-utils.js skeletonRows) */
-.skeleton-row td {
-    padding: 14px 12px;
-}
-
-.skeleton-row .skeleton-line {
-    display: block;
-    height: 14px;
-    border-radius: 8px;
-}
-
-@keyframes skeleton-shimmer {
-    to {
-        transform: translateX(100%);
-    }
-}
-
 @media (max-width: 980px) {
     .analytics-capsules {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3877,10 +3890,7 @@ button {
 @media (prefers-reduced-motion: reduce) {
 
     .analytics-card,
-    .score-ring-progress,
-    .skeleton::after,
-    .skeleton-line::after,
-    .skeleton-card::after {
+    .score-ring-progress {
         animation: none !important;
         transition: none !important;
     }
@@ -3909,7 +3919,7 @@ button {
 #teacherClassView [aria-label="Assignment records"] thead th {
     height: auto !important;
     min-height: 0 !important;
-    font-size: 12px !important;
+    font-size: 13.5px !important;
     line-height: 1.15;
     background: rgb(255, 196, 145) !important;
     color: var(--brand-navy-900, #101B3D) !important;
@@ -3924,7 +3934,7 @@ button {
 }
 
 .assignment-name-link strong {
-    font-size: 13.5px;
+    font-size: 15px;
 }
 
 .assignment-level-btn {
@@ -3934,17 +3944,26 @@ button {
     box-shadow: 0 12px 24px rgba(86, 164, 198, .22) !important;
 }
 
+/* mobile: Filter behaves like the admin "Add Class" button — full-width pill */
 @media (max-width: 640px) {
+    .assignment-command-center .toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .assignment-level-picker {
+        width: 100%;
+    }
+
     .assignment-level-btn {
-        width: auto !important;
-        min-width: 104px;
-        padding-inline: 12px;
+        width: 100% !important;
+        min-height: 46px;
+        border-radius: 14px;
     }
 
     .assignment-level-menu {
-        left: auto !important;
+        left: 0 !important;
         right: 0 !important;
-        width: min(260px, 78vw) !important;
+        width: 100% !important;
     }
 }
 
@@ -4283,8 +4302,32 @@ button {
         flex-direction: column;
     }
 
+    /* stays 3-across and shrinks, same behaviour as the stat cards */
     .student-overview {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .student-overview-card {
+        min-height: 78px;
+        padding: 12px 10px;
+        border-radius: 14px;
+        text-align: center;
+        justify-items: center;
+    }
+
+    .student-overview-card span {
+        font-size: 9.5px;
+        line-height: 1.15;
+    }
+
+    .student-overview-card strong {
+        font-size: clamp(22px, 6vw, 30px);
+    }
+
+    .student-overview-card em {
+        font-size: 10.5px;
+        line-height: 1.15;
     }
 
     .assignment-profile-hero {
@@ -4325,28 +4368,8 @@ button {
 }
 
 /* ==================================================
-   Table pagination + refresh
+   Table pagination
 ================================================== */
-.table-refresh-btn {
-    width: 48px;
-    min-width: 48px;
-    padding: 0;
-    display: inline-grid;
-    place-items: center;
-    cursor: pointer;
-}
-
-.section-head .table-refresh-btn {
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
-    margin-left: auto;
-}
-
-.section-head .profile-badge+.table-refresh-btn {
-    margin-left: 12px;
-}
-
 .table-pagination {
     display: flex;
     align-items: center;

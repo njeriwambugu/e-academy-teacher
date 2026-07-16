@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
 }
+
 /*ukiguza ume-bant*/
 :root {
   --navy: radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .24), transparent 18%), linear-gradient(95deg, #172653 0%, #21304d 36%, #7d4f36 68%, #f06405 100%);
@@ -1682,7 +1683,7 @@ body:not(.login-active) .login-page {
   position: relative;
 }
 
-.suggestion-list {
+.suggestion-list, .grade-dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
@@ -1712,7 +1713,8 @@ body:not(.login-active) .login-page {
   bottom: calc(100% + 8px);
 }
 
-.suggestion-option {
+.suggestion-option,
+.grade-option {
   min-height: 38px;
   display: flex;
   align-items: center;
@@ -1729,7 +1731,9 @@ body:not(.login-active) .login-page {
 }
 
 .suggestion-option:hover,
-.suggestion-option.active {
+.suggestion-option.active,
+.grade-option:hover,
+.grade-option.active {
   background: linear-gradient(135deg, #edf4f6, #fff4ec);
   color: #172653;
   transform: translateX(2px);
@@ -2633,65 +2637,65 @@ body:not(.login-active) .login-page {
 }
 
 .student-tools {
-display: grid;
-grid-template-columns: minmax(220px, 1fr) 190px;
-gap: 12px;
-margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 190px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .student-filter {
-height: 46px;
-padding: 0 44px 0 14px;
-border: 1px solid var(--line);
-border-radius: 14px;
-appearance: none;
--webkit-appearance: none;
-background-color: #fff;
-background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m7 9 5 5 5-5' fill='none' stroke='%2326325d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-background-repeat: no-repeat;
-background-position: right 14px center;
-background-size: 18px;
-color: #26325d;
-font-weight: 850;
-box-shadow: 0 8px 18px rgba(30, 39, 82, 0.06);
-outline: 0;
-transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+  height: 46px;
+  padding: 0 44px 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m7 9 5 5 5-5' fill='none' stroke='%2326325d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+  color: #26325d;
+  font-weight: 850;
+  box-shadow: 0 8px 18px rgba(30, 39, 82, 0.06);
+  outline: 0;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
 }
 
 .student-filter:focus {
-border-color: color-mix(in srgb, var(--theme), white 18%);
-box-shadow: 0 0 0 4px color-mix(in srgb, var(--theme-soft), transparent 20%);
+  border-color: color-mix(in srgb, var(--theme), white 18%);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--theme-soft), transparent 20%);
 }
 
 .student-filter:disabled {
-color: #8b91aa;
-background-color: #f6f7fb;
-cursor: not-allowed;
+  color: #8b91aa;
+  background-color: #f6f7fb;
+  cursor: not-allowed;
 }
 
 .student-card-grid {
-display: grid;
-grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .student-card {
-display: grid;
-grid-template-columns: minmax(0, 1fr) auto;
-gap: 16px;
-align-items: center;
-min-height: 132px;
-padding: 18px;
-border: 1px solid var(--line);
-border-radius: 16px;
-background: #fff;
-box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  min-height: 132px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow);
 }
 
 .student-card-main {
-display: grid;
-gap: 12px;
-min-width: 0;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
 }
 
 .student-name {
@@ -2830,7 +2834,11 @@ table {
 thead {
   background: #ffc491;
 }
-.table.is-empty thead { display: none; }
+
+.table.is-empty thead {
+  display: none;
+}
+
 #teachersManagementView tbody tr:hover {
   background: #f7fafb;
 }
@@ -2838,10 +2846,10 @@ thead {
 /* Teachers management — Actions column */
 .table th.col-mgmt-actions {
   display: table-cell !important;
-    width: 30% !important;
-    text-align: center;
-    visibility: visible !important;
-    padding: 12px !important;
+  width: 30% !important;
+  text-align: center;
+  visibility: visible !important;
+  padding: 12px !important;
 }
 
 .table td:last-child {
@@ -4539,15 +4547,15 @@ tbody tr:last-child td {
     grid-template-columns: 1fr;
   }
 
-  
 
-.panel-head {
+
+  .panel-head {
     align-items: flex-start;
     flex-direction: column;
   }
 
   #detailTableWrap,
-  #teachersTableWrap{
+  #teachersTableWrap {
     width: 100%;
     margin-top: 16px;
     margin-left: 0;
@@ -4598,40 +4606,34 @@ tbody tr:last-child td {
   }
 
   #detailTableWrap th:nth-child(2),
-  #detailTableWrap td:nth-child(2)
-  {
+  #detailTableWrap td:nth-child(2) {
     text-align: left;
   }
 
   #detailTableWrap[data-panel="teachers"] th:nth-child(3),
-  #detailTableWrap[data-panel="teachers"] td:nth-child(3)
-   {
+  #detailTableWrap[data-panel="teachers"] td:nth-child(3) {
     display: none;
   }
 
   #detailTableWrap[data-panel="teachers"] th:nth-child(2),
-  #detailTableWrap[data-panel="teachers"] td:nth-child(2)
-   {
+  #detailTableWrap[data-panel="teachers"] td:nth-child(2) {
     display: none;
   }
 
   #detailTableWrap[data-panel="students"] th:nth-child(2),
   #detailTableWrap[data-panel="students"] td:nth-child(2),
   #detailTableWrap[data-panel="students"] th:nth-child(3),
-  #detailTableWrap[data-panel="students"] td:nth-child(3)
-  {
+  #detailTableWrap[data-panel="students"] td:nth-child(3) {
     display: none;
   }
 
   #detailTableWrap[data-panel="students"] th:nth-child(1),
-  #detailTableWrap[data-panel="students"] td:nth-child(1)
-   {
+  #detailTableWrap[data-panel="students"] td:nth-child(1) {
     width: 70%;
   }
 
   #detailTableWrap[data-panel="students"] th:nth-child(4),
-  #detailTableWrap[data-panel="students"] td:nth-child(4)
-   {
+  #detailTableWrap[data-panel="students"] td:nth-child(4) {
     width: 30%;
     text-align: center;
     display: table-cell;
@@ -4645,8 +4647,7 @@ tbody tr:last-child td {
   }
 
   #detailTableWrap[data-panel="teachers"] th:nth-child(3),
-  #detailTableWrap[data-panel="teachers"] td:nth-child(3)
-   {
+  #detailTableWrap[data-panel="teachers"] td:nth-child(3) {
     width: 30%;
     text-align: center;
     display: table-cell;
