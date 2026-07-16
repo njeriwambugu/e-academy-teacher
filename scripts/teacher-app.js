@@ -2,7 +2,7 @@ import { teacherContext, classMock, getClassMock } from "./mock-data.js";
 import { getStudentProfile } from "./student-profile.js";
 import { createSelectClassModal } from "./teacher.modals.js";
 import { createAssignmentsFeature } from "./teacher.assignments.js";
-import { clearButtonLoading, runButtonAction } from "./ui-state.js";
+import { clearButtonLoading, runButtonAction, setButtonLoading } from "./ui-state.js";
 import { createPager } from "./table-utils.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -925,7 +925,17 @@ function openAssignmentDetail(id) {
   showAssignmentDrill("detail");
 }
 
-/* assignment deployment modal (frontend only) */
+/* assignment deployment modal */
+
+let pendingDeployment = null;
+
+// Single backend integration point. Replace the body of this function with the
+// real API call (e.g. fetch("/api/assignments/deploy", {method:"POST", body}))
+// and everything else keeps working unchanged.
+function deployAssignmentAPI(payload) {
+  console.info("deployAssignmentAPI", payload);
+  return new Promise((resolve) => window.setTimeout(() => resolve({ ok: true }), 250));
+}
 
 function setDeployModalOpen(open) {
   const modal = $("#teacherDeployModal");
@@ -939,12 +949,17 @@ function bindDeployModal() {
   const modal = $("#teacherDeployModal");
   if (!modal) return;
 
-  // the Assign button lives inside the re-rendered deployment page
+  // the Assign FAB lives inside the re-rendered deployment page
   $("#teacherAssignmentDetailMeta")?.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-deploy-assign]");
     if (!btn) return;
+    pendingDeployment = {
+      assignment: btn.dataset.deployAssign || "",
+      subjectId: activeAssignmentCtx.subjectId,
+      classId: activeAssignmentCtx.classId,
+    };
     const nameEl = $("#teacherDeployAssignmentName");
-    if (nameEl) nameEl.textContent = btn.dataset.deployAssign || "Set a deadline and add a note.";
+    if (nameEl) nameEl.textContent = pendingDeployment.assignment || "Set a deadline and add a note.";
     const deadline = $("#teacherDeployDeadline");
     const comment = $("#teacherDeployComment");
     if (deadline) deadline.value = "";
@@ -958,9 +973,25 @@ function bindDeployModal() {
     }
   });
 
-  $("#teacherDeployOk")?.addEventListener("click", () => {
-    setDeployModalOpen(false);
-    notifyTeacher("DEPLOYMENT SUCCESSFUL");
+  $("#teacherDeployOk")?.addEventListener("click", (e) => {
+    const okBtn = e.currentTarget;
+    const payload = {
+      ...pendingDeployment,
+      deadline: $("#teacherDeployDeadline")?.value || null,
+      comment: $("#teacherDeployComment")?.value.trim() || "",
+    };
+
+    setButtonLoading(okBtn, true);
+    deployAssignmentAPI(payload)
+      .then((result) => {
+        setDeployModalOpen(false);
+        notifyTeacher(result?.ok ? "DEPLOYMENT SUCCESSFUL" : "Deployment failed. Try again.");
+      })
+      .catch(() => notifyTeacher("Deployment failed. Try again."))
+      .finally(() => {
+        setButtonLoading(okBtn, false);
+        pendingDeployment = null;
+      });
   });
 }
 
@@ -1310,7 +1341,7 @@ function handleRoute() {
       { label: "Dashboard", nav: "dashboard" },
       { label: "Students" },
     ]);
-    transitionToView("students", renderStudents);
+    transitionToView("students", renderStudents, { loading: false });
     return;
   }
 
@@ -1325,7 +1356,7 @@ function handleRoute() {
       { label: "Dashboard", nav: "dashboard" },
       { label: "Assignments" },
     ]);
-    transitionToView("assignments", () => assignmentsFeature?.renderList());
+    transitionToView("assignments", () => assignmentsFeature?.renderList(), { loading: false });
     return;
   }
 
@@ -1429,8 +1460,17 @@ function bindNav() {
 
   $("#teacherClassBack")?.addEventListener("click", () => {
     const btn = $("#teacherClassBack");
-    const to = btn?.dataset.backTo || "dashboard";
-    runButtonAction(btn, () => goToNav(to), 90);
+    // real browser back so the user returns exactly where they were;
+    // if there is no in-app history (fresh tab / deep link) fall back
+    // to the view this page belongs under.
+    const fallback = btn?.dataset.backTo || "dashboard";
+    const hashBefore = location.hash;
+    runButtonAction(btn, () => {
+      history.back();
+      window.setTimeout(() => {
+        if (location.hash === hashBefore) goToNav(fallback);
+      }, 180);
+    }, 90);
   });
 
   $("#profilePerformanceBody")?.addEventListener("click", (e) => {

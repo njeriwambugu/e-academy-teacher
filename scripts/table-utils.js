@@ -63,7 +63,7 @@ export function createPager({ container, pageSize = 8, onPageChange }) {
       }).join("");
 
       el.innerHTML = `
-        <span class="table-pagination-meta">Showing ${from}–${to} of ${total}</span>
+        <span class="table-pagination-meta">${from}- ${to} of ${total}</span>
         <span class="table-pagination-pages">
           <button type="button" data-page="prev" class="table-page-btn nav" aria-label="Previous page" ${page === 1 ? "disabled" : ""}>&lsaquo;</button>
           ${numbers}
