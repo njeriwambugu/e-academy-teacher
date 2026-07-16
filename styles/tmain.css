@@ -2014,6 +2014,9 @@ button {
     display: grid;
     grid-template-columns: 1fr;
     min-height: 0;
+    /* the option list below is the single scroller — undo main.css's
+       54vh cap here so a long class list can't spill past the wrapper */
+    max-height: none;
     overflow: visible;
 }
 
@@ -2971,13 +2974,36 @@ button {
 
 #teacherSelectClassModal #teacherClassOptions.option-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-height: 60vh;
+    max-height: min(58vh, 480px);
     overflow-y: auto;
     padding: 4px 4px 6px;
     align-content: start;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
+/* phones: stay 2-up with tighter buttons so ten classes need barely any
+   scrolling; only very narrow screens fall back to one column */
 @media (max-width: 460px) {
+    #teacherSelectClassModal .modal-form {
+        max-height: 92dvh;
+    }
+
+    #teacherSelectClassModal #teacherClassOptions.option-list {
+        max-height: min(62dvh, 520px);
+        gap: 8px;
+    }
+
+    #teacherSelectClassModal #teacherClassOptions .class-option-btn,
+    #teacherSelectClassModal #teacherClassOptions .option-btn.class-option-btn {
+        min-height: 50px;
+        padding: 10px 8px;
+        font-size: 13px;
+        border-radius: 13px;
+    }
+}
+
+@media (max-width: 340px) {
     #teacherSelectClassModal #teacherClassOptions.option-list {
         grid-template-columns: 1fr;
     }
