@@ -618,6 +618,34 @@
     </div>
   </div>
 
+  <!-- assignment deployment modal -->
+  <div class="modal-layer" id="teacherDeployModal" aria-hidden="true">
+    <div class="modal-form" role="dialog" aria-modal="true" aria-labelledby="teacherDeployTitle">
+      <div class="modal-head">
+        <div>
+          <h2 id="teacherDeployTitle">Assign to Learners</h2>
+          <p class="modal-note" id="teacherDeployAssignmentName">Set a deadline and add a note.</p>
+        </div>
+        <button class="modal-close" type="button" data-deploy-close aria-label="Close modal">
+          X
+        </button>
+      </div>
+      <div class="form-grid">
+        <label class="deploy-field">
+          <span>Deadline</span>
+          <input type="date" id="teacherDeployDeadline" />
+        </label>
+        <label class="deploy-field">
+          <span>Comment</span>
+          <textarea id="teacherDeployComment" rows="4" placeholder="Add a note for your learners (optional)"></textarea>
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button class="button" type="button" id="teacherDeployOk">OK</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Shared modal engine (same file as admin/scripts/modal.js).
        Must load BEFORE the module scripts so window.Modals exists. -->
   <script src="./scripts/modal.js"></script>

@@ -226,8 +226,6 @@ button {
 
 .teacher-app .main {
     min-width: 0;
-    /* Let the block fill the space left of the sidebar. Using 100vw here caused a
-       horizontal scrollbar because 100vw includes the vertical scrollbar width. */
     width: auto;
     margin-left: 250px;
     padding: 32px;
@@ -235,7 +233,7 @@ button {
     transition: margin-left 250ms ease;
 }
 
-/* sidebar collapse (desktop only — sidebar is display:none <=880px) */
+/* sidebar collapse (desktop only - sidebar is display:none <=880px) */
 .sidebar-toggle {
     align-self: flex-end;
     width: 34px;
@@ -357,7 +355,6 @@ button {
     transition: .2s;
 }
 
-/* hover matches the grade-filter tabs: glassy lift */
 .nav-item:not(.active):hover {
     background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(245, 249, 255, .88));
     transform: translateY(-2px);
@@ -474,9 +471,7 @@ button {
     margin-top: 22px;
 }
 
-/* ===== Stat cards ===== */
-
-/* ===== Performance chart ===== */
+/* performance chart remove in dep */
 .chart-card {
     margin-top: 4px;
 }
@@ -493,7 +488,7 @@ button {
     height: 420px;
 }
 
-/* ===== Accordions (strands + mixed exercises) ===== */
+/* accordions/sub-segments (strands + mixed exercises) */
 .accordion {
     display: grid;
     gap: 12px;
@@ -569,7 +564,6 @@ button {
     display: block;
 }
 
-/* Sub-strand rows (clickable) */
 .substrand-list {
     display: grid;
     gap: 8px;
@@ -636,7 +630,7 @@ button {
     }
 }
 
-/* Modal class buttons */
+/* modal class buttons */
 .option-list,
 #teacherClassOptions {
     display: grid;
@@ -687,7 +681,7 @@ button {
     color: #fff;
 }
 
-/* Class tabs: Class Info / Analysis / Assignments */
+/* class Info / Analysis / Assignments */
 .class-segmented,
 .sub-segmented {
     margin: 18px 0 0;
@@ -803,14 +797,14 @@ button {
     z-index: 0;
 }
 
-/* faint subject-themed glyphs spread across the card */
+/* faint subject -the const SUBJECT_DOODLES */
 .subject-doodles {
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
     color: #1b2440;
-    opacity: .07;
+    opacity: .09;
 }
 
 .subject-doodles i {
@@ -821,11 +815,13 @@ button {
 }
 
 .subject-doodles i:nth-child(1) { top: 8%; left: 6%; transform: rotate(-14deg); font-size: 26px; }
-.subject-doodles i:nth-child(2) { top: 14%; right: 30%; transform: rotate(10deg); }
+.subject-doodles i:nth-child(2) { top: 18%; right: 30%; transform: rotate(10deg); }
 .subject-doodles i:nth-child(3) { top: 42%; left: 24%; transform: rotate(6deg); font-size: 18px; }
-.subject-doodles i:nth-child(4) { bottom: 30%; left: 4%; transform: rotate(-8deg); font-size: 28px; }
+.subject-doodles i:nth-child(4) { bottom: 18%; left: 30%; transform: rotate(-8deg); font-size: 28px; }
 .subject-doodles i:nth-child(5) { bottom: 12%; right: 12%; transform: rotate(12deg); }
-.subject-doodles i:nth-child(6) { bottom: 8%; left: 44%; transform: rotate(-6deg); font-size: 17px; }
+.subject-doodles i:nth-child(6) { bottom: 18%; left: 44%; transform: rotate(-6deg); font-size: 17px; }
+.subject-doodles i:nth-child(7) { bottom: 18%; left: 44%; transform: rotate(-6deg); font-size: 18px; }
+.subject-doodles i:nth-child(8) { top: 16%; right: 55%; transform: rotate(-12deg); font-size: 19px; }
 
 /* hover = pure zoom; the icon stays still */
 #teacherSubjectsGrid .subject-card:hover,
@@ -1529,7 +1525,7 @@ button {
     white-space: nowrap;
 }
 
-/* 5) Grade filters: allow dropdowns to show (no clipping) + arrow + selected. */
+/* grade filters: allow dropdowns to show (no clipping) + arrow + selected. */
 .student-grade-filters {
     flex-wrap: wrap;
     overflow: visible;
@@ -1986,7 +1982,7 @@ button {
 
 @media (max-width: 880px) {
     .table td {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .table td strong {
@@ -1994,7 +1990,7 @@ button {
     }
 
     .table thead th {
-        font-size: 13px;
+        font-size: 13.2px;
     }
 }
 
@@ -3394,9 +3390,6 @@ button {
 }
 
 
-/* ==================================================
-   Assignment tree filter — cascading hierarchy + date branch
-================================================== */
 .assignment-tree-filter {
     gap: 10px;
 }
@@ -3998,7 +3991,7 @@ button {
 }
 
 .pill-avg {
-    background: #DDF1FA !important;
+    background: #B9DFF0 !important;
     color: #1F5D86 !important;
     border: 1px solid rgba(31, 93, 134, .12);
 }
@@ -4056,9 +4049,8 @@ button {
     line-height: 1.55;
 }
 
-/* ==================================================
-   Teacher UX polish: stable routes, skeletons, buttons
-================================================== */
+/* stable routes, skeletons, buttons*/
+
 .teacher-app .topbar {
     margin-bottom: 22px;
 }
@@ -4204,8 +4196,9 @@ button {
     margin: -6px 0 18px;
 }
 
-/* overview cards follow the brand theme (navy → orange), like the stat cards */
-.student-overview-card {
+.student-overview-card,
+.student-overview-card.active,
+ .student-overview-card.pending{
     position: relative;
     overflow: hidden;
     min-height: 96px;
@@ -4222,21 +4215,9 @@ button {
     box-shadow: 0 18px 38px rgba(23, 38, 83, .18);
 }
 
-.student-overview-card.active {
-    background:
-        radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 20%),
-        linear-gradient(135deg, #172653 0%, #21304d 55%, #2e5c8a 100%);
-}
-
-.student-overview-card.pending {
-    background:
-        radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 20%),
-        linear-gradient(135deg, #7d4f36 0%, #b8641d 55%, #f06405 100%);
-}
-
 .student-overview-card span {
     color: rgba(255, 255, 255, .82);
-    font-size: 12px;
+    font-size: 18px;
     font-weight: 900;
     text-transform: uppercase;
 }
@@ -4276,7 +4257,6 @@ button {
         flex-direction: column;
     }
 
-    /* stays 3-across and shrinks, same behaviour as the stat cards */
     .student-overview {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 8px;
@@ -4295,9 +4275,6 @@ button {
         line-height: 1.15;
     }
 
-    .student-overview-card strong {
-        font-size: clamp(22px, 6vw, 30px);
-    }
 
     .student-overview-card em {
         font-size: 10.5px;
@@ -4323,7 +4300,7 @@ button {
     }
 }
 
-/* Hand cursor on every interactive element */
+/* hand cursor on every interactive element */
 .nav-item,
 .segment,
 .accordion-head,
@@ -4341,9 +4318,7 @@ button {
     cursor: pointer;
 }
 
-/* ==================================================
-   Table pagination
-================================================== */
+/*pagnation*/
 .table-pagination {
     display: flex;
     align-items: center;
@@ -4353,11 +4328,7 @@ button {
     margin: 14px 2px 0;
 }
 
-.table-pagination-meta {
-    color: var(--muted, #6e7593);
-    font-size: 13px;
-    font-weight: 800;
-}
+
 
 .table-pagination-pages {
     display: inline-flex;

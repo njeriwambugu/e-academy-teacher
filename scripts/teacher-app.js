@@ -1,4 +1,3 @@
-// teacher/scripts/teacher-app.js
 import { teacherContext, classMock, getClassMock } from "./mock-data.js";
 import { getStudentProfile } from "./student-profile.js";
 import { createSelectClassModal } from "./teacher.modals.js";
@@ -104,7 +103,7 @@ const MONTHS = [
 
 function formatDate(value) {
   if (!value) return "\u2014";
-  // Accepts "2026-06-09 09:30:00" or ISO strings.
+  // accepts "2026-06-09 09:30:00" or ISO strings.
   const datePart = String(value).slice(0, 10);
   const [y, m, d] = datePart.split("-").map(Number);
   if (!y || !m || !d) return String(value);
@@ -226,19 +225,19 @@ function renderSubjects() {
 
 // faint background glyphs per subject
 const SUBJECT_DOODLES = {
-  MAT: ["+", "x", "-", "±", "=", "÷", "%", "2⁷", "𝝅", "√", "⏲", "⃤", "𓍝", "⊿", "i³"],
+  MAT: ["2⁷", "𝝅", "√", "⏲", "⃤", "𓍝", "⊿", "i³"],
   ENG: ["✎", "❝ ❞", "Aa", "🗣", "❞", "𓂃✍︎", "ִ🕮", "🗪"],
   KIS: ["𓂃🖊", "❝ ❞", "Ss", "⁉", "❞", "🗯", "🗣", "ᶻ𐰁"],
-  SCI: ["⚛", "🧬", "⚗", "☢", "⚙", "𓌉◯𓇋", "Co²", "🕸", "🕷"],
-  SS: ["☾☼", "ᨒ", "🗺", "⛏", "⛱", "✈", "🏝", "🌤", "🌡", "🏜"],
-  INT: ["🧬", "⋆⌬", "♻", "⚡︎", "☤", "⚧", "⚠︎", "𓇖", "☘"],
-  COMP: ["🖧", "</>", "🖱", "💻︎", "💾︎", "🔌︎", "🖥︎", "🖳", "모", "⁴⁰⁴", "☏"],
-  CRE: ["†⛪︎†", "♕", "✞", "𓉸", "♗", "🕯", "⛧", "🕊", "𓆩†𓆪", "✰ ✰ ✰"],
-  IRE: ["☪︎📿︎☪︎", "☪︎", "🕋︎", "۞", "📜︎", "☾⋆", "-`♡´-"],
-  ENV: ["♲", "🌍︎", "♻", "🌱︎", "🌀︎", "🗑︎", "💧︎", "🍂︎", "🛢", "🌨", "🛏"],
-  PTECH: ["🛠︎", "⛓", "🔌︎", "🏗", "⛟", "🏠︎⛏"],
-  AGRI: ["𓃽𓃽𓀚", "⸙", "°‧ 𓆝 𓆟 𓆞 ·｡", "🌱︎", "𓄀", "𓇢𓆸"],
-  ART: ["⚽︎", "♫", "𓂃🖌", "𝄞", "🎤︎︎", "⚾︎", "🏟", "ᯓ♪", "𓀤", "♫⋆｡♪ ₊˚♬ﾟ."]
+  SCI: ["⚛", "🍂︎", "☢", "⚙", "𓌉◯𓇋", "Co²", "🕸", "🕷"],
+  SS: ["ᨒ", "🗺", "⛱", "✈", "🏝", "🌤", "🌡", "🏜"],
+  INT: ["🧬", "⋆⌬", "♻", "⚡︎", "☤", "⚧", "⚠︎", "☘"],
+  COMP: ["🖧", "</>", "💻︎", "💾︎", "🖥︎", "🖳", "모", "⁴⁰⁴"],
+  CRE: ["†⛪︎†", "♕", "✞", "𓉸", "🕯", "⛧", "🕊", "𓆩†𓆪"],
+  IRE: ["☪︎📿︎", "☪︎", "🕋︎", "۞", "📜︎", "☾⋆", "-`♡´-", "الله"],
+  ENV: ["♲", "🌍︎", "🌱︎", "🌀︎", "💧︎", "🛢", "🌨", "🛏"],
+  PTECH: ["🛠︎", "⛓", "🔌︎", "🏗", "⛟", "🏠︎⛏", "⛭", "⌁"],
+  AGRI: ["𓃽𓃽𓀚", "⸙", "𓆝 𓆟 𓆞", "🌱︎", "𓄀", "𓇢𓆸", "𓃖", "𓃟"],
+  ART: ["⚽︎", "♫", "𓂃🖌", "𝄞", "🎤︎︎", "⚾︎", "ᯓ♪", "𓀤"]
 };
 
 function subjectDoodles(subjectId) {
@@ -260,7 +259,7 @@ function renderStudentGradeFilters() {
   classes.forEach((c) => {
     const groupName = c.group || c.name;
     if (!groupMap.has(groupName)) {
-      const group = { name: groupName, theme: c.theme || "", streams: [] };
+      const group = { name: groupName, theme: c.theme || "", streams: [] };//c theme
       groupMap.set(groupName, group);
       groups.push(group);
     }
@@ -585,16 +584,18 @@ function renderStrands(strands) {
             <button type="button" class="substrand-row" data-strand="${i}" data-sub="${si}">
               <span class="substrand-name">${escapeHTML(sub.name)}</span>
               <span class="substrand-pills">
-                <span class="pill pill-avg">${sub.averageScore == null ? "No data" : "Avg " + sub.averageScore + "%"}</span>
+                <span class="pill pill-avg">${assignmentCountLabel(sub.count)}</span>
               </span>
             </button>`)
         .join("");
 
+      const strandCount = (strand.subStrands || []).reduce((sum, sub) => sum + (Number(sub.count) || 0), 0);
+
       return `
         <div class="accordion-item">
-          <button type="button" class="accordion-header">
+          <button type="button" class="accordion-header" data-strand-open="${i}">
             <span class="accordion-title">${escapeHTML(strand.name)}</span>
-            <span class="accordion-pills"><span class="pill pill-avg">Avg ${strand.averageScore}%</span></span>
+            <span class="accordion-pills"><span class="pill pill-avg">${assignmentCountLabel(strandCount)}</span></span>
             <span class="accordion-sign" aria-hidden="true"></span>
           </button>
           <div class="accordion-body">
@@ -603,6 +604,12 @@ function renderStrands(strands) {
         </div>`;
     })
     .join("");
+}
+
+// pill label: assignments not yet assigned to learners
+function assignmentCountLabel(count) {
+  const n = Number(count) || 0;
+  return `${n} assignment${n === 1 ? "" : "s"}`;
 }
 
 function renderMixed(mixed) {
@@ -615,19 +622,19 @@ function renderMixed(mixed) {
   }
 
   el.innerHTML = mixed
-    .map((m) => `
+    .map((m, i) => `
         <div class="accordion-item">
-          <button type="button" class="accordion-header">
+          <button type="button" class="accordion-header" data-mixed-open="${i}">
             <span class="accordion-title">${escapeHTML(m.name)}</span>
-            <span class="accordion-pills"><span class="pill pill-avg">Avg ${m.averageScore}%</span></span>
+            <span class="accordion-pills"><span class="pill pill-avg">${assignmentCountLabel(m.count)}</span></span>
             <span class="accordion-sign" aria-hidden="true"></span>
           </button>
-          <div class="accordion-body"><div class="mixed-body"><span class="pill pill-avg">Average score ${m.averageScore}%</span></div></div>
+          <div class="accordion-body"><div class="mixed-body"><span class="pill pill-avg">${assignmentCountLabel(m.count)} ready to assign</span></div></div>
         </div>`)
     .join("");
 }
 
-function renderClassChart(performance) {//temp chart
+function renderClassChart(performance) {//temp chart so remove on dep
   const el = $("#teacherClassChart");
   const caption = $("#teacherChartCaption");
   if (caption && performance?.title) caption.textContent = performance.title;
@@ -822,7 +829,7 @@ function showAssignmentCards(strandIdx, subIdx) {
         .map((a) => `
 <article class="assignment-card">
   <h3 class="assignment-card-name">${escapeHTML(a.name)}</h3>
-  <p class="assignment-card-skills"><span class="assignment-card-label">Skills Covered</span>${escapeHTML(a.skills.join(", "))}</p>
+  <p class="assignment-card-skills">${escapeHTML(a.skills.join(", "))}</p>
   <button type="button" class="button" data-assignment-id="${escapeHTML(a.id)}">View Assignment Page</button>
 </article>`)
         .join("")
@@ -919,7 +926,7 @@ function getStudentById(id) {
 }
 
 function getStudentSubjects(student) {
-  const subjectIds = getTeacherAssignments()//Subjects the teacher teaches to this student's class.
+  const subjectIds = getTeacherAssignments()//subjects the teacher teaches to this student's class.
     .filter((a) => Number(a.classId) === Number(student.classId))
     .map((a) => a.subjectId);
 

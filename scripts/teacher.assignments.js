@@ -65,7 +65,7 @@ export function createAssignmentsFeature(deps) {
     classGroup: "",
     classId: "",
     status: "",
-    date: "", // YYYY-MM-DD picked from the calendar branch
+    date: "", 
   };
 
   let currentDetailPanel = "overview";
@@ -376,7 +376,6 @@ export function createAssignmentsFeature(deps) {
       requestAnimationFrame(tick);
     });
 
-    // HH:MM:SS values count up too (time card)
     root.querySelectorAll("[data-count-duration]").forEach((node) => {
       const target = Number(node.dataset.countDuration) || 0;
       if (reduce || !target) {
@@ -404,7 +403,6 @@ export function createAssignmentsFeature(deps) {
     const remaining = Math.max(0, total - completed);
     const tone = scoreTone(score);
     const pace = paceLabel(avgSeconds);
-    // avg time shown as a fraction of a fixed 300s pace scale so the ring stays meaningful
     const timePct = avgSeconds ? Math.min(100, Math.round((avgSeconds / 300) * 100)) : 0;
     el.className = "assignment-insight-pills analytics-capsules";
     el.innerHTML = `
@@ -572,7 +570,6 @@ export function createAssignmentsFeature(deps) {
       listPager.reset();
       renderList();
 
-      // entering the date branch shows the calendar — leave the menu open
       const keepOpen = filters.branch === "date" && !filters.date;
       levelMenu.classList.toggle("open", keepOpen);
       levelButton?.setAttribute("aria-expanded", String(keepOpen));

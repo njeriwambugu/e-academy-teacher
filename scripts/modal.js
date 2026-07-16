@@ -1,13 +1,3 @@
-/* ============================================================
-   Shared modal engine (window.Modals)
-   ------------------------------------------------------------
-   This is the SAME engine used by the admin dashboard
-   (admin/scripts/modal.js). Keep the two files identical so the
-   teacher and admin portals behave the same way.
-
-   Loaded as a plain <script> BEFORE the module scripts so that
-   window.Modals is available to every popup on the page.
-   ============================================================ */
 (() => {
   "use strict";
 

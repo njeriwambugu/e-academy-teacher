@@ -1,4 +1,3 @@
-// Mobile topbar profile avatar dropdown + logout action.
 (function () {
   const btn = document.getElementById("teacherMobileProfileBtn");
   const dropdown = document.getElementById("teacherMobileProfileDropdown");

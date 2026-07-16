@@ -1174,7 +1174,8 @@ body:not(.login-active) .login-page {
 
 /* Route skeletons live in tmain.css (.view-loading system). */
 
-.stats {
+.stats, 
+.student-overview {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
@@ -2330,14 +2331,18 @@ body:not(.login-active) .login-page {
   padding: 0 22px;
   border: 0;
   border-radius: 10px;
-  color: #71789b;
+  color: #4d505f;
   background: transparent;
   font-weight: 900;
+  
 }
 
 .segment.active {
   color: #fff;
   background: linear-gradient(135deg, #24315f, #141f46);
+  border: 0.8px;
+  border-color: rgba(255, 255, 255, 0.38);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 16px 30px rgba(5, 9, 23, 0.28);
 }
 
 .student-panel {
@@ -5042,7 +5047,7 @@ tbody tr:last-child td {
     min-height: 40px;
     height: auto;
     padding: 0 10px;
-    font-size: 12px;
+    font-size: 13px;
   }
 }
 
