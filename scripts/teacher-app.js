@@ -913,12 +913,11 @@ function openAssignmentDetail(id) {
         <h3>${escapeHTML(a.name)}</h3>
         <p>This opens the assignment deployment flow. The backend can connect the real learner assignment screen here.</p>
       </section>
-      <button type="button" class="deploy-fab" data-deploy-assign="${escapeHTML(a.name)}" aria-label="Assign ${escapeHTML(a.name)} to learners">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <button type="button" class="deploy-fab" data-deploy-assign="${escapeHTML(a.name)}" aria-label="Assign ${escapeHTML(a.name)} to learners" title="Assign to learners">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M22 2L11 13"></path>
           <path d="M22 2l-7 20-4-9-9-4z"></path>
         </svg>
-        <span>Assign</span>
       </button>`;
   }
 
