@@ -4115,10 +4115,12 @@ button {
     min-height: 108px;
     align-content: center;
     padding: 16px 18px;
-    border: 1px solid rgba(226, 231, 242, .95);
+    border: 1px solid color-mix(in srgb, var(--insight-color, #14B8A6), white 78%);
     border-radius: 18px;
-    background: #fff;
-    box-shadow: 0 14px 30px rgba(29, 37, 72, .07);
+    /* whole card carries a faint tint of its accent colour */
+    background:
+        linear-gradient(145deg, color-mix(in srgb, var(--insight-color, #14B8A6), white 90%), color-mix(in srgb, var(--insight-color, #14B8A6), white 96%));
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--insight-color, #14B8A6), transparent 86%);
 }
 
 .deploy-insight-card::before {
