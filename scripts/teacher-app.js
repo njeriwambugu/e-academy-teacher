@@ -736,26 +736,36 @@ function bindClassPanels() {
 }
 
 function bindAccordions() {
-  ["#teacherStrandsAccordion", "#teacherMixedAccordion"].forEach((sel) => {
-    const acc = $(sel);
-    if (!acc) return;
-    acc.addEventListener("click", (e) => {
-      const header = e.target.closest(".accordion-header");
-      if (header && acc.contains(header)) {
-        header.closest(".accordion-item")?.classList.toggle("open");
-      }
-    });
-  });
-
-  // selecting a sub-strand opens its Class Assignments cards.
+  // The chevron toggles the accordion; pressing the header itself opens the
+  // Class Assignments drill for that strand / mixed exercise.
   $("#teacherStrandsAccordion")?.addEventListener("click", (e) => {
     const row = e.target.closest(".substrand-row");
-    if (!row) return;
-    row
-      .closest(".substrand-list")
-      ?.querySelectorAll(".substrand-row")
-      .forEach((r) => r.classList.toggle("active", r === row));
-    showAssignmentCards(Number(row.dataset.strand), Number(row.dataset.sub));
+    if (row) {
+      row
+        .closest(".substrand-list")
+        ?.querySelectorAll(".substrand-row")
+        .forEach((r) => r.classList.toggle("active", r === row));
+      showAssignmentCards(Number(row.dataset.strand), Number(row.dataset.sub));
+      return;
+    }
+
+    const header = e.target.closest(".accordion-header");
+    if (!header) return;
+    if (e.target.closest(".accordion-sign")) {
+      header.closest(".accordion-item")?.classList.toggle("open");
+      return;
+    }
+    showStrandCards(Number(header.dataset.strandOpen));
+  });
+
+  $("#teacherMixedAccordion")?.addEventListener("click", (e) => {
+    const header = e.target.closest(".accordion-header");
+    if (!header) return;
+    if (e.target.closest(".accordion-sign")) {
+      header.closest(".accordion-item")?.classList.toggle("open");
+      return;
+    }
+    showMixedCards(Number(header.dataset.mixedOpen));
   });
 
   $("#teacherAssignmentCardsBack")?.addEventListener("click", () => showAssignmentDrill("list"));
@@ -813,19 +823,15 @@ function buildSubstrandAssignments(strand, sub) {
   }));
 }
 
-function showAssignmentCards(strandIdx, subIdx) {
-  const strand = activeClassData?.strands?.[strandIdx];
-  const sub = strand?.subStrands?.[subIdx];
-  if (!sub) return;
-
-  activeSubstrandAssignments = buildSubstrandAssignments(strand, sub);
+function renderAssignmentCards(title, cards, emptyMessage) {
+  activeSubstrandAssignments = cards;
   const titleEl = $("#teacherAssignmentCardsTitle");
-  if (titleEl) titleEl.textContent = `Class Assignments \u2022 ${sub.name}`;
+  if (titleEl) titleEl.textContent = title;
 
   const grid = $("#teacherAssignmentCardGrid");
   if (grid) {
-    grid.innerHTML = activeSubstrandAssignments.length
-      ? activeSubstrandAssignments
+    grid.innerHTML = cards.length
+      ? cards
         .map((a) => `
 <article class="assignment-card">
   <h3 class="assignment-card-name">${escapeHTML(a.name)}</h3>
@@ -833,10 +839,54 @@ function showAssignmentCards(strandIdx, subIdx) {
   <button type="button" class="button" data-assignment-id="${escapeHTML(a.id)}">View Assignment Page</button>
 </article>`)
         .join("")
-      : `<p class="muted">No assignments available for this sub-strand yet.</p>`;
+      : `<p class="muted">${escapeHTML(emptyMessage)}</p>`;
   }
 
   showAssignmentDrill("cards");
+}
+
+function showAssignmentCards(strandIdx, subIdx) {
+  const strand = activeClassData?.strands?.[strandIdx];
+  const sub = strand?.subStrands?.[subIdx];
+  if (!sub) return;
+
+  renderAssignmentCards(
+    `Class Assignments \u2022 ${sub.name}`,
+    buildSubstrandAssignments(strand, sub),
+    "No assignments available for this sub-strand yet."
+  );
+}
+
+function showStrandCards(strandIdx) {
+  const strand = activeClassData?.strands?.[strandIdx];
+  if (!strand) return;
+
+  const cards = (strand.subStrands || []).flatMap((sub) => buildSubstrandAssignments(strand, sub));
+
+  renderAssignmentCards(
+    `Class Assignments \u2022 ${strand.name}`,
+    cards,
+    "No assignments available for this strand yet."
+  );
+}
+
+function showMixedCards(mixedIdx) {
+  const mixed = activeClassData?.mixedExercises?.[mixedIdx];
+  if (!mixed) return;
+
+  renderAssignmentCards(
+    `Class Assignments \u2022 ${mixed.name}`,
+    [{
+      id: `mixed-${mixedIdx}`,
+      uid: "",
+      name: mixed.name,
+      subject: activeAssignmentCtx.subjectName,
+      className: activeAssignmentCtx.className,
+      created: "\u2014",
+      skills: ["Mixed Exercise"],
+    }],
+    "No mixed exercises available yet."
+  );
 }
 
 function openAssignmentDetail(id) {
@@ -855,10 +905,50 @@ function openAssignmentDetail(id) {
       <section class="assignment-deploy-placeholder">
         <h3>${escapeHTML(a.name)}</h3>
         <p>This opens the assignment deployment flow. The backend can connect the real learner assignment screen here.</p>
+        <button type="button" class="button deploy-assign-btn" data-deploy-assign="${escapeHTML(a.name)}">Assign</button>
       </section>`;
   }
 
   showAssignmentDrill("detail");
+}
+
+/* assignment deployment modal (frontend only) */
+
+function setDeployModalOpen(open) {
+  const modal = $("#teacherDeployModal");
+  if (!modal) return;
+  modal.classList.toggle("open", open);
+  modal.setAttribute("aria-hidden", String(!open));
+  document.body.classList.toggle("modal-open", open);
+}
+
+function bindDeployModal() {
+  const modal = $("#teacherDeployModal");
+  if (!modal) return;
+
+  // the Assign button lives inside the re-rendered deployment page
+  $("#teacherAssignmentDetailMeta")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-deploy-assign]");
+    if (!btn) return;
+    const nameEl = $("#teacherDeployAssignmentName");
+    if (nameEl) nameEl.textContent = btn.dataset.deployAssign || "Set a deadline and add a note.";
+    const deadline = $("#teacherDeployDeadline");
+    const comment = $("#teacherDeployComment");
+    if (deadline) deadline.value = "";
+    if (comment) comment.value = "";
+    setDeployModalOpen(true);
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal || e.target.closest("[data-deploy-close]")) {
+      setDeployModalOpen(false);
+    }
+  });
+
+  $("#teacherDeployOk")?.addEventListener("click", () => {
+    setDeployModalOpen(false);
+    notifyTeacher("DEPLOYMENT SUCCESSFUL");
+  });
 }
 
 function notifyTeacher(message) {
@@ -1438,6 +1528,7 @@ function initializeTeacherDashboard() {
   assignmentsFeature.bind();
   bindClassPanels();
   bindAccordions();
+  bindDeployModal();
   bindLogout();
   bindSidebarToggle();
   bindSwitchAdmin();
