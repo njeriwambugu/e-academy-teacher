@@ -241,7 +241,7 @@ const SUBJECT_DOODLES = {
 };
 
 function subjectDoodles(subjectId) {
-  return SUBJECT_DOODLES[subjectId] || ["✦", "✎", "☀", "+", "❝", "%"];
+  return SUBJECT_DOODLES[subjectId] || ["🕮", "✎", "☀", "+", "❝", "%", "𓂃🖊", "📜︎"];
 }
 
 let studentGradeFilter = "all";//students view
