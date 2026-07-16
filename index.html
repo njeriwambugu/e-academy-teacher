@@ -57,7 +57,8 @@
         aria-expanded="true">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"
           stroke-linecap="round" stroke-linejoin="round">
-          <path d="M15 6l-6 6 6 6"></path>
+          <path d="M19 12H5"></path>
+          <path d="M12 19l-7-7 7-7"></path>
         </svg>
       </button>
 
@@ -132,7 +133,8 @@
     <main class="main" aria-label="Teacher portal content">
 
       <button class="breadcrumb-back floating-back" id="teacherClassBack" type="button" hidden aria-label="Back">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M15 6l-6 6 6 6"></path>
         </svg>
         <span class="back-label">Back</span>
@@ -376,14 +378,15 @@
 
         <div class="assignment-profile" id="teacherAssignmentProfile" hidden>
           <div class="assignment-detail-layout">
-              <section class="assignment-detail-card assignment-info-card">
-                <div class="section-head">
-                  <h2>Assignment information</h2>
-                </div>
-                <div class="assignment-detail-meta" id="assignmentProfileMeta"></div>
-              </section>
-              <div class="deploy-insights assignment-highlights" id="assignmentHighlights" aria-label="Learner highlights"></div>
-            </div>
+            <section class="assignment-detail-card assignment-info-card">
+              <div class="section-head">
+                <h2>Assignment information</h2>
+              </div>
+              <div class="assignment-detail-meta" id="assignmentProfileMeta"></div>
+            </section>
+            <div class="deploy-insights assignment-highlights" id="assignmentHighlights"
+              aria-label="Learner highlights"></div>
+          </div>
 
           <div class="segmented assignment-detail-segments" id="assignmentDetailSegments" role="tablist"
             aria-label="Assignment report sections">
@@ -395,7 +398,7 @@
             <div class="assignment-insight-pills" id="assignmentInsightPills"
               aria-label="Assignment performance summary"></div>
 
-            
+
           </div>
 
           <div class="assignment-detail-panel" data-assignment-detail-content="learners">
@@ -457,7 +460,8 @@
           <div class="section">
             <div class="section-head">
               <h2>Assignments Performance</h2>
-            </div><p class="page-subtitle" id="teacherChartCaption">
+            </div>
+            <p class="page-subtitle" id="teacherChartCaption">
               For assignments that have already been deployed
             </p>
             <div class="table">
