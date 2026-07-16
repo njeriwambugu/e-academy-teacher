@@ -636,7 +636,7 @@
           X
         </button>
       </div>
-      <div class="form-grid">
+      <div class="form-grid" id="teacherDeployFields">
         <label class="deploy-field">
           <span>Deadline</span>
           <input type="date" id="teacherDeployDeadline" />
@@ -646,7 +646,17 @@
           <textarea id="teacherDeployComment" rows="4" placeholder="Add a note for your learners (optional)"></textarea>
         </label>
       </div>
-      <div class="modal-actions">
+      <div class="deploy-success" id="teacherDeploySuccess" hidden>
+        <span class="deploy-success-ring" aria-hidden="true">
+          <svg viewBox="0 0 52 52">
+            <circle class="deploy-success-circle" cx="26" cy="26" r="23" fill="none"></circle>
+            <path class="deploy-success-check" fill="none" d="M14 27l8 8 16-17"></path>
+          </svg>
+        </span>
+        <strong>Assignment Deployed</strong>
+        <span class="deploy-success-note" id="teacherDeploySuccessNote">Your learners can now see it.</span>
+      </div>
+      <div class="modal-actions" id="teacherDeployActions">
         <button class="button" type="button" id="teacherDeployOk">OK</button>
       </div>
     </div>

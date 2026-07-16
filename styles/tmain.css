@@ -4221,6 +4221,77 @@ button {
     box-shadow: 0 0 0 3px rgba(240, 100, 5, .12);
 }
 
+/* animated "Assignment Deployed" state inside the modal */
+.deploy-success {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding: 26px 12px 18px;
+    text-align: center;
+    animation: scale-in-center 260ms cubic-bezier(.18, .72, .2, 1) both;
+}
+
+.deploy-success[hidden] {
+    display: none;
+}
+
+.deploy-success strong {
+    color: var(--brand-navy-900, #101a3a);
+    font-size: 20px;
+    font-weight: 950;
+}
+
+.deploy-success-note {
+    color: var(--muted, #6e7593);
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.deploy-success-ring {
+    width: 72px;
+    height: 72px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: color-mix(in srgb, #10B981, white 88%);
+}
+
+.deploy-success-ring svg {
+    width: 46px;
+    height: 46px;
+    stroke: #10B981;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.deploy-success-circle {
+    stroke-dasharray: 145;
+    stroke-dashoffset: 145;
+    animation: deploy-draw 520ms ease-out 80ms forwards;
+}
+
+.deploy-success-check {
+    stroke-dasharray: 36;
+    stroke-dashoffset: 36;
+    animation: deploy-draw 340ms ease-out 480ms forwards;
+}
+
+@keyframes deploy-draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .deploy-success,
+    .deploy-success-circle,
+    .deploy-success-check {
+        animation: none !important;
+        stroke-dashoffset: 0;
+    }
+}
+
 /* stable routes, skeletons, buttons*/
 
 .teacher-app .topbar {

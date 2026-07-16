@@ -942,6 +942,16 @@ function setDeployModalOpen(open) {
   modal.classList.toggle("open", open);
   modal.setAttribute("aria-hidden", String(!open));
   document.body.classList.toggle("modal-open", open);
+  if (open) setDeploySuccessState(false);
+}
+
+function setDeploySuccessState(success) {
+  const fields = $("#teacherDeployFields");
+  const actions = $("#teacherDeployActions");
+  const done = $("#teacherDeploySuccess");
+  if (fields) fields.hidden = success;
+  if (actions) actions.hidden = success;
+  if (done) done.hidden = !success;
 }
 
 function bindDeployModal() {
@@ -983,8 +993,18 @@ function bindDeployModal() {
     setButtonLoading(okBtn, true);
     deployAssignmentAPI(payload)
       .then((result) => {
-        setDeployModalOpen(false);
-        notifyTeacher(result?.ok ? "DEPLOYMENT SUCCESSFUL" : "Deployment failed. Try again.");
+        if (!result?.ok) {
+          notifyTeacher("Deployment failed. Try again.");
+          return;
+        }
+        const note = $("#teacherDeploySuccessNote");
+        if (note) {
+          note.textContent = payload.deadline
+            ? `${payload.assignment || "Assignment"} • due ${formatDate(payload.deadline)}`
+            : payload.assignment || "Your learners can now see it.";
+        }
+        setDeploySuccessState(true);
+        window.setTimeout(() => setDeployModalOpen(false), 1700);
       })
       .catch(() => notifyTeacher("Deployment failed. Try again."))
       .finally(() => {
