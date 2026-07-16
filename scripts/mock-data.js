@@ -362,6 +362,12 @@ const subjectStudentScores = {
   COMP: makeScores("COMP", 82),
   CRE: makeScores("CRE", 78),
   ART: makeScores("ART", 84),
+  ENG: makeScores("ENG", 73),
+  ENV: makeScores("ENV", 75),
+  SS: makeScores("SS", 72),
+  IRE: makeScores("IRE", 77),
+  PTECH: makeScores("PTECH", 70),
+  AGRI: makeScores("AGRI", 79),
 };
 
 const strandPerformance = {
@@ -462,6 +468,173 @@ const strandPerformance = {
         { name: "Keyboard Skills", count: 4, averageScore: 86, completion: 80 },
         { name: "File Management", count: 3, averageScore: 82, completion: 76 },
         { name: "Internet Safety", count: 5, averageScore: 85, completion: 79 },
+      ],
+    },
+  ],
+  ENG: [
+    {
+      name: "LISTENING AND SPEAKING",
+      open: true,
+      averageScore: 75,
+      completion: 70,
+      subStrands: [
+        { name: "Pronunciation", count: 4, averageScore: 77, completion: 72 },
+        { name: "Oral Narratives", count: 3, averageScore: 73, completion: 67 },
+        { name: "Conversations", count: 4, averageScore: 76, completion: 71 },
+      ],
+    },
+    {
+      name: "READING",
+      open: false,
+      averageScore: 72,
+      completion: 66,
+      subStrands: [
+        { name: "Fluency", count: 5, averageScore: 74, completion: 69 },
+        { name: "Comprehension", count: 6, averageScore: 70, completion: 63 },
+        { name: "Intensive Reading", count: 3, averageScore: 73, completion: 66 },
+      ],
+    },
+    {
+      name: "WRITING",
+      open: false,
+      averageScore: 69,
+      completion: 61,
+      subStrands: [
+        { name: "Handwriting", count: 3, averageScore: 72, completion: 66 },
+        { name: "Creative Writing", count: 5, averageScore: 66, completion: 57 },
+        { name: "Functional Writing", count: 4, averageScore: 70, completion: 60 },
+      ],
+    },
+    {
+      name: "GRAMMAR",
+      open: false,
+      averageScore: 74,
+      completion: 68,
+      subStrands: [
+        { name: "Parts of Speech", count: 5, averageScore: 75, completion: 70 },
+        { name: "Tenses", count: 4, averageScore: 71, completion: 64 },
+        { name: "Sentence Structure", count: 3, averageScore: 76, completion: 71 },
+      ],
+    },
+  ],
+  KIS: [
+    {
+      name: "KUSIKILIZA NA KUZUNGUMZA",
+      open: true,
+      averageScore: 71,
+      completion: 66,
+      subStrands: [
+        { name: "Matamshi", count: 4, averageScore: 73, completion: 68 },
+        { name: "Mazungumzo", count: 3, averageScore: 69, completion: 63 },
+        { name: "Hadithi", count: 3, averageScore: 72, completion: 67 },
+      ],
+    },
+    {
+      name: "KUSOMA",
+      open: false,
+      averageScore: 68,
+      completion: 62,
+      subStrands: [
+        { name: "Ufahamu", count: 5, averageScore: 66, completion: 59 },
+        { name: "Kusoma kwa Ufasaha", count: 4, averageScore: 70, completion: 64 },
+      ],
+    },
+    {
+      name: "KUANDIKA",
+      open: false,
+      averageScore: 67,
+      completion: 60,
+      subStrands: [
+        { name: "Insha", count: 5, averageScore: 64, completion: 56 },
+        { name: "Imla", count: 3, averageScore: 70, completion: 63 },
+      ],
+    },
+    {
+      name: "SARUFI",
+      open: false,
+      averageScore: 72,
+      completion: 65,
+      subStrands: [
+        { name: "Ngeli", count: 4, averageScore: 71, completion: 64 },
+        { name: "Vitenzi", count: 4, averageScore: 73, completion: 66 },
+      ],
+    },
+  ],
+  CRE: [
+    {
+      name: "CREATION",
+      open: true,
+      averageScore: 79,
+      completion: 74,
+      subStrands: [
+        { name: "The Creation Story", count: 4, averageScore: 81, completion: 76 },
+        { name: "Caring for Creation", count: 3, averageScore: 77, completion: 71 },
+      ],
+    },
+    {
+      name: "THE BIBLE",
+      open: false,
+      averageScore: 76,
+      completion: 70,
+      subStrands: [
+        { name: "Books of the Bible", count: 4, averageScore: 78, completion: 72 },
+        { name: "Bible Stories", count: 5, averageScore: 74, completion: 68 },
+      ],
+    },
+    {
+      name: "CHRISTIAN VALUES",
+      open: false,
+      averageScore: 80,
+      completion: 75,
+      subStrands: [
+        { name: "Honesty", count: 3, averageScore: 82, completion: 78 },
+        { name: "Responsibility", count: 3, averageScore: 78, completion: 72 },
+      ],
+    },
+  ],
+  ART: [
+    {
+      name: "CREATING AND PERFORMING",
+      open: true,
+      averageScore: 85,
+      completion: 80,
+      subStrands: [
+        { name: "Drawing and Painting", count: 5, averageScore: 87, completion: 82 },
+        { name: "Music and Movement", count: 4, averageScore: 84, completion: 79 },
+        { name: "Drama", count: 3, averageScore: 83, completion: 77 },
+      ],
+    },
+    {
+      name: "SPORTS AND GAMES",
+      open: false,
+      averageScore: 82,
+      completion: 78,
+      subStrands: [
+        { name: "Athletics", count: 4, averageScore: 84, completion: 80 },
+        { name: "Ball Games", count: 4, averageScore: 80, completion: 76 },
+      ],
+    },
+  ],
+  ENV: [
+    {
+      name: "THE ENVIRONMENT",
+      open: true,
+      averageScore: 76,
+      completion: 71,
+      subStrands: [
+        { name: "Weather", count: 4, averageScore: 78, completion: 73 },
+        { name: "Soil", count: 3, averageScore: 74, completion: 68 },
+        { name: "Water", count: 4, averageScore: 77, completion: 72 },
+      ],
+    },
+    {
+      name: "CONSERVATION",
+      open: false,
+      averageScore: 73,
+      completion: 67,
+      subStrands: [
+        { name: "Waste Management", count: 4, averageScore: 72, completion: 65 },
+        { name: "Tree Planting", count: 3, averageScore: 75, completion: 70 },
       ],
     },
   ],

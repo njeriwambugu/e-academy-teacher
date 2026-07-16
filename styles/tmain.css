@@ -86,7 +86,7 @@ button {
     --focus: color-mix(in srgb, var(--accent), white 35%);
 
     /* solid blend of the bar's layered navy gradient — used by the notch + cutout */
-    --mobile-nav-bg: #3d4a66;
+    --mobile-nav-bg: #4a5670;
     --mobile-nav-active: #F59E0B;
     --mobile-nav-inactive: #EEF4FF;
     --mobile-nav-h: 74px;
@@ -357,8 +357,14 @@ button {
     transition: .2s;
 }
 
-.nav-item:hover {
-    background: #eef2ff;
+/* hover matches the grade-filter tabs: glassy lift */
+.nav-item:not(.active):hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(245, 249, 255, .88));
+    transform: translateY(-2px);
+    box-shadow:
+        inset 0 0 0 1px rgba(190, 205, 228, 0.75),
+        0 10px 22px rgba(5, 9, 23, 0.14),
+        inset 0 -2px 0 rgba(137, 190, 221, 0.42);
 }
 
 .nav-item.active {
@@ -402,7 +408,8 @@ button {
     .teacher-app .main {
         margin-left: 0;
         width: 100%;
-        padding: 16px 16px 90px;
+        /* clearance for the floating bottom nav + its raised bubble */
+        padding: 16px 16px 118px;
     }
 }
 
@@ -1043,37 +1050,50 @@ button {
     position: relative;
 }
 
-/*.grade-dropdown-menu {
+/* dropdown panel mirrors the admin profile-dropdown glass look */
+.grade-dropdown-menu {
     position: absolute;
-    top: 110%;
+    top: calc(100% + 10px);
     left: 0;
-    min-width: 220px;
-    background: #fff;
-    border-radius: 16px;
-    padding: 8px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, .15);
+    min-width: 230px;
     display: none;
-    z-index: 20;
-}*/
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 18px;
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .74)),
+        rgba(255, 255, 255, .82);
+    box-shadow: 0 26px 58px rgba(31, 39, 72, 0.18);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    z-index: 30;
+}
 
 .grade-dropdown.open .grade-dropdown-menu {
-    display: block;
+    display: grid;
+    gap: 4px;
+    animation: dropdown-in 170ms ease both;
 }
 
-/*.grade-option {
+.grade-option {
     width: 100%;
     border: none;
-    background: none;
+    background: transparent;
     text-align: left;
-    padding: 12px;
+    padding: 11px 12px;
     border-radius: 12px;
+    color: #26325d;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 800;
+    transition: background 140ms ease, color 140ms ease;
 }
 
-.grade-option:hover {
-    background: #f6f7fb;
-}*/
+.grade-option:hover,
+.grade-option:focus-visible {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--brand-navy-900, #101a3a);
+    outline: 0;
+}
 
 @media (max-width: 720px) {
     .modal-layer {
@@ -1393,12 +1413,6 @@ button {
 }
 
 
-.grade-filter-btn.active {
-    background: var(--brand-gradient) !important;
-    color: #fff !important;
-}
-
-
 .grade-option {
     display: flex;
     align-items: center;
@@ -1685,43 +1699,15 @@ button {
     opacity: .6;
 }
 
-/* ---- Grade filter area: admin-style gradient panel,
-        but each class keeps its theme colour on the button. ---- */
+/* Grade filter shell + buttons come from the admin grade-tabs styles above. */
 #teacherStudentsView .student-grade-filters {
-    background: var(--brand-gradient);
-    border-radius: 18px;
-    padding: 14px;
-    gap: 12px;
-    flex-wrap: wrap;
     overflow: visible;
-    box-shadow: 0 14px 34px rgba(23, 38, 83, .18);
-}
-
-/* The panel now provides the colour, so the buttons sit on top of it. */
-#teacherStudentsView .grade-filter-btn {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
-}
-
-/* Active stream stands out as solid navy, like the admin reference. */
-#teacherStudentsView .grade-filter-btn.active {
-    background: var(--brand-navy-900) !important;
-    color: #fff !important;
-}
-
-/* Keep the dropdown menu readable above the gradient panel. */
-#teacherStudentsView .grade-dropdown-menu {
-    box-shadow: 0 20px 46px rgba(16, 26, 58, .35);
 }
 
 @media (max-width: 720px) {
     #teacherStudentsView .student-grade-filters {
         padding: 10px;
         gap: 8px;
-    }
-
-    #teacherStudentsView .grade-filter-btn {
-        padding: 10px 12px;
-        font-size: 13px;
     }
 }
 
@@ -2810,9 +2796,19 @@ button {
 }
 
 .assignment-detail-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(260px, .8fr);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: 18px;
+    margin-bottom: 18px;
+    padding: 24px;
+    border: 1px solid rgba(226, 231, 242, .92);
+    border-radius: 22px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, .98), rgba(248, 251, 254, .92)),
+        #fff;
+    box-shadow: 0 18px 42px rgba(29, 37, 72, .08);
+    grid-template-columns: minmax(0, 1.4fr) minmax(260px, .8fr);
 }
 
 .assignment-info-card,
@@ -2836,8 +2832,7 @@ button {
 
 @media (max-width: 640px) {
 
-    .assignment-command-center,
-    .assignment-profile-hero {
+    .assignment-command-center {
         padding: 18px;
         border-radius: 18px;
     }
@@ -2846,9 +2841,7 @@ button {
         grid-template-columns: 1fr;
     }
 
-    .assignment-profile-hero {
-        flex-direction: column;
-    }
+    
 
     /* assignments list collapses to 2 columns on mobile, so no min width needed */
     .assignment-students-table table {
@@ -4211,35 +4204,52 @@ button {
     margin: -6px 0 18px;
 }
 
+/* overview cards follow the brand theme (navy → orange), like the stat cards */
 .student-overview-card {
+    position: relative;
+    overflow: hidden;
     min-height: 96px;
     display: grid;
     align-content: center;
     gap: 4px;
     padding: 18px;
-    border: 1px solid rgba(226, 231, 242, .9);
+    border: 1px solid rgba(255, 255, 255, .34);
     border-radius: 18px;
     background:
-        linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(247, 249, 253, .92));
-    box-shadow: 0 14px 34px rgba(29, 37, 72, .07);
+        radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 20%),
+        var(--brand-gradient);
+    color: #fff;
+    box-shadow: 0 18px 38px rgba(23, 38, 83, .18);
+}
+
+.student-overview-card.active {
+    background:
+        radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 20%),
+        linear-gradient(135deg, #172653 0%, #21304d 55%, #2e5c8a 100%);
+}
+
+.student-overview-card.pending {
+    background:
+        radial-gradient(circle at 12% 20%, rgba(255, 255, 255, .22), transparent 20%),
+        linear-gradient(135deg, #7d4f36 0%, #b8641d 55%, #f06405 100%);
 }
 
 .student-overview-card span {
-    color: var(--muted);
+    color: rgba(255, 255, 255, .82);
     font-size: 12px;
     font-weight: 900;
     text-transform: uppercase;
 }
 
 .student-overview-card strong {
-    color: var(--brand-navy-900);
+    color: #fff;
     font-size: clamp(28px, 4vw, 42px);
     line-height: 1;
     font-weight: 950;
 }
 
 .student-overview-card em {
-    color: #667085;
+    color: rgba(255, 255, 255, .78);
     font-size: 12.5px;
     font-style: normal;
     font-weight: 750;
@@ -4259,42 +4269,6 @@ button {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .36);
 }
 
-.assignment-profile-hero {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 18px;
-    margin-bottom: 18px;
-    padding: 24px;
-    border: 1px solid rgba(226, 231, 242, .92);
-    border-radius: 22px;
-    background:
-        linear-gradient(135deg, rgba(255, 255, 255, .98), rgba(248, 251, 254, .92)),
-        #fff;
-    box-shadow: 0 18px 42px rgba(29, 37, 72, .08);
-}
-
-.assignment-profile-kicker {
-    margin: 0 0 8px;
-    color: var(--brand-orange-600, #f06405);
-    font-size: 12px;
-    font-weight: 950;
-    text-transform: uppercase;
-}
-
-.assignment-profile-hero h1 {
-    margin: 0;
-    color: var(--brand-navy-900, #101a3a);
-    font-size: clamp(24px, 3vw, 38px);
-    line-height: 1.05;
-}
-
-.assignment-profile-hero p:last-child {
-    max-width: 760px;
-    margin: 10px 0 0;
-    color: var(--muted, #6e7593);
-    font-weight: 750;
-}
 
 @media (max-width: 720px) {
     .breadcrumb-row {

@@ -227,18 +227,18 @@ function renderSubjects() {
 // faint background glyphs per subject
 const SUBJECT_DOODLES = {
   MAT: ["+", "x", "-", "±", "=", "÷", "%", "2⁷", "𝝅", "√", "⏲", "⃤", "𓍝", "⊿", "i³"],
-  ENG: ["✎", "❝", "Aa", "🗣", "❞", "𓂃✍︎"],
-  KIS: ["✎", "❝", "Ss", "!", "❞", "Aa"],
-  SCI: ["⚛", "🧬", "⚗", "☢", "⚙", "𓌉◯𓇋"],
-  SS: ["☀", "⛰", "🗺", "⛏", "⛱", "✈", "🏝", "🌤"],
-  INT: ["☀", "⋆⌬", "♻", "✦", "☂", "✈"],
-  COMP: ["🖧", "</>", "🖱", "✦", "☂", "✈"],
-  CRE: ["☀", "⛰", "✞", "✦", "☂", "✈"],
-  IRE: ["☀", "⛰", "♻", "✦", "☂", "✈"],
-  ENV: ["♲", "⛰", "♻", "✦", "☂", "✈"],
-  PTECH: ["☀", "⛰", "♻", "✦", "☂", "✈"],
-  AGRI: ["𓃽𓃽𓀚", "⸙", "°‧ 𓆝 𓆟 𓆞 ·｡", "✦", "☂", "✈"],
-  ART: ["⚽︎", "♫", "𓂃🖌", "𝄞", "🎤︎︎", "⚾︎"]
+  ENG: ["✎", "❝ ❞", "Aa", "🗣", "❞", "𓂃✍︎", "ִ🕮", "🗪"],
+  KIS: ["𓂃🖊", "❝ ❞", "Ss", "⁉", "❞", "🗯", "🗣", "ᶻ𐰁"],
+  SCI: ["⚛", "🧬", "⚗", "☢", "⚙", "𓌉◯𓇋", "Co²", "🕸", "🕷"],
+  SS: ["☾☼", "ᨒ", "🗺", "⛏", "⛱", "✈", "🏝", "🌤", "🌡", "🏜"],
+  INT: ["🧬", "⋆⌬", "♻", "⚡︎", "☤", "⚧", "⚠︎", "𓇖", "☘"],
+  COMP: ["🖧", "</>", "🖱", "💻︎", "💾︎", "🔌︎", "🖥︎", "🖳", "모", "⁴⁰⁴", "☏"],
+  CRE: ["†⛪︎†", "♕", "✞", "𓉸", "♗", "🕯", "⛧", "🕊", "𓆩†𓆪", "✰ ✰ ✰"],
+  IRE: ["☪︎📿︎☪︎", "☪︎", "🕋︎", "۞", "📜︎", "☾⋆", "-`♡´-"],
+  ENV: ["♲", "🌍︎", "♻", "🌱︎", "🌀︎", "🗑︎", "💧︎", "🍂︎", "🛢", "🌨", "🛏"],
+  PTECH: ["🛠︎", "⛓", "🔌︎", "🏗", "⛟", "🏠︎⛏"],
+  AGRI: ["𓃽𓃽𓀚", "⸙", "°‧ 𓆝 𓆟 𓆞 ·｡", "🌱︎", "𓄀", "𓇢𓆸"],
+  ART: ["⚽︎", "♫", "𓂃🖌", "𝄞", "🎤︎︎", "⚾︎", "🏟", "ᯓ♪", "𓀤", "♫⋆｡♪ ₊˚♬ﾟ."]
 };
 
 function subjectDoodles(subjectId) {
@@ -362,19 +362,19 @@ function renderStudentOverview(allStudents, visibleStudents) {
   const el = $("#studentOverview");
   if (!el) return;
 
-  const active = allStudents.filter((student) => student.status !== "pending").length;
-  const pending = allStudents.length - active;
-  const visible = visibleStudents.length;
+  // counts reflect the filtered table, not the whole roster
+  const active = visibleStudents.filter((student) => student.status !== "pending").length;
+  const pending = visibleStudents.length - active;
 
   const cards = [
-    { label: "Total Students", value: visible, note: "current view" },
-    { label: "Active", value: active, note: "active students" },
-    { label: "Pending", value: pending, note: "invite not accepted" },
+    { key: "total", label: "Total Students", value: visibleStudents.length, note: "current view" },
+    { key: "active", label: "Active", value: active, note: "active students" },
+    { key: "pending", label: "Pending", value: pending, note: "invite not accepted" },
   ];
 
   el.innerHTML = cards
     .map((card) => `
-      <article class="student-overview-card">
+      <article class="student-overview-card ${escapeHTML(card.key)}">
         <span>${escapeHTML(card.label)}</span>
         <strong>${escapeHTML(card.value)}</strong>
         <em>${escapeHTML(card.note)}</em>

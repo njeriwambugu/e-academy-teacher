@@ -375,14 +375,14 @@
         </div>
 
         <div class="assignment-profile" id="teacherAssignmentProfile" hidden>
-          <section class="assignment-profile-hero">
-            <div>
-              <p class="assignment-profile-kicker">Assignment Report</p>
-              <h1 id="assignmentProfileTitle">Assignment</h1>
-              <p id="assignmentProfileSubtitle">Performance details are ready for review.</p>
+          <div class="assignment-detail-layout">
+              <section class="assignment-detail-card assignment-info-card">
+                <div class="section-head">
+                  <h2>Assignment information</h2>
+                </div>
+                <div class="assignment-detail-meta" id="assignmentProfileMeta"></div>
+              </section>
             </div>
-            <span class="student-status active" id="assignmentProfileStatus">Active</span>
-          </section>
 
           <div class="segmented assignment-detail-segments" id="assignmentDetailSegments" role="tablist"
             aria-label="Assignment report sections">
@@ -394,14 +394,7 @@
             <div class="assignment-insight-pills" id="assignmentInsightPills"
               aria-label="Assignment performance summary"></div>
 
-            <div class="assignment-detail-layout">
-              <section class="assignment-detail-card assignment-info-card">
-                <div class="section-head">
-                  <h2>Assignment information</h2>
-                </div>
-                <div class="assignment-detail-meta" id="assignmentProfileMeta"></div>
-              </section>
-            </div>
+            
           </div>
 
           <div class="assignment-detail-panel" data-assignment-detail-content="learners">
