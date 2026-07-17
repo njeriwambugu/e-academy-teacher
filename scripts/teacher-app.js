@@ -1,9 +1,9 @@
-import { teacherContext, classMock, getClassMock } from "./mock-data.js";
-import { getStudentProfile } from "./student-profile.js";
-import { createSelectClassModal } from "./teacher.modals.js";
-import { createAssignmentsFeature } from "./teacher.assignments.js";
-import { clearButtonLoading, runButtonAction } from "./ui-state.js";
-import { createPager } from "./table-utils.js";
+import { teacherContext, classMock, getClassMock } from "./data/mock-data.js";
+import { getStudentProfile } from "./data/student-profile.js";
+import { createSelectClassModal } from "./ui/modals.js";
+import { createAssignmentsFeature } from "./ui/assignments.js";
+import { clearButtonLoading, runButtonAction } from "./utils/ui-state.js";
+import { createPager } from "./utils/table-utils.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));

@@ -2,7 +2,7 @@
 
 ## Technical decisions
 
-- The assignment workflow now lives in `scripts/teacher.assignments.js` instead of being embedded inside `teacher-app.js`.
+- The assignment workflow now lives in `scripts/ui/assignments.js` instead of being embedded inside `teacher-app.js`.
 - `teacher-app.js` remains the shell/router owner: navigation, breadcrumbs, class pages, student pages, and app initialization.
 - The assignment module owns assignment-specific state, derived rows, filters, detail rendering, learner table rendering, and assignment event handlers.
 - Assignment identity is stable using `subjectId::classId::assignmentId`, so the same deployed assignment can be opened from the main Assignments page or from a class assignment table.
@@ -18,25 +18,22 @@
 ```text
 scripts/
   teacher-app.js              # App shell, routing, shared teacher dashboard views
-  teacher.assignments.js      # Assignment list, filters, reports, learner performance
-  teacher.modals.js           # Teacher modal UI
-  student-profile.js          # Student profile derivation
-  mock-data.js                # Mock data source
-  subject-themes.js           # Subject/assignment visual themes
+  modal.js                    # Shared modal engine (same file as the admin app's)
+  data/
+    mock-data.js              # Canonical mock store (also feeds the admin app)
+    student-profile.js        # Student profile derivation
+  ui/
+    assignments.js            # Assignment list, filters, reports, learner performance
+    modals.js                 # Teacher modal UI
+    mobile-profile.js         # Mobile header profile dropdown
+  utils/
+    ui-state.js               # Button/action helpers
+    table-utils.js            # Shared table pagination
 styles/
   tmain.css                   # Teacher UI styles, including assignment feature styles
 ```
 
-Long term, split additional feature modules the same way:
-
-```text
-scripts/features/students/
-scripts/features/classes/
-scripts/features/assignments/
-scripts/shared/dom.js
-scripts/shared/formatters.js
-scripts/shared/router.js
-```
+See the repository README for the full two-portal structure and conventions.
 
 ## Performance improvements
 

@@ -1,6 +1,6 @@
 
-import { runButtonAction } from "./ui-state.js";
-import { createPager } from "./table-utils.js";
+import { runButtonAction } from "../utils/ui-state.js";
+import { createPager } from "../utils/table-utils.js";
 
 function hashString(value = "") {
   return String(value).split("").reduce((sum, char) => {
