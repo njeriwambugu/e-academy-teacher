@@ -89,7 +89,15 @@ scripts/
   When the API exists, the data layer (`scripts/data/`) is the only layer
   that should change.
 
+## Running
 
+1. Start WAMP (both project folders under `c:\wamp64\www\`).
+2. Open <http://localhost/e-academy-teacher-v14/>.
+3. "Switch to Admin" in the sidebar (or the mobile profile dropdown) jumps to
+   the admin portal.
+
+Both folders are independent git repositories; commit teacher and admin
+changes in their own repos.
 
 ## More docs
 
