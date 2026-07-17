@@ -16,7 +16,7 @@ function formatDuration(totalSeconds) {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
-// table-friendly "3m 45s" style
+// table-friendly "3m 45s" style because if i used 3.45 it would have been confusing...
 function formatMinutes(totalSeconds) {
   const seconds = Math.max(0, Number(totalSeconds) || 0);
   const m = Math.floor(seconds / 60);
@@ -220,7 +220,7 @@ export function createAssignmentsFeature(deps) {
     if (label) label.textContent = currentLevelLabel();
     if (menu) {
       if (filters.branch === "date") {
-        // calendar replaces the old per-assignment list
+        // update- calendar replaces the old per-assignment list
         menu.innerHTML = `
           <div class="level-menu-date">
             <span class="level-menu-date-label">Deployed on</span>
@@ -296,9 +296,7 @@ export function createAssignmentsFeature(deps) {
       const scoreBase = row.average == null ? 72 : Number(row.average);
       const score = completed ? Math.max(35, Math.min(100, scoreBase + (seed % 19) - 9)) : null;
       const seconds = completed ? 72 + (seed % 190) : null;
-
-      // four states: completed (green) / retake (red) for attempted work,
-      // ongoing (blue) / not started (grey) for the rest.
+      //states: completed (green) / retake (red) for attempted work, ongoing (blue) / not started (grey) for the rest.
       let status;
       let statusClass;
       if (completed) {

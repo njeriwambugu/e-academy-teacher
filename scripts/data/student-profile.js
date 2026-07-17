@@ -25,7 +25,7 @@ function subjectsForClass(classId) {
   return [...ids];
 }
 
-// This learner's latest score in a subject, read from the shared score table.
+// this learner's latest score in a subject, read from the shared score table.
 function subjectScore(subjectId, studentId) {
   const row = (subjectStudentScores[subjectId] || []).find(
     (s) => s.studentId === studentId
@@ -46,15 +46,14 @@ function clampScore(n) {
   return Math.max(35, Math.min(99, Math.round(n)));
 }
 
-// table-friendly "3m 45s" style
-function fmtDuration(totalSeconds) {
+function fmtDuration(totalSeconds) {//time in m and s
   const seconds = Math.max(0, Number(totalSeconds) || 0);
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
   return m ? `${m}m ${String(s).padStart(2, "0")}s` : `${s}s`;
 }
 
-// real deployed assignment. Name, subject and the learner's subject score, attempts and time-taken are simulated deterministically (no per-attempt logs exist).
+// name, subject and the learner's subject score, attempts and time taken are simulated deterministically (no per-attempt logs exist).
 function buildPerformance(student) {
   const isPending = student.status === "pending";
   const rows = [];
@@ -84,7 +83,7 @@ function buildPerformance(student) {
         category === "done" || category === "retake" || category === "ongoing";
       const attempts = category === "retake" ? 2 : attempted ? 1 : 0;
       const isScored = category === "done" || category === "retake";
-      const variance = (seed % 13) - 6; // -6..+6 around the real subject score
+      const variance = (seed % 13) - 6; // -6..+6 around the real subject score(change to your preference)
       const score = isScored && base != null ? clampScore(base + variance) : null;
       const timeTaken = attempted ? fmtDuration(180 + (seed % 12) * 45) : null;
 
@@ -113,7 +112,7 @@ function buildStudentProfile(student) {
     ? Math.round(scored.reduce((sum, p) => sum + p.score, 0) / scored.length)
     : null;
 
-  // Strongest subject = highest real subject score among the class subjects.
+  // strongest subject = highest real subject score among the class subjects.
   let strongestSubject = null;
   let bestScore = -1;
   subjectsForClass(student.classId).forEach((subjectId) => {

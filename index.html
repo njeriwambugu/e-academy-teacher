@@ -525,7 +525,6 @@
 
         <!-- Assignments panel -->
         <div class="class-panel" data-class-panel="assignments">
-          <!--<div class="detail-stats class-stat-grid assignment-overview-stats" id="teacherAssignmentStats"></div>-->
           <div id="teacherAssignmentList">
             <div class="segmented sub-segmented" id="teacherAssignmentSubSegments" role="tablist"
               aria-label="Assignment groups">
@@ -566,7 +565,7 @@
             <div class="assignment-card-grid" id="teacherAssignmentCardGrid"></div>
           </div>
 
-          <!-- Assignment detail layer -->
+          <!-- assignment detail layer -->
           <div class="assignment-drill" id="teacherAssignmentDetail" hidden>
             <button type="button" class="link-back" id="teacherAssignmentDetailBack">&#8592; Back to Class
               Assignments</button>
@@ -692,8 +691,6 @@
     </div>
   </div>
 
-  <!-- Shared modal engine (same file as admin/scripts/modal.js).
-       Must load BEFORE the module scripts so window.Modals exists. -->
   <script src="./scripts/modal.js"></script>
   <script type="module" src="./scripts/teacher-app.js"></script>
   <script src="./scripts/ui/mobile-profile.js"></script>

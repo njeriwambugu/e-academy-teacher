@@ -1,6 +1,5 @@
-/* Shared table pagination helper. */
-
-const PAGE_WINDOW = 1; // numbered pages shown on each side of the current page
+/* shared table pagination helper. */
+const PAGE_WINDOW = 1;
 
 export function createPager({ container, pageSize = 8, onPageChange }) {
   let page = 1;

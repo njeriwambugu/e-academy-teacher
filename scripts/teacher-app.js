@@ -501,7 +501,7 @@ function bindStudentControls() {
   });
 }
 
-/*class Detail: stats, assignments, strands, mixed, chart  */
+/*class details: stats, assignments, strands, mixed, chart  */
 
 function renderClassStatCards(target, cards) {
   const el = typeof target === "string" ? $(target) : target;
@@ -737,9 +737,7 @@ function bindClassPanels() {
   });
 }
 
-function bindAccordions() {
-  // The chevron toggles the accordion; pressing the header itself opens the
-  // Class Assignments drill for that strand / mixed exercise.
+function bindAccordions() {// note that the chevron toggles the accordion; pressing the header itself opens the
   $("#teacherStrandsAccordion")?.addEventListener("click", (e) => {
     const row = e.target.closest(".substrand-row");
     if (row) {
@@ -810,8 +808,7 @@ function showAssignmentDrill(layer) {
   syncAssignFab(layer === "detail");
 }
 
-// The Assign FAB lives beside the floating back button and only shows on the
-// deployment page (class view, detail drill layer).
+// the Assign FAB lives beside the floating back button and only shows on the deployment page (class view, detail drill layer).
 function syncAssignFab(visible) {
   const fab = $("#teacherAssignFab");
   if (fab) fab.hidden = !visible;
@@ -932,7 +929,7 @@ function openAssignmentDetail(id) {
 
 let pendingDeployment = null;
 
-// Single backend integration point. Replace the body of this function with the
+// single backend integration point. Replace the body of this function with the
 // real API call (e.g. fetch("/api/assignments/deploy", {method:"POST", body}))
 // and everything else keeps working unchanged.
 function deployAssignmentAPI(payload) {
@@ -1480,9 +1477,7 @@ function bindNav() {
 
   $("#teacherClassBack")?.addEventListener("click", () => {
     const btn = $("#teacherClassBack");
-    // real browser back so the user returns exactly where they were;
-    // if there is no in-app history (fresh tab / deep link) fall back
-    // to the view this page belongs under.
+    // real browser back so the user returns exactly where they were if there is no in-app history (fresh tab / deep link) fall back to the view this page belongs under.
     const fallback = btn?.dataset.backTo || "dashboard";
     const hashBefore = location.hash;
     runButtonAction(btn, () => {
@@ -1540,7 +1535,7 @@ function bindSubjectCards() {
 function bindLogout() {
   ["#teacherLogoutBtn", "#teacherMobileLogoutBtn"].forEach((sel) => {
     $(sel)?.addEventListener("click", () => {
-      // no auth backend in this prototype; send the user back to the dashboard.
+      // no auth backend in this prototype; send the user back to the dashboard.(made that in admin so did not include it also the role thing....)
       goToNav("dashboard");
     });
   });

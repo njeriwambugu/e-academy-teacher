@@ -85,7 +85,6 @@ button {
     --text-sm: 13px;
     --focus: color-mix(in srgb, var(--accent), white 35%);
 
-    /* solid blend of the bar's layered navy gradient — used by the notch + cutout */
     --mobile-nav-bg: #4a5670;
     --mobile-nav-active: #F59E0B;
     --mobile-nav-inactive: #EEF4FF;
@@ -114,7 +113,7 @@ button {
 
 }
 
-.mini-shape {
+.mini-shape {/*the grey abstract and circle*/
     position: relative;
     width: 34px;
     height: 34px;
@@ -412,8 +411,7 @@ button {
     .teacher-app .main {
         margin-left: 0;
         width: 100%;
-        /* clearance for the floating bottom nav + its raised bubble */
-        padding: 16px 16px 118px;
+        padding: 16px 16px 118px;/* clearance for the floating bottom nav + its raised bubble */
     }
 }
 
@@ -688,7 +686,7 @@ button {
     color: #fff;
 }
 
-/* class Info / Analysis / Assignments */
+/* class Info / analysis / assignments */
 .class-segmented,
 .sub-segmented {
     margin: 18px 0 0;
@@ -822,7 +820,7 @@ button {
     font-size: 21px;
     line-height: 1;
 }
-
+/*positioning*/
 .subject-doodles i:nth-child(1)  { top: 6%;  left: 5%;   transform: rotate(-14deg); font-size: 26px; }
 .subject-doodles i:nth-child(2)  { top: 10%; left: 36%;  transform: rotate(9deg);   font-size: 19px; }
 .subject-doodles i:nth-child(3)  { top: 5%;  right: 26%; transform: rotate(-7deg);  font-size: 23px; }
@@ -859,7 +857,6 @@ button {
     }
 }
 
-/* hover = pure zoom; the icon stays still */
 #teacherSubjectsGrid .subject-card:hover,
 #teacherSubjectsGrid .subject-card:focus-visible {
     transform: scale(1.03);
@@ -929,14 +926,12 @@ button {
     transform: translate(4px, 2px);
 }
 
-/* Tablet */
 @media (max-width: 1080px) {
     #teacherSubjectsGrid.card-grid {
         grid-template-columns: repeat(2, minmax(220px, 1fr));
     }
 }
 
-/* Mobile: matches the shared screenshot proportions */
 @media (max-width: 640px) {
     #teacherSubjectsGrid.card-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -974,13 +969,7 @@ button {
     }
 }
 
-/* =========================================================
-   MODAL FIX — copy reference modal behaviour + grade themes
-   Scope: modal popup/class buttons only. Subject cards untouched.
-   ========================================================= */
-
 /* modal keyframes live in main.css (modal-layer-in etc.) */
-
 /* class modal selection/option buttons */
 #teacherClassOptions,
 #teacherClassOptions.option-list {
@@ -1018,8 +1007,7 @@ button {
 }
 
 /*students page*/
-
-/* Grade Filters */
+/* grade filters */
 .student-grade-filters {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(94px, 1fr));
@@ -1279,10 +1267,6 @@ button {
     color: var(--muted);
 }
 
-/* ==================================================
-   MOBILE
-================================================== */
-
 @media (max-width: 680px) {
 
     .teacher-subjects-grid {
@@ -1304,9 +1288,7 @@ button {
     }
 }
 
-/* ==================================================
-   STUDENT TABLE CONTENT
-================================================== */
+/*students table */
 
 .student-name {
     display: flex;
@@ -1317,23 +1299,18 @@ button {
 .student-avatar {
     width: 42px;
     height: 42px;
-
     border-radius: 50%;
-
     background:
         linear-gradient(135deg,
             var(--brand-navy-800),
             var(--brand-orange-600));
 
     color: #fff;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 14px;
     font-weight: 900;
-
     flex-shrink: 0;
 }
 
@@ -1343,35 +1320,25 @@ button {
 
 .student-info strong {
     display: block;
-
     color: var(--ink);
-
     font-size: 14px;
     font-weight: 800;
 }
 
 .student-info span {
     display: block;
-
     margin-top: 2px;
-
     color: var(--muted);
-
     font-size: 12px;
 }
 
 .student-action-btn {
     height: 38px;
-
     padding: 0 14px;
-
     border: none;
     border-radius: 12px;
-
     background: var(--brand-gradient);
-
     color: #fff;
-
     font-size: 12px;
     font-weight: 800;
 }
@@ -1467,7 +1434,6 @@ button {
 .learner-dot.ongoing { background: #2b6fb3; }
 .learner-dot.not-started { background: #9aa3b2; }
 
-/* learners heading subtitle + colour key */
 .learners-subtitle {
     margin: 2px 0 10px;
     font-size: 13px;
@@ -1496,7 +1462,6 @@ button {
 }
 
 @media (max-width: 880px) {
-    /* learners table: dot + name, score, time — status column folds into the dot */
     .assignment-students-table th:nth-child(2),
     .assignment-students-table td.learner-status-col {
         display: none;
@@ -1567,8 +1532,6 @@ button {
     }
 }
 
-/* Back button — floating pill pinned to the top right of the content area.
-   Icon-only below 640px. */
 .floating-back {
     position: fixed;
     top: 18px;
@@ -1577,7 +1540,6 @@ button {
 }
 
 @media (max-width: 880px) {
-    /* sits below the sticky mobile header, on the left side */
     .floating-back {
         top: 74px;
         left: 14px;
@@ -1655,7 +1617,6 @@ button {
     white-space: nowrap;
 }
 
-/* grade filters: allow dropdowns to show (no clipping) + arrow + selected. */
 .student-grade-filters {
     flex-wrap: wrap;
     overflow: visible;
@@ -1672,7 +1633,7 @@ button {
 }
 
 .grade-option.selected {
-    background: var(--brand-navy-900);
+    background: var(--brand-navy-900, #101a3a);
     color: #fff;
 }
 
@@ -1700,8 +1661,6 @@ button {
 }
 
 @media (max-width: 768px) {
-
-    /* re-show the Class column (3rd), which the earlier rule hid */
     #teacherStudentsView .table th:nth-child(3),
     #teacherStudentsView .table td:nth-child(3) {
         display: table-cell;
@@ -1720,7 +1679,6 @@ button {
     }
 }
 
-/* 8) Profile-only action button (icon). */
 .student-action-btn.profile-only {
     display: inline-flex;
     align-items: center;
@@ -1736,7 +1694,7 @@ button {
     filter: brightness(0) invert(1);
 }
 
-/* 9) Student profile modal. */
+/* student profile modal. */
 .student-profile-form .profile-id {
     display: flex;
     align-items: center;
@@ -1799,13 +1757,7 @@ button {
     }
 }
 
-
-/* ==================================================
-   REQUEST 4 — breadcrumb trail, filter panel,
-   clickable names, and the student profile PAGE
-================================================== */
-
-/* ---- Breadcrumb trail ---- */
+/* breadcrumb trail */
 .breadcrumb .crumb {
     cursor: pointer;
 }
@@ -1822,7 +1774,6 @@ button {
     opacity: .6;
 }
 
-/* Grade filter shell + buttons come from the admin grade-tabs styles above. */
 #teacherStudentsView .student-grade-filters {
     overflow: visible;
 }
@@ -1834,7 +1785,6 @@ button {
     }
 }
 
-/* ---- Clickable student name — mirrors admin .student-link colours ---- */
 .student-name-btn {
     border: 0;
     background: transparent;
@@ -1858,19 +1808,7 @@ button {
     text-underline-offset: 4px;
 }
 
-/* ==================================================
-   STUDENT PROFILE PAGE (view-only for teachers)
-================================================== */
-
-#teacherStudentProfileView .profile-hero {
-    background: var(--brand-gradient);
-    color: #fff;
-    border-radius: 22px;
-    padding: 30px 32px;
-    margin-bottom: 22px;
-    box-shadow: 0 18px 45px rgba(28, 36, 67, .2);
-}
-
+/* student profile page(view-only for teachers)*/
 .profile-hero-name {
     margin: 0;
     font-size: 30px;
@@ -1883,12 +1821,6 @@ button {
     opacity: .9;
 }
 
-#teacherStudentProfileView .profile-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
 #teacherStudentProfileView .profile-badges .pill {
     display: inline-flex;
     align-items: center;
@@ -1898,7 +1830,6 @@ button {
     font-size: 12px;
     font-weight: 800;
     color: #fff;
-    background: rgba(255, 255, 255, .18);
     backdrop-filter: blur(4px);
 }
 
@@ -2080,22 +2011,14 @@ button {
 }
 
 
-/* ==================================================
-   REQUEST 5 — table header alignment, sidebar footer,
-   select-class modal scroll + 3-up class buttons
-================================================== */
-
-/* Headers centered and aligned with their column data. The table already uses
-   table-layout:fixed so head + body columns share the exact same widths.
-   The first column (names) stays left-aligned for readability. */
+/* table header alignment, sidebar footer, select-class modal scroll + 3-up class buttons*/
 .table th,
 .table td {
     text-align: center;
     vertical-align: middle;
 }
 
-/* readable table typography on every screen size */
-.table td {
+.table td {/* readable table typography on every screen size */
     font-size: 14.5px;
 }
 
@@ -2111,11 +2034,9 @@ button {
     .table td {
         font-size: 13px;
     }
-
     .table td strong {
         font-size: 14.5px;
     }
-
     .table thead th {
         font-size: 13.2px;
     }
@@ -2126,14 +2047,12 @@ button {
     text-align: left;
 }
 
-/* Sidebar: pin the footer buttons to the very bottom. */
 .sidebar-footer {
     margin-top: auto;
     display: grid;
     gap: 6px;
 }
 
-/* ---- Select-class modal: scrollable dialog + options list ---- */
 #teacherSelectClassModal .modal-form {
     max-height: 88vh;
     display: flex;
@@ -2144,17 +2063,12 @@ button {
     display: grid;
     grid-template-columns: 1fr;
     min-height: 0;
-    /* the option list below is the single scroller — undo main.css's
-       54vh cap here so a long class list can't spill past the wrapper */
     max-height: none;
     overflow: visible;
 }
 
 
-/* ==================================================
-   REQUEST 5 — Assignments drill-down (strand → cards → detail)
-================================================== */
-
+/* assignments drill-down (strand → cards → detail)*/
 #teacherAssignmentList[hidden],
 .assignment-drill[hidden] {
     display: none !important;
@@ -2377,38 +2291,6 @@ button {
     transform: translateX(-50%) translateY(0);
 }
 
-
-/* ==================================================
-   REQUEST 6 — search input, breadcrumb colour,
-   glassmorphism welcome pill, and the student
-   profile rebuilt to match the admin design.
-================================================== */
-
-/* ---- 1) Student search — reuses main.css .toolbar/.search; deltas only ---- 
-#teacherStudentsView .toolbar {
-    margin-bottom: 18px;
-}
-
-#teacherStudentsView .search {
-    max-width: 420px;
-    transition: border-color .2s ease, box-shadow .2s ease;
-}
-
-#teacherStudentsView .search:focus-within {
-    border-color: var(--brand-navy-700);
-    box-shadow: 0 0 0 3px rgba(23, 38, 83, .12);
-}
-
-#teacherStudentsView .search input {
-    font-size: 14px;
-}
-
-#teacherStudentsView .search input::placeholder {
-    color: var(--muted);
-    font-weight: 600;
-}*/
-
-/* ---- 2) Breadcrumb text colour: links grey, current black ---- */
 .teacher-app .breadcrumb {
     color: var(--muted);
 }
@@ -2425,7 +2307,6 @@ button {
     color: var(--ink);
 }
 
-/* ---- 3) Glassmorphism welcome pill ---- */
 .welcome-pill {
     display: inline-flex;
     align-items: center;
@@ -2449,12 +2330,6 @@ button {
     font-weight: 900;
 }
 
-/* ==================================================
-   Student profile — mirrors the admin student
-   profile (hero + info card + metrics + assignment
-   summary) and keeps the extra performance table.
-   Scoped to the view so it overrides earlier rules.
-================================================== */
 #teacherStudentProfileView .profile-shell {
     display: grid;
     gap: 24px;
@@ -2702,8 +2577,7 @@ button {
     font-weight: 800;
 }
 
-/* .assignment-summary-* styles live in main.css */
-
+/* assignment-summary-styles live in main.css */
 #teacherStudentProfileView .performance-panel .table {
     margin: 0;
     box-shadow: none;
@@ -2735,12 +2609,7 @@ button {
     }
 }
 
-
-/* ==================================================
-   REQUEST 7 — Assignments Performance table on mobile:
-   show only Name + Score (Avg); hide Subject, Attempts
-   and Time Taken (Avg) so it stops squishing.
-================================================== */
+/* performance tbl-show only Name + Score (Avg); hide Subject, Attempts and Time Taken (Avg) so it stops squishing.*/
 @media (max-width: 600px) {
 
     #teacherStudentProfileView .performance-panel table th:nth-child(2),
@@ -2816,9 +2685,7 @@ button {
     }
 }
 
-/* ==================================================
-   Assignments page — production-grade filtering + report detail
-================================================== */
+/* assignments page - grade filtering + report detail*/
 .sr-only {
     position: absolute;
     width: 1px;
@@ -2848,8 +2715,7 @@ button {
     box-shadow: 0 14px 34px rgba(29, 37, 72, .07);
 }
 
-/* assignments toolbar — reuses main.css .toolbar/.search; deltas only */
-.assignment-command-center .toolbar {
+.assignment-command-center .toolbar {/*reuses main.css .toolbar/.search; deltas only */
     margin-bottom: 0;
 }
 
@@ -2889,12 +2755,14 @@ button {
     color: #20284f;
     text-align: left;
     cursor: pointer;
+    
 }
 
 .assignment-name-link strong {
     color: #20284f;
     font-weight: 950;
     transition: color .15s ease;
+    
 }
 
 .assignment-name-link span {
@@ -2982,18 +2850,13 @@ button {
         grid-template-columns: 1fr;
     }
 
-    
-
-    /* learners table is 3 columns on mobile (dot+name, score, time) — fits */
-    .assignment-students-table table {
+    .assignment-students-table table {/* learners table is 3 columns on mobile (dot+name, score, time)*/
         min-width: 0;
     }
 }
 
 
-/* ==================================================
-   Mobile students filters, breadcrumb back link, refresh-safe nav
-================================================== */
+/* mobile students filters, breadcrumb back link, refresh-safe nav */
 .breadcrumb-stack {
     display: grid;
     gap: 8px;
@@ -3010,7 +2873,6 @@ button {
     display: none;
 }
 
-/* same responsive grid the admin grade-tabs use */
 .student-filter-desktop {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(94px, 1fr));
@@ -3029,10 +2891,6 @@ button {
     background: var(--line, #e4e8f1);
 }
 
-.grade-option.selected {
-    background: var(--brand-navy-900, #101a3a);
-    color: #fff;
-}
 
 @media (max-width: 720px) {
     #teacherStudentsView .student-grade-filters {
@@ -3089,9 +2947,6 @@ button {
 
 }
 
-/* ==================================================
-   Consolidated production cleanup: nav, modal options, assignment buttons
-================================================== */
 .teacher-bottom-nav {
     display: none;
 }
@@ -3112,8 +2967,7 @@ button {
     -webkit-overflow-scrolling: touch;
 }
 
-/* phones: stay 2-up with tighter buttons so ten classes need barely any
-   scrolling; only very narrow screens fall back to one column */
+/* phones: stay 2-up with tighter buttons so ten classes need barely any scrolling; only very narrow screens fall back to one column */
 @media (max-width: 460px) {
     #teacherSelectClassModal .modal-form {
         max-height: 92dvh;
@@ -3152,16 +3006,13 @@ button {
     padding: 6px 10px;
     border-radius: 999px;
     color: #fff !important;
-    background: linear-gradient(180deg, #f48221, #f06405);
     font-size: 11px !important;
     font-weight: 900 !important;
     letter-spacing: .02em;
 }
 
 
-/* ==================================================
-   Class segment stat cards — dashboard visual system
-================================================== */
+/* class segment stat cards - dashboard visual system*/
 #teacherClassView .class-stat-grid {
     display: grid;
     gap: clamp(10px, 2.2vw, 22px);
@@ -3176,7 +3027,6 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-/* variant of main.css .stat — markup uses "stat class-stat-card"; bg/radius/shadow come from .stat */
 #teacherClassView .class-stat-card {
     min-height: clamp(86px, 13vw, 116px);
     padding: clamp(12px, 2.6vw, 22px) clamp(10px, 2.4vw, 24px);
@@ -3229,9 +3079,7 @@ button {
 }
 
 
-/* ==================================================
-   Assignment report metric pills
-================================================== */
+/* assignment report metric pills*/
 
 .assignment-insight-pills {
     display: grid;
@@ -3318,7 +3166,6 @@ button {
     }
 }
 
-
 /*mobile nav*/
 .mobile-placeholder-card {
     padding: 22px;
@@ -3335,8 +3182,7 @@ button {
     will-change: opacity, transform;
 }
 
-/* transform must end at none — a kept transform turns position:fixed
-   children (floating back / assign FAB) into absolutely-positioned ones */
+/* transform must end at none a kept transform turns position:fixed children (floating back / assign FAB) into absolutely-positioned ones */
 .teacher-app .view.active {
     opacity: 1;
     transform: none;
@@ -3392,7 +3238,7 @@ button {
         display: none;
     }
 
-    .teacher-bottom-nav .nav-float {
+    .teacher-bottom-nav .nav-float {/*the bubble*/
         position: absolute;
         left: var(--indicator-x);
         top: -31px;
@@ -3402,7 +3248,6 @@ button {
         place-items: center;
         border: 1px solid var(--bg, #f6f7fb);
         border-radius: 50%;
-        /* active bubble uses the same theme gradient as the web sidebar's active item */
         background: var(--brand-gradient);
         color: #fff;
         box-shadow: var(--mobile-nav-float-shadow);
@@ -3694,10 +3539,7 @@ button {
 }
 
 
-/* ==================================================
-   Assignment/mobile cleanup requested: no modal shapes, no CTA pills,
-   two-column mobile info rows, and learner scores visible on phones.
-================================================== */
+/* assignment/mobile cleanup requested: no modal shapes, no CTA pills, two-column mobile info rows, and learner scores visible on phones. */
 #teacherClassOptions .class-option-shapes,
 #teacherClassOptions .shape,
 #teacherClassOptions .shape::before,
@@ -3758,7 +3600,7 @@ button {
         table-layout: fixed;
     }
 
-    /* three columns on phones: dot+name, score, time (status folds into the dot) */
+    /* 3 columns on phones: dot+name, score, time (status folds into the dot) */
     .assignment-students-table th:nth-child(2),
     .assignment-students-table td:nth-child(2) {
         display: none;
@@ -3784,9 +3626,7 @@ button {
 }
 
 
-/* ==================================================
-   Student profile assignment links + standalone back button
-================================================== */
+/* student profile assignment links + standalone back button */
 
 .profile-assignment-link {
     appearance: none;
@@ -3862,6 +3702,8 @@ button {
     transform: translate3d(0, 12px, 0);
     transition: transform 250ms var(--analytics-ease), box-shadow 250ms var(--analytics-ease), border-color 250ms ease, opacity 360ms ease;
     will-change: transform, opacity;
+    align-items: center;
+    text-align: center;
 }
 
 .analytics-capsules.is-ready .analytics-card {
@@ -3901,13 +3743,7 @@ button {
     line-height: 1.2;
 }
 
-
-/* donut metric cards — thick ring, big % centre, value/total subline (reference design) */
-.analytics-card {
-    align-items: center;
-    text-align: center;
-}
-
+/* donut metric cards/thick ring*/
 .score-ring-variant {
     --ring-size: clamp(150px, 14vw, 176px);
     position: relative;
@@ -4076,7 +3912,6 @@ button {
     box-shadow: 0 12px 24px rgba(86, 164, 198, .22) !important;
 }
 
-/* mobile: Filter behaves like the admin "Add Class" button — full-width pill */
 @media (max-width: 640px) {
     .assignment-command-center .toolbar {
         grid-template-columns: 1fr;
@@ -4195,7 +4030,7 @@ button {
     line-height: 1.55;
 }
 
-/* floating action button for deployment — icon-only circle */
+/* floating action button for deployment -icon-only circle */
 .deploy-fab {
     position: fixed;
     right: 26px;
@@ -4234,7 +4069,7 @@ button {
     }
 }
 
-/* learner highlight cards on the deployment page — two per row */
+/* learner highlight cards on the deployment page, 2 per row */
 .deploy-insights {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4252,9 +4087,8 @@ button {
     padding: 16px 18px;
     border: 1px solid color-mix(in srgb, var(--insight-color, #14B8A6), white 78%);
     border-radius: 18px;
-    /* whole card carries a faint tint of its accent colour */
     background:
-        linear-gradient(145deg, color-mix(in srgb, var(--insight-color, #14B8A6), white 90%), color-mix(in srgb, var(--insight-color, #14B8A6), white 96%));
+        linear-gradient(145deg, color-mix(in srgb, var(--insight-color, #14B8A6), white 90%), color-mix(in srgb, var(--insight-color, #14B8A6), white 96%));/* whole card carries a faint tint of its accent colour */
     box-shadow: 0 14px 30px color-mix(in srgb, var(--insight-color, #14B8A6), transparent 86%);
 }
 
@@ -4301,7 +4135,6 @@ button {
     }
 }
 
-/* highlights beside the Assignment information card: two per row */
 .assignment-highlights {
     margin-top: 0;
     align-content: start;
@@ -4313,7 +4146,6 @@ button {
     }
 }
 
-/* deployment modal fields — one field per row on every screen size */
 #teacherDeployModal .form-grid {
     grid-template-columns: 1fr;
     gap: 14px;
@@ -4433,7 +4265,6 @@ button {
 }
 
 /* stable routes, skeletons, buttons*/
-
 .teacher-app .topbar {
     margin-bottom: 22px;
 }
@@ -4653,7 +4484,6 @@ button {
         justify-items: center;
     }
 
-    /* text stays big on phones, like the dashboard stat cards */
     .student-overview-card span {
         font-size: 12.5px;
         line-height: 1.15;

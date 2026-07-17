@@ -193,10 +193,6 @@ export const classes = [
   { id: 14, name: "Grade 5 West", group: "Grade 5", theme: "grade-5", students: 24 }
 ];
 
-// Students are organised around the logged-in teacher (Mr Sammy), who teaches
-// PP2 North East (3), Grade 8 South (11) and Grade 9 North (12). Every class he
-// is assigned to has real students so the dashboard totals and class pages are
-// never empty. A few students from other classes are kept for variety.
 const students = [
   // PP2 North East (classId 3) — Mr Sammy: English, Creative Arts & Sports
   { id: 1001, name: "Baraka Otieno",    classId: 3, admissionNo: "EA-2026-PP2-001", status: "active",  invite: "Accepted" },
@@ -225,18 +221,15 @@ const students = [
   { id: 1020, name: "Christine Atieno", classId: 12, admissionNo: "EA-2026-G9-007", status: "active",  invite: "Accepted" },
   { id: 1021, name: "John Mwenda",      classId: 12, admissionNo: "EA-2026-G9-008", status: "pending", invite: "Pending"  },
 
-  // A few students from other classes (not Mr Sammy's) for variety
   { id: 1022, name: "Sarah Chepkemoi",  classId: 10, admissionNo: "EA-2026-G7-001", status: "active",  invite: "Accepted" },
 
-  // Shared with the admin app (same people in both portals)
   { id: 1023, name: "Timothy Kamau",    classId: 4,  admissionNo: "EA-2026-G1-001", status: "pending", invite: "Accepted" },
   { id: 1024, name: "Amani Yusuf",      classId: 12, admissionNo: "EA-2026-G9-009", status: "active",  invite: "Accepted" },
   { id: 1025, name: "Nia Joy",          classId: 11, admissionNo: "EA-2026-G8-008", status: "active",  invite: "Accepted" },
   { id: 1026, name: "Zacharia Muteti",  classId: 3,  admissionNo: "EA-2026-PP2-007", status: "pending", invite: "Pending" }
 ];
 
-// Parent/guardian details live directly on the student records (single source
-// of truth) so the profile can read them instead of inventing data each time.
+
 const guardianInfo = {
   1001: ["Joseph Otieno", "0722 145 880"],
   1002: ["Mary Achieng", "0723 410 552"],
@@ -260,7 +253,6 @@ const guardianInfo = {
   1020: ["Susan Atieno", "0738 562 310"],
   1021: ["Michael Mwenda", "0709 487 651"],
   1022: ["Janet Chepkemoi", "0747 130 829"],
-  // Guardians below match the admin app's records for the shared students
   1023: ["Kevin Kamau", "0721859532"],
   1024: ["Abdi Rahim", "0712456789"],
   1025: ["James Otieno", "0799555123"],

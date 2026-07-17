@@ -1,20 +1,4 @@
-# ESOMA Academy — Teacher Portal
-
-Frontend prototype for the teacher side of the ESOMA Academy school system.
-Plain HTML/CSS/ES-modules — **no build step**. Served by WAMP from
-`c:\wamp64\www\`.
-
-- Teacher portal (this repo): <http://localhost/e-academy-teacher-v14/>
-- Admin portal (sibling repo): <http://localhost/e-academy-admin-main/e-academy-admin-main/>
-
-## The two portals, one system
-
-| | Admin | Teacher |
-|---|---|---|
-| Scope | Whole school | Only the logged-in teacher's classes/subjects/students |
-| Folder | `e-academy-admin-main/e-academy-admin-main/` | `e-academy-teacher-v14/` |
-| Entry script | `scripts/legacy.js` (+ `scripts/app.js`) | `scripts/teacher-app.js` |
-| Data | Adapter over the shared store | **Canonical mock store** |
+# Teacher Portal
 
 **Shared mock data.** The single source of truth for people and numbers is
 [`scripts/data/mock-data.js`](scripts/data/mock-data.js) in this repo
@@ -36,7 +20,7 @@ admin endpoints — the frontends keep their shapes.
 ```text
 <portal>/
   index.html            # single page; views are <section class="view"> blocks
-  assets/               # icons, images
+  assets/               # icons, images//changed the directory to scripts just for testing//
   styles/
     main.css            # base component library (shared design language)
     tmain.css           # portal overlay styles (admin uses main.css only)
@@ -89,17 +73,30 @@ scripts/
   When the API exists, the data layer (`scripts/data/`) is the only layer
   that should change.
 
-## Running
+## Technical decisions
 
-1. Start WAMP (both project folders under `c:\wamp64\www\`).
-2. Open <http://localhost/e-academy-teacher-v14/>.
-3. "Switch to Admin" in the sidebar (or the mobile profile dropdown) jumps to
-   the admin portal.
+- The assignment workflow now lives in `scripts/ui/assignments.js` instead of being embedded inside `teacher-app.js`.
+- `teacher-app.js` remains the shell/router owner: navigation, breadcrumbs, class pages, student pages, and app initialization.
+- The assignment module owns assignment-specific state, derived rows, filters, detail rendering, learner table rendering, and assignment event handlers.
+- Assignment identity is stable using `subjectId::classId::assignmentId`, so the same deployed assignment can be opened from the main Assignments page or from a class assignment table.
 
-Both folders are independent git repositories; commit teacher and admin
-changes in their own repos.
+## Tradeoff analysis
 
-## More docs
+- Kept the existing vanilla JavaScript stack instead of introducing a framework. This avoids build tooling and reduces risk for the current prototype.
+- Used a feature-module boundary rather than a full domain/application/infrastructure rewrite. This improves maintainability now without changing product behavior.
+- Used cached derived assignment rows because assignments are read-only mock data today. If the backend later becomes live, call `invalidateCache()` after mutations.
+## Performance improvements
 
-- [docs/assignment-architecture.md](docs/assignment-architecture.md) —
-  assignment feature design notes.
+- Derived assignment rows are cached instead of rebuilt on every lookup.
+- Assignment lookup uses a `Map` for constant-time detail resolution.
+- Select dropdown DOM is only updated when its HTML actually changes.
+- Search input is debounced to avoid re-rendering the table on every keystroke under fast typing.
+- Event delegation is used for dynamic tables, avoiding per-row listeners.
+
+## Scaling risks to watch
+
+- Large assignment tables should eventually use pagination or virtualized rows.
+- Filters should be backed by indexed API queries once assignments come from the backend.
+- Learner performance should be real backend data, not deterministic mock derivation.
+- CSS should be split by feature when the app moves to a build pipeline.
+

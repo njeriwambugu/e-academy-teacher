@@ -25,8 +25,6 @@ export function clearButtonLoading(root = document) {
     .forEach((button) => setButtonLoading(button, false));
 }
 
-// Buttons no longer show a spinner — pages use skeleton loading instead,
-// so actions run immediately for a smooth flow.
 export function runButtonAction(button, action) {
   action?.();
 }
