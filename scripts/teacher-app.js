@@ -2,7 +2,7 @@ import { teacherContext, classMock, getClassMock } from "./mock-data.js";
 import { getStudentProfile } from "./student-profile.js";
 import { createSelectClassModal } from "./teacher.modals.js";
 import { createAssignmentsFeature } from "./teacher.assignments.js";
-import { clearButtonLoading, runButtonAction, setButtonLoading } from "./ui-state.js";
+import { clearButtonLoading, runButtonAction } from "./ui-state.js";
 import { createPager } from "./table-utils.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -225,10 +225,10 @@ function renderSubjects() {
 
 // faint background glyphs per subject
 const SUBJECT_DOODLES = {
-  MAT: ["2⁷", "𝝅", "√", "⏲", "⃤", "𓍝", "⊿", "i³"],
-  ENG: ["✎", "❝ ❞", "Aa", "🗣", "❞", "𓂃✍︎", "ִ🕮", "🗪"],
+  MAT: ["2⁷", "𝝅", "√", "⏲", "⃤", "𓍝", "⊿", "i³", "✗"],
+  ENG: ["✎", "❝ ❞", "Aa", "🗣", "❞", "𓂃✍︎", "ִ🕮", "🗪", "✉︎"],
   KIS: ["𓂃🖊", "❝ ❞", "Ss", "⁉", "❞", "🗯", "🗣", "ᶻ𐰁"],
-  SCI: ["⚛", "🍂︎", "☢", "⚙", "𓌉◯𓇋", "Co²", "🕸", "🕷"],
+  SCI: ["⚛", "🍂︎", "☢", "⚙", "𓌉◯𓇋", "Co²", "🕸", "🕷", "𓆈"],
   SS: ["ᨒ", "🗺", "⛱", "✈", "🏝", "🌤", "🌡", "🏜"],
   INT: ["🧬", "⋆⌬", "♻", "⚡︎", "☤", "⚧", "⚠︎", "☘"],
   COMP: ["🖧", "</>", "💻︎", "💾︎", "🖥︎", "🖳", "모", "⁴⁰⁴"],
@@ -241,7 +241,7 @@ const SUBJECT_DOODLES = {
 };
 
 // How many doodles each card shows — matches the positioned slots in tmain.css.
-const DOODLE_SLOTS = 15;
+const DOODLE_SLOTS = 24;
 
 function subjectDoodles(subjectId) {
   const glyphs = SUBJECT_DOODLES[subjectId] || ["🕮", "✎", "☀", "+", "❝", "%", "𓂃🖊", "📜︎"];
@@ -817,6 +817,14 @@ function showAssignmentDrill(layer) {
   if (list) list.hidden = layer !== "list";
   if (cards) cards.hidden = layer !== "cards";
   if (detail) detail.hidden = layer !== "detail";
+  syncAssignFab(layer === "detail");
+}
+
+// The Assign FAB lives beside the floating back button and only shows on the
+// deployment page (class view, detail drill layer).
+function syncAssignFab(visible) {
+  const fab = $("#teacherAssignFab");
+  if (fab) fab.hidden = !visible;
 }
 
 function buildSubstrandAssignments(strand, sub) {
@@ -918,12 +926,13 @@ function openAssignmentDetail(id) {
         <h3>${escapeHTML(a.name)}</h3>
         <p>This opens the assignment deployment flow. The backend can connect the real learner assignment screen here.</p>
       </section>
-      <button type="button" class="deploy-fab" data-deploy-assign="${escapeHTML(a.name)}" aria-label="Assign ${escapeHTML(a.name)} to learners" title="Assign to learners">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M22 2L11 13"></path>
-          <path d="M22 2l-7 20-4-9-9-4z"></path>
-        </svg>
-      </button>`;
+      `;
+  }
+
+  const fab = $("#teacherAssignFab");
+  if (fab) {
+    fab.dataset.deployAssign = a.name;
+    fab.setAttribute("aria-label", `Assign ${a.name} to learners`);
   }
 
   showAssignmentDrill("detail");
@@ -963,10 +972,8 @@ function bindDeployModal() {
   const modal = $("#teacherDeployModal");
   if (!modal) return;
 
-  // the Assign FAB lives inside the re-rendered deployment page
-  $("#teacherAssignmentDetailMeta")?.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-deploy-assign]");
-    if (!btn) return;
+  $("#teacherAssignFab")?.addEventListener("click", (e) => {
+    const btn = e.currentTarget;
     pendingDeployment = {
       assignment: btn.dataset.deployAssign || "",
       subjectId: activeAssignmentCtx.subjectId,
@@ -987,23 +994,30 @@ function bindDeployModal() {
     }
   });
 
-  $("#teacherDeployOk")?.addEventListener("click", (e) => {
-    const okBtn = e.currentTarget;
+  $("#teacherDeployOk")?.addEventListener("click", () => {
     const payload = {
       ...pendingDeployment,
       deadline: $("#teacherDeployDeadline")?.value || null,
       comment: $("#teacherDeployComment")?.value.trim() || "",
     };
 
-    setButtonLoading(okBtn, true);
     deployAssignmentAPI(payload)
       .then((result) => {
-        setDeployModalOpen(false);
-        notifyTeacher(result?.ok ? "DEPLOYMENT SUCCESSFUL" : "Deployment failed. Try again.");
+        if (!result?.ok) {
+          notifyTeacher("Deployment failed. Try again.");
+          return;
+        }
+        const note = $("#teacherDeploySuccessNote");
+        if (note) {
+          note.textContent = payload.deadline
+            ? `${payload.assignment || "Assignment"} • due ${formatDate(payload.deadline)}`
+            : payload.assignment || "Your learners can now see it.";
+        }
+        setDeploySuccessState(true);
+        window.setTimeout(() => setDeployModalOpen(false), 1700);
       })
       .catch(() => notifyTeacher("Deployment failed. Try again."))
       .finally(() => {
-        setButtonLoading(okBtn, false);
         pendingDeployment = null;
       });
   });
@@ -1226,6 +1240,8 @@ function showView(name) {
     el.classList.toggle("view-entering", isActive);
     if (isActive) setTimeout(() => el.classList.remove("view-entering"), 380);
   });
+  // the deployment FAB only belongs to the class view's detail drill
+  if (name !== "class") syncAssignFab(false);
 }
 
 let routeTransitionId = 0;
@@ -1355,7 +1371,7 @@ function handleRoute() {
       { label: "Dashboard", nav: "dashboard" },
       { label: "Students" },
     ]);
-    transitionToView("students", renderStudents, { loading: false });
+    transitionToView("students", renderStudents);
     return;
   }
 
@@ -1370,7 +1386,7 @@ function handleRoute() {
       { label: "Dashboard", nav: "dashboard" },
       { label: "Assignments" },
     ]);
-    transitionToView("assignments", () => assignmentsFeature?.renderList(), { loading: false });
+    transitionToView("assignments", () => assignmentsFeature?.renderList());
     return;
   }
 
@@ -1566,8 +1582,10 @@ function bindSidebarToggle() {
 }
 
 function bindSwitchAdmin() {
-  $("#teacherSwitchAdminBtn")?.addEventListener("click", () => {
-    window.location.href = "../e-academy-admin-main/e-academy-admin-main/index.html";
+  ["#teacherSwitchAdminBtn", "#teacherMobileSwitchAdminBtn"].forEach((sel) => {
+    $(sel)?.addEventListener("click", () => {
+      window.location.href = "../e-academy-admin-main/e-academy-admin-main/index.html";
+    });
   });
 }
 

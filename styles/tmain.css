@@ -797,7 +797,10 @@ button {
     z-index: 0;
 }
 
-/* faint subject -the const SUBJECT_DOODLES */
+/* faint subject glyphs — the id selector must outrank the generic
+   `.subject-card>*` rule, which otherwise forces position:relative and
+   collapses this layer into a single band instead of covering the card */
+#teacherSubjectsGrid .subject-card .subject-doodles,
 .subject-doodles {
     position: absolute;
     inset: 0;
@@ -830,6 +833,26 @@ button {
 .subject-doodles i:nth-child(13) { bottom: 6%;  left: 42%;  transform: rotate(6deg);   font-size: 18px; }
 .subject-doodles i:nth-child(14) { bottom: 12%; right: 28%; transform: rotate(-8deg);  font-size: 25px; }
 .subject-doodles i:nth-child(15) { bottom: 5%;  right: 8%;  transform: rotate(13deg);  font-size: 19px; }
+.subject-doodles i:nth-child(16) { top: 4%;  left: 20%;  transform: rotate(11deg);  font-size: 17px; }
+.subject-doodles i:nth-child(17) { top: 22%; left: 26%;  transform: rotate(-6deg);  font-size: 20px; }
+.subject-doodles i:nth-child(18) { top: 20%; right: 40%; transform: rotate(14deg);  font-size: 17px; }
+.subject-doodles i:nth-child(19) { top: 46%; left: 24%;  transform: rotate(-11deg); font-size: 19px; }
+.subject-doodles i:nth-child(20) { top: 44%; right: 4%;  transform: rotate(9deg);   font-size: 22px; }
+.subject-doodles i:nth-child(21) { top: 68%; left: 22%;  transform: rotate(7deg);   font-size: 18px; }
+.subject-doodles i:nth-child(22) { top: 66%; right: 14%; transform: rotate(-13deg); font-size: 20px; }
+.subject-doodles i:nth-child(23) { bottom: 20%; left: 34%; transform: rotate(10deg); font-size: 17px; }
+.subject-doodles i:nth-child(24) { bottom: 4%;  left: 26%; transform: rotate(-7deg); font-size: 21px; }
+
+/* phones: slightly smaller glyphs, same full-card spread */
+@media (max-width: 640px) {
+    .subject-doodles i {
+        font-size: 15px;
+    }
+
+    .subject-doodles i:nth-child(n) {
+        font-size: clamp(13px, 4vw, 19px);
+    }
+}
 
 /* hover = pure zoom; the icon stays still */
 #teacherSubjectsGrid .subject-card:hover,
@@ -1456,10 +1479,11 @@ button {
 }
 
 @media (max-width: 880px) {
-    /* sits below the sticky mobile header */
+    /* sits below the sticky mobile header, on the left side */
     .floating-back {
         top: 74px;
-        right: 14px;
+        left: 14px;
+        right: auto;
     }
 }
 
@@ -4086,6 +4110,10 @@ button {
     box-shadow: 0 18px 38px rgba(23, 38, 83, .32), 0 8px 18px rgba(240, 100, 5, .22);
     cursor: pointer;
     transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.deploy-fab[hidden] {
+    display: none;
 }
 
 .deploy-fab:hover,
