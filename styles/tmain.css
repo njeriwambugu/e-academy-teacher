@@ -3732,23 +3732,28 @@ button {
         table-layout: fixed;
     }
 
+    /* three columns on phones: dot+name, score, time (status folds into the dot) */
     .assignment-students-table th:nth-child(2),
-    .assignment-students-table td:nth-child(2),
-    .assignment-students-table th:nth-child(4),
-    .assignment-students-table td:nth-child(4) {
+    .assignment-students-table td:nth-child(2) {
         display: none;
     }
 
     .assignment-students-table th:nth-child(1),
     .assignment-students-table td:nth-child(1) {
-        width: 68%;
+        width: 46%;
     }
 
     .assignment-students-table th:nth-child(3),
     .assignment-students-table td:nth-child(3) {
-        width: 32%;
+        width: 24%;
         text-align: right;
         font-weight: 950;
+    }
+
+    .assignment-students-table th:nth-child(4),
+    .assignment-students-table td:nth-child(4) {
+        width: 30%;
+        text-align: right;
     }
 }
 
