@@ -1469,6 +1469,34 @@ button {
 .learner-dot.ongoing { background: #2b6fb3; }
 .learner-dot.not-started { background: #9aa3b2; }
 
+/* learners heading subtitle + colour key */
+.learners-subtitle {
+    margin: 2px 0 10px;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.status-key {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    margin: 0 0 12px;
+}
+
+.status-key-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted, #6e7593);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.status-key .learner-dot {
+    display: inline-block;
+}
+
 @media (max-width: 880px) {
     /* learners table: dot + name, score, time — status column folds into the dot */
     .assignment-students-table th:nth-child(2),
