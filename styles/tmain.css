@@ -292,6 +292,13 @@ button {
     cursor: pointer;
 }
 
+/* mobile dropdown variant matches the sidebar button's colours */
+.profile-dropdown .switch-admin {
+    color: #233364;
+    background: #a2cfe5cc;
+    border-radius: 12px;
+}
+
 .avatar {
     display: inline-flex;
     align-items: center;
@@ -1408,6 +1415,71 @@ button {
 
 .student-status.pending::before {
     background: #f2a22c;
+}
+
+/* learner work states: completed green, retake red, ongoing blue, not started grey */
+.student-status.completed {
+    color: #1c7c46;
+    background: #dcf5e5;
+}
+
+.student-status.completed::before {
+    background: #22b85d;
+}
+
+.student-status.retake {
+    color: #a03028;
+    background: #fde3e1;
+}
+
+.student-status.retake::before {
+    background: #ef4444;
+}
+
+.student-status.ongoing {
+    color: #126b9e;
+    background: #dff3fb;
+}
+
+.student-status.ongoing::before {
+    background: #2b6fb3;
+}
+
+.student-status.not-started {
+    color: #5a6472;
+    background: #eef0f4;
+}
+
+.student-status.not-started::before {
+    background: #9aa3b2;
+}
+
+/* status dot shown before the learner's name on phones */
+.learner-dot {
+    display: none;
+    width: 10px;
+    height: 10px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: #9aa3b2;
+}
+
+.learner-dot.completed { background: #22b85d; }
+.learner-dot.retake { background: #ef4444; }
+.learner-dot.ongoing { background: #2b6fb3; }
+.learner-dot.not-started { background: #9aa3b2; }
+
+@media (max-width: 880px) {
+    /* learners table: dot + name, score, time — status column folds into the dot */
+    .assignment-students-table th:nth-child(2),
+    .assignment-students-table td.learner-status-col {
+        display: none;
+    }
+
+    .learner-dot {
+        display: inline-block;
+        margin-right: 8px;
+    }
 }
 
 
@@ -2886,9 +2958,9 @@ button {
 
     
 
-    /* assignments list collapses to 2 columns on mobile, so no min width needed */
+    /* learners table is 3 columns on mobile (dot+name, score, time) — fits */
     .assignment-students-table table {
-        min-width: 560px;
+        min-width: 0;
     }
 }
 

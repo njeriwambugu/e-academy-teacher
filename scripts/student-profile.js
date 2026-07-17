@@ -46,12 +46,12 @@ function clampScore(n) {
   return Math.max(35, Math.min(99, Math.round(n)));
 }
 
+// table-friendly "3m 45s" style
 function fmtDuration(totalSeconds) {
-  const pad = (n) => String(n).padStart(2, "0");
-  const h = Math.floor(totalSeconds / 3600);
-  const m = Math.floor((totalSeconds % 3600) / 60);
-  const s = totalSeconds % 60;
-  return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  const seconds = Math.max(0, Number(totalSeconds) || 0);
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return m ? `${m}m ${String(s).padStart(2, "0")}s` : `${s}s`;
 }
 
 // real deployed assignment. Name, subject and the learner's subject score, attempts and time-taken are simulated deterministically (no per-attempt logs exist).

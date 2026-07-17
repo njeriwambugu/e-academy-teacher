@@ -16,6 +16,14 @@ function formatDuration(totalSeconds) {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
+// table-friendly "3m 45s" style
+function formatMinutes(totalSeconds) {
+  const seconds = Math.max(0, Number(totalSeconds) || 0);
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return m ? `${m}m ${String(s).padStart(2, "0")}s` : `${s}s`;
+}
+
 function uniqueBy(items, keyFn) {
   const seen = new Set();
   return items.filter((item) => {
@@ -288,11 +296,29 @@ export function createAssignmentsFeature(deps) {
       const scoreBase = row.average == null ? 72 : Number(row.average);
       const score = completed ? Math.max(35, Math.min(100, scoreBase + (seed % 19) - 9)) : null;
       const seconds = completed ? 72 + (seed % 190) : null;
+
+      // four states: completed (green) / retake (red) for attempted work,
+      // ongoing (blue) / not started (grey) for the rest.
+      let status;
+      let statusClass;
+      if (completed) {
+        const needsRetake = score < 55;
+        status = needsRetake ? "Retake" : "Completed";
+        statusClass = needsRetake ? "retake" : "completed";
+      } else {
+        const ongoing = seed % 2 === 0;
+        status = ongoing ? "Ongoing" : "Not Started";
+        statusClass = ongoing ? "ongoing" : "not-started";
+      }
+
       return {
         ...student,
         completed,
+        status,
+        statusClass,
         score,
-        timeTaken: seconds == null ? null : formatDuration(seconds),
+        secondsTaken: seconds,
+        timeTaken: seconds == null ? null : formatMinutes(seconds),
       };
     });
   }
@@ -468,10 +494,7 @@ export function createAssignmentsFeature(deps) {
     const learnerRows = getLearnerRows(row);
     const completedLearners = learnerRows.filter((student) => student.completed);
     const avgSeconds = completedLearners.length
-      ? Math.round(completedLearners.reduce((sum, student) => {
-        const [h, m, s] = student.timeTaken.split(":").map(Number);
-        return sum + h * 3600 + m * 60 + s;
-      }, 0) / completedLearners.length)
+      ? Math.round(completedLearners.reduce((sum, student) => sum + (student.secondsTaken || 0), 0) / completedLearners.length)
       : 0;
 
     const title = $("#assignmentProfileTitle");
@@ -522,10 +545,11 @@ export function createAssignmentsFeature(deps) {
           <tr>
             <td>
               <button type="button" class="student-name-btn" data-student-id="${escapeHTML(student.id)}">
+                <i class="learner-dot ${escapeHTML(student.statusClass)}" aria-hidden="true"></i>
                 <span class="student-info"><strong>${escapeHTML(student.name)}</strong></span>
               </button>
             </td>
-            <td><span class="student-status ${student.completed ? "active" : "pending"}">${student.completed ? "Completed" : "Pending"}</span></td>
+            <td class="learner-status-col"><span class="student-status ${escapeHTML(student.statusClass)}">${escapeHTML(student.status)}</span></td>
             <td>${student.score == null ? "\u2014" : escapeHTML(student.score + "%")}</td>
             <td>${escapeHTML(student.timeTaken || "\u2014")}</td>
           </tr>`).join("")
@@ -627,12 +651,8 @@ export function createAssignmentsFeature(deps) {
       return;
     }
 
-    const toSeconds = (t) => {
-      const [h, m, s] = String(t || "0:0:0").split(":").map(Number);
-      return h * 3600 + m * 60 + s;
-    };
     const byScore = [...completedLearners].sort((a, b) => b.score - a.score);
-    const byTime = [...completedLearners].sort((a, b) => toSeconds(a.timeTaken) - toSeconds(b.timeTaken));
+    const byTime = [...completedLearners].sort((a, b) => (a.secondsTaken || 0) - (b.secondsTaken || 0));
     const avgNote = `Class average ${row.average == null ? "—" : row.average + "%"}`;
 
     const cards = [
