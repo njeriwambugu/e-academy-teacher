@@ -815,7 +815,6 @@ button {
     line-height: 1;
 }
 
-/* 15 slots on a loose grid — glyph arrays of any length stay evenly spread */
 .subject-doodles i:nth-child(1)  { top: 6%;  left: 5%;   transform: rotate(-14deg); font-size: 26px; }
 .subject-doodles i:nth-child(2)  { top: 10%; left: 36%;  transform: rotate(9deg);   font-size: 19px; }
 .subject-doodles i:nth-child(3)  { top: 5%;  right: 26%; transform: rotate(-7deg);  font-size: 23px; }

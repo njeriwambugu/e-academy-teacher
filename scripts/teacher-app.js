@@ -240,8 +240,13 @@ const SUBJECT_DOODLES = {
   ART: ["⚽︎", "♫", "𓂃🖌", "𝄞", "🎤︎︎", "⚾︎", "ᯓ♪", "𓀤"]
 };
 
+// How many doodles each card shows — matches the positioned slots in tmain.css.
+const DOODLE_SLOTS = 15;
+
 function subjectDoodles(subjectId) {
-  return SUBJECT_DOODLES[subjectId] || ["🕮", "✎", "☀", "+", "❝", "%", "𓂃🖊", "📜︎"];
+  const glyphs = SUBJECT_DOODLES[subjectId] || ["🕮", "✎", "☀", "+", "❝", "%", "𓂃🖊", "📜︎"];
+  // cycle the array so every slot fills and the card is covered edge to edge
+  return Array.from({ length: DOODLE_SLOTS }, (_, i) => glyphs[i % glyphs.length]);
 }
 
 let studentGradeFilter = "all";//students view
@@ -993,18 +998,8 @@ function bindDeployModal() {
     setButtonLoading(okBtn, true);
     deployAssignmentAPI(payload)
       .then((result) => {
-        if (!result?.ok) {
-          notifyTeacher("Deployment failed. Try again.");
-          return;
-        }
-        const note = $("#teacherDeploySuccessNote");
-        if (note) {
-          note.textContent = payload.deadline
-            ? `${payload.assignment || "Assignment"} • due ${formatDate(payload.deadline)}`
-            : payload.assignment || "Your learners can now see it.";
-        }
-        setDeploySuccessState(true);
-        window.setTimeout(() => setDeployModalOpen(false), 1700);
+        setDeployModalOpen(false);
+        notifyTeacher(result?.ok ? "DEPLOYMENT SUCCESSFUL" : "Deployment failed. Try again.");
       })
       .catch(() => notifyTeacher("Deployment failed. Try again."))
       .finally(() => {
