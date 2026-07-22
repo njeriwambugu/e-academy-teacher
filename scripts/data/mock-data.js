@@ -369,6 +369,7 @@ const subjectStudentScores = {
   IRE: makeScores("IRE", 77),
   PTECH: makeScores("PTECH", 70),
   AGRI: makeScores("AGRI", 79),
+  BIO: makeScores("BIO", 38), // Grade 9 North's only subject Mr Sammy doesn't teach- kept low so it visibly drags the all-subjects avg below the teacher avg
 };
 
 const strandPerformance = {

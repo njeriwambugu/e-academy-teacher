@@ -291,7 +291,6 @@ button {
     cursor: pointer;
 }
 
-/* mobile dropdown variant matches the sidebar button's colours */
 .profile-dropdown .switch-admin {
     color: #233364;
     background: #a2cfe5cc;
@@ -846,7 +845,6 @@ button {
 .subject-doodles i:nth-child(23) { bottom: 20%; left: 34%; transform: rotate(10deg); font-size: 17px; }
 .subject-doodles i:nth-child(24) { bottom: 4%;  left: 26%; transform: rotate(-7deg); font-size: 21px; }
 
-/* phones: slightly smaller glyphs, same full-card spread */
 @media (max-width: 640px) {
     .subject-doodles i {
         font-size: 15px;
@@ -1028,7 +1026,6 @@ button {
     display: none;
 }
 
-/* buttons match the admin .tab spec */
 .grade-filter-btn {
     width: 100%;
     min-width: 0;
@@ -1070,7 +1067,6 @@ button {
     position: relative;
 }
 
-/* dropdown panel mirrors the admin profile-dropdown glass look */
 .grade-dropdown-menu {
     position: absolute;
     top: calc(100% + 10px);
@@ -1190,13 +1186,10 @@ button {
     padding: 26px 22px;
     border: none;
     border-radius: 24px;
-
     background: #fff;
-
     box-shadow:
         0 12px 30px rgba(0, 0, 0, .06),
         0 24px 50px rgba(31, 39, 72, .08);
-
     transition:
         transform .2s ease,
         box-shadow .2s ease;
@@ -1204,7 +1197,6 @@ button {
 
 .subject-card:hover {
     transform: translateY(-6px);
-
     box-shadow:
         0 20px 40px rgba(0, 0, 0, .08),
         0 32px 60px rgba(31, 39, 72, .12);
@@ -1218,9 +1210,7 @@ button {
 .subject-icon {
     width: 110px;
     height: 110px;
-
     object-fit: contain;
-
     margin-bottom: 18px;
 }
 
@@ -1228,9 +1218,7 @@ button {
     font-size: 18px;
     font-weight: 900;
     color: var(--ink);
-
     line-height: 1.3;
-
     margin-bottom: 10px;
 }
 
@@ -1238,32 +1226,21 @@ button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     min-height: 34px;
-
     padding: 0 14px;
-
     border-radius: 999px;
-
     background: rgba(111, 91, 215, .08);
-
     color: var(--accent-deep);
-
     font-size: 13px;
     font-weight: 800;
 }
 
 .subject-empty {
     padding: 40px 20px;
-
     text-align: center;
-
     border-radius: 20px;
-
     background: #fff;
-
     border: 1px dashed var(--line);
-
     color: var(--muted);
 }
 
@@ -1452,13 +1429,93 @@ button {
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    padding: 6px 12px 6px 8px;
+    border: 1px solid color-mix(in srgb, var(--pill-color, #6e7593), white 72%);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pill-color, #6e7593), white 92%);
     color: var(--muted, #6e7593);
+    font: inherit;
     font-size: 12px;
     font-weight: 800;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, transform .1s ease, box-shadow .15s ease;
+}
+
+.status-key-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px color-mix(in srgb, var(--pill-color, #6e7593), transparent 82%);
+}
+
+.status-key-item:focus-visible {
+    outline: 2px solid var(--pill-color, #6e7593);
+    outline-offset: 2px;
+}
+
+.status-key-item.completed { --pill-color: #22b85d; }
+.status-key-item.retake { --pill-color: #ef4444; }
+.status-key-item.ongoing { --pill-color: #2b6fb3; }
+.status-key-item.not-started { --pill-color: #9aa3b2; }
+
+.status-key-item.is-active-filter {
+    border-color: var(--pill-color, #6e7593);
+    background: color-mix(in srgb, var(--pill-color, #6e7593), white 78%);
+    color: color-mix(in srgb, var(--pill-color, #6e7593), black 25%);
+    box-shadow: 0 6px 14px color-mix(in srgb, var(--pill-color, #6e7593), transparent 78%);
 }
 
 .status-key .learner-dot {
     display: inline-block;
+}
+
+/* sortable learner table headers */
+.col-sort-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    font-weight: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.col-sort-btn:hover,
+.col-sort-btn.is-sorted {
+    color: var(--brand-navy-900, #101a3a);
+}
+
+.col-sort-btn .sort-icon {
+    display: inline-block;
+    width: 12px;
+    font-size: 12px;
+    line-height: 1;
+    color: #545b73;
+    opacity: .78;
+    animation: sortIconPulse 2.4s ease-in-out infinite;
+}
+
+.col-sort-btn .sort-icon::after {
+    content: "\21C5";
+}
+
+.col-sort-btn.is-sorted .sort-icon {
+    animation: none;
+    opacity: 1;
+    color: var(--brand-navy-900, #101a3a);
+}
+
+.col-sort-btn.is-asc .sort-icon::after { content: "\25B2"; }
+.col-sort-btn.is-desc .sort-icon::after { content: "\25BC"; }
+
+@keyframes sortIconPulse {/*pulse aka attention seeker*/
+    0%, 100% { opacity: .55; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .col-sort-btn .sort-icon { animation: none; }
 }
 
 @media (max-width: 880px) {
@@ -1501,7 +1558,6 @@ button {
         min-width: 70px;
     }
 }
-
 
 .grade-option {
     display: flex;
@@ -1803,7 +1859,7 @@ button {
 
 .student-name-btn:hover .student-info strong,
 .student-name-btn:focus-visible .student-info strong {
-    color: #60428f; /* admin --theme-deep */
+    color: #60428f; 
     text-decoration: underline;
     text-underline-offset: 4px;
 }
@@ -2067,8 +2123,7 @@ button {
     overflow: visible;
 }
 
-
-/* assignments drill-down (strand → cards → detail)*/
+/* assignments drill-down (strand to cards to detail)*/
 #teacherAssignmentList[hidden],
 .assignment-drill[hidden] {
     display: none !important;
@@ -2552,6 +2607,21 @@ button {
     font-weight: 800;
 }
 
+#teacherStudentProfileView .metric-compare {
+    color: #8a91ac;
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.3;
+}
+
+#teacherStudentProfileView .metric-compare em {
+    font-style: normal;
+    font-weight: 900;
+}
+
+#teacherStudentProfileView .metric-compare em.up { color: #17a668; }
+#teacherStudentProfileView .metric-compare em.down { color: #e14545; }
+
 #teacherStudentProfileView .assignment-summary,
 #teacherStudentProfileView .performance-panel {
     overflow: hidden;
@@ -2773,7 +2843,7 @@ button {
 
 .assignment-name-link:hover strong,
 .assignment-name-link:focus-visible strong {
-    color: #60428f; /* admin --theme-deep */
+    color: #60428f; 
     text-decoration: underline;
     text-underline-offset: 4px;
 }
@@ -3080,7 +3150,6 @@ button {
 
 
 /* assignment report metric pills*/
-
 .assignment-insight-pills {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3369,11 +3438,9 @@ button {
     0% {
         transform: translate3d(0, 6px, 0) scale(.86);
     }
-
     62% {
         transform: translate3d(0, -2px, 0) scale(1.1);
     }
-
     100% {
         transform: translate3d(0, 0, 0) scale(1);
     }
@@ -3538,8 +3605,6 @@ button {
     }
 }
 
-
-/* assignment/mobile cleanup requested: no modal shapes, no CTA pills, two-column mobile info rows, and learner scores visible on phones. */
 #teacherClassOptions .class-option-shapes,
 #teacherClassOptions .shape,
 #teacherClassOptions .shape::before,
@@ -4591,7 +4656,7 @@ button {
     font-weight: 900;
 }
 
-/* assignments table: extra columns are desktop-only */
+/* assignments table: extra columns are desktop only */
 @media (max-width: 880px) {
     .assignment-table-shell .col-wide {
         display: none;

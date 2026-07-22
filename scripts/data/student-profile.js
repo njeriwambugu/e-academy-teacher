@@ -90,6 +90,7 @@ function buildPerformance(student) {
       rows.push({
         uid: `${subjectId}::${student.classId}::${assignment.id}`,
         name: assignment.name,
+        subjectId,
         subject: subjectNameById(subjectId),
         attempts,
         timeTaken,
@@ -99,17 +100,24 @@ function buildPerformance(student) {
     });
   });
 
-  return rows.slice(0, 16);
+  return rows;
 }
 
-function buildStudentProfile(student) {
+function buildStudentProfile(student, teacherSubjectIds = []) {
   if (!student) return null;
   const isPending = student.status === "pending";
   const performance = buildPerformance(student);
 
   const scored = performance.filter((p) => p.score != null);
+  // overall = across every subject taught to this class (all teachers), the school-wide picture
   const performanceAverage = scored.length
     ? Math.round(scored.reduce((sum, p) => sum + p.score, 0) / scored.length)
+    : null;
+
+  // teacherAverage = only the subject(s) the viewing teacher teaches this student
+  const teacherScored = scored.filter((p) => teacherSubjectIds.includes(p.subjectId));
+  const teacherAverage = teacherScored.length
+    ? Math.round(teacherScored.reduce((sum, p) => sum + p.score, 0) / teacherScored.length)
     : null;
 
   // strongest subject = highest real subject score among the class subjects.
@@ -147,13 +155,14 @@ function buildStudentProfile(student) {
     guardianContact: student.guardianContact || "\u2014",
     engagement: isPending && active === 0 ? "\u2014" : engagement,
     performanceAverage,
+    teacherAverage,
     strongestSubject,
     summary,
-    performance,
+    performance: performance.slice(0, 16), // table shows a capped preview; averages above use the full set
   };
 }
 
-export function getStudentProfile(studentId) {
+export function getStudentProfile(studentId, teacherSubjectIds = []) {
   const student = students.find((s) => String(s.id) === String(studentId));
-  return buildStudentProfile(student);
+  return buildStudentProfile(student, teacherSubjectIds);
 }

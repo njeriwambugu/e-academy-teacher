@@ -311,6 +311,7 @@
               <div class="metric-copy">
                 <strong id="profilePerformance">85%</strong>
                 <span>Performance Average</span>
+                <small class="metric-compare" id="profilePerformanceCompare"></small>
               </div>
             </article>
             <article class="profile-metric">
@@ -427,20 +428,20 @@
                 <span class="profile-badge" id="assignmentLearnerCount">0 learners</span>
               </div>
               <p class="muted learners-subtitle">Students who did this assignment</p>
-              <div class="status-key" aria-label="Status colour key">
-                <span class="status-key-item"><i class="learner-dot completed" aria-hidden="true"></i>Completed</span>
-                <span class="status-key-item"><i class="learner-dot retake" aria-hidden="true"></i>Retake</span>
-                <span class="status-key-item"><i class="learner-dot ongoing" aria-hidden="true"></i>Ongoing</span>
-                <span class="status-key-item"><i class="learner-dot not-started" aria-hidden="true"></i>Not Started</span>
+              <div class="status-key" id="learnersStatusKey" aria-label="Status colour key, tap to sort by status">
+                <button type="button" class="status-key-item completed" data-status-sort="completed"><i class="learner-dot completed" aria-hidden="true"></i>Completed</button>
+                <button type="button" class="status-key-item retake" data-status-sort="retake"><i class="learner-dot retake" aria-hidden="true"></i>Retake</button>
+                <button type="button" class="status-key-item ongoing" data-status-sort="ongoing"><i class="learner-dot ongoing" aria-hidden="true"></i>Ongoing</button>
+                <button type="button" class="status-key-item not-started" data-status-sort="not-started"><i class="learner-dot not-started" aria-hidden="true"></i>Not Started</button>
               </div>
               <div class="table assignment-students-table">
                 <table aria-label="Assignment student performance">
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Status</th>
-                      <th>Score</th>
-                      <th>Time Taken</th>
+                      <th><button type="button" class="col-sort-btn" data-sort-key="status">Status<span class="sort-icon" aria-hidden="true"></span></button></th>
+                      <th><button type="button" class="col-sort-btn" data-sort-key="score">Score<span class="sort-icon" aria-hidden="true"></span></button></th>
+                      <th><button type="button" class="col-sort-btn" data-sort-key="secondsTaken">Time Taken<span class="sort-icon" aria-hidden="true"></span></button></th>
                     </tr>
                   </thead>
                   <tbody id="assignmentStudentsBody"></tbody>

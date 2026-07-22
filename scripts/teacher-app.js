@@ -1074,13 +1074,37 @@ function getStudentById(id) {
   );
 }
 
-function getStudentSubjects(student) {
-  const subjectIds = getTeacherAssignments()//subjects the teacher teaches to this student's class.
-    .filter((a) => Number(a.classId) === Number(student.classId))
-    .map((a) => a.subjectId);
+// short forms for the profile summary line, where full subject names would crowd the sentence
+const SUBJECT_ABBR = {
+  ENG: "Eng",
+  SCI: "Sci-T",
+  INT: "Int-Sci",
+  MAT: "Math",
+  KIS: "Kis",
+  CRE: "CRE",
+  IRE: "IRE",
+  ART: "Art",
+  ENV: "Env",
+};
 
-  return [...new Set(subjectIds)]
-    .map((id) => teacherContext.subjects.find((s) => s.id === id)?.name)
+function abbreviateSubject(id, name) {
+  return SUBJECT_ABBR[id] || name;
+}
+
+// subject ids the teacher teaches to this specific student's class (a teacher can teach other subjects elsewhere)
+function getTeacherSubjectIdsForClass(classId) {
+  const subjectIds = getTeacherAssignments()
+    .filter((a) => Number(a.classId) === Number(classId))
+    .map((a) => a.subjectId);
+  return [...new Set(subjectIds)];
+}
+
+function getStudentSubjects(student) {
+  return getTeacherSubjectIdsForClass(student.classId)
+    .map((id) => {
+      const name = teacherContext.subjects.find((s) => s.id === id)?.name;
+      return name ? abbreviateSubject(id, name) : null;
+    })
     .filter(Boolean);
 }
 
@@ -1099,7 +1123,9 @@ function openStudentProfile(studentId) {
 }
 
 function renderStudentProfilePage(studentId) {
-  const profile = getStudentProfile(studentId);
+  const student = getStudentById(studentId);
+  if (!student) return null;
+  const profile = getStudentProfile(studentId, getTeacherSubjectIdsForClass(student.classId));
   if (!profile) return null;
 
   const profileView = $("#teacherStudentProfileView");
@@ -1155,7 +1181,18 @@ function renderStudentProfilePage(studentId) {
 
   const performance = $("#profilePerformance");
   if (performance) {
-    performance.textContent = profile.performanceAverage == null ? "\u2014" : `${profile.performanceAverage}%`;
+    performance.textContent = profile.teacherAverage == null ? "\u2014" : `${profile.teacherAverage}%`;
+  }
+
+  const performanceCompare = $("#profilePerformanceCompare");
+  if (performanceCompare) {
+    if (profile.performanceAverage == null || profile.teacherAverage == null) {
+      performanceCompare.textContent = "";
+    } else {
+      
+      
+      performanceCompare.innerHTML = `All subjects avg ${escapeHTML(profile.performanceAverage)}%`;//all subject average (comparison
+    }
   }
 
   const bestSubject = $("#profileBestSubject");
@@ -1535,7 +1572,7 @@ function bindSubjectCards() {
 function bindLogout() {
   ["#teacherLogoutBtn", "#teacherMobileLogoutBtn"].forEach((sel) => {
     $(sel)?.addEventListener("click", () => {
-      // no auth backend in this prototype; send the user back to the dashboard.(made that in admin so did not include it also the role thing....)
+      // no auth backend in this prototype so send the user back to the dashboard.(made that in admin so did not include it also the role thing....)
       goToNav("dashboard");
     });
   });

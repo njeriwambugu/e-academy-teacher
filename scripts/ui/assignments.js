@@ -80,6 +80,7 @@ export function createAssignmentsFeature(deps) {
   let allRowsCache = null;
   let rowByIdCache = null;
   let lastDetailUid = null;
+  let learnerSort = null; // { type: "column", key: "score"|"secondsTaken"|"status", dir: 1|-1 } or { type: "status", key }
 
   const listPager = createPager({
     container: "#assignmentsPagination",
@@ -220,7 +221,6 @@ export function createAssignmentsFeature(deps) {
     if (label) label.textContent = currentLevelLabel();
     if (menu) {
       if (filters.branch === "date") {
-        // update- calendar replaces the old per-assignment list
         menu.innerHTML = `
           <div class="level-menu-date">
             <span class="level-menu-date-label">Deployed on</span>
@@ -285,22 +285,39 @@ export function createAssignmentsFeature(deps) {
     listPager.renderControls();
   }
 
+  //force tied extremes on Whole Numbers Practice 1 (Grade 9 North) so the "N Students"  grouping has real ties to show 
+  const TIE_TEST_OVERRIDES = {
+    "MAT::12::MAT-0-0": {
+      1014: { score: 92, seconds: 95 },  // Sharon Cheruiyot
+      1015: { score: 92, seconds: 95 },  // Caleb Mutua
+      1016: { score: 92, seconds: 95 },  // Grace Naliaka
+      1017: { score: 92, seconds: 130 }, // Eric Kiplangat
+      1018: { score: 92, seconds: 170 }, // Faith Nyambura
+      1019: { score: 45, seconds: 210 }, // Abel Musyoka
+      1020: { score: 45, seconds: 260 }, // Christine Atieno
+      1021: { score: 68, seconds: 260 }, // John Mwenda
+      1024: { score: 79, seconds: 260 }, // Amani Yusuf
+    },
+  };
+
   function getLearnerRows(row) {
     const students = row.classData?.students || [];
     const completionPct = row.total ? row.completed / row.total : 0;
     const completedCount = Math.min(students.length, Math.round(students.length * completionPct));
+    const tieOverrides = TIE_TEST_OVERRIDES[row.uid];
 
     return students.map((student, index) => {
+      const override = tieOverrides?.[student.id];
       const seed = hashString(`${row.uid}:${student.id}`);
-      const completed = index < completedCount;
+      const completed = override ? true : index < completedCount;
       const scoreBase = row.average == null ? 72 : Number(row.average);
-      const score = completed ? Math.max(35, Math.min(100, scoreBase + (seed % 19) - 9)) : null;
-      const seconds = completed ? 72 + (seed % 190) : null;
+      const score = override ? override.score : completed ? Math.max(35, Math.min(100, scoreBase + (seed % 19) - 9)) : null;
+      const seconds = override ? override.seconds : completed ? 72 + (seed % 190) : null;
       //states: completed (green) / retake (red) for attempted work, ongoing (blue) / not started (grey) for the rest.
       let status;
       let statusClass;
       if (completed) {
-        const needsRetake = score < 55;
+        const needsRetake = score < 55;//change the score for retake
         status = needsRetake ? "Retake" : "Completed";
         statusClass = needsRetake ? "retake" : "completed";
       } else {
@@ -318,6 +335,47 @@ export function createAssignmentsFeature(deps) {
         secondsTaken: seconds,
         timeTaken: seconds == null ? null : formatMinutes(seconds),
       };
+    });
+  }
+
+  function sortLearnerRows(rows) {
+    if (!learnerSort) return rows;
+    if (learnerSort.type === "status") {
+      return [...rows].sort((a, b) => (a.statusClass === learnerSort.key ? 0 : 1) - (b.statusClass === learnerSort.key ? 0 : 1));
+    }
+    const { key, dir } = learnerSort;
+    return [...rows].sort((a, b) => {
+      const av = key === "status" ? a.status : a[key];
+      const bv = key === "status" ? b.status : b[key];
+      if (av == null && bv == null) return 0;
+      if (av == null) return 1; // nulls (not started/ongoing) always sink to the bottom
+      if (bv == null) return -1;
+      return typeof av === "string" ? av.localeCompare(bv) * dir : (av - bv) * dir;
+    });
+  }
+
+  function toggleColumnSort(key) {
+    const firstDir = key === "status" ? 1 : -1; // numeric columns lead with highest/slowest first
+    if (learnerSort?.type === "column" && learnerSort.key === key) {
+      learnerSort = { type: "column", key, dir: -learnerSort.dir };
+    } else {
+      learnerSort = { type: "column", key, dir: firstDir };
+    }
+  }
+
+  function toggleStatusSort(key) {
+    learnerSort = learnerSort?.type === "status" && learnerSort.key === key ? null : { type: "status", key };
+  }
+
+  function updateLearnerSortUI() {
+    document.querySelectorAll(".assignment-students-table [data-sort-key]").forEach((btn) => {
+      const active = learnerSort?.type === "column" && learnerSort.key === btn.dataset.sortKey;
+      btn.classList.toggle("is-sorted", active);
+      btn.classList.toggle("is-asc", active && learnerSort.dir === 1);
+      btn.classList.toggle("is-desc", active && learnerSort.dir === -1);
+    });
+    document.querySelectorAll("#learnersStatusKey [data-status-sort]").forEach((btn) => {
+      btn.classList.toggle("is-active-filter", learnerSort?.type === "status" && learnerSort.key === btn.dataset.statusSort);
     });
   }
 
@@ -537,7 +595,7 @@ export function createAssignmentsFeature(deps) {
 
     const studentBody = $("#assignmentStudentsBody");
     if (studentBody) {
-      const pageLearners = learnersPager.paginate(learnerRows);
+      const pageLearners = learnersPager.paginate(sortLearnerRows(learnerRows));
       studentBody.innerHTML = learnerRows.length
         ? pageLearners.map((student) => `
           <tr>
@@ -553,6 +611,7 @@ export function createAssignmentsFeature(deps) {
           </tr>`).join("")
         : `<tr><td colspan="4" class="muted">No learners found for this class.</td></tr>`;
       learnersPager.renderControls();
+      updateLearnerSortUI();
     }
 
     activateDetailPanel(currentDetailPanel);
@@ -637,9 +696,24 @@ export function createAssignmentsFeature(deps) {
       const btn = e.target.closest("[data-student-id]");
       if (btn) runButtonAction(btn, () => openStudentProfile(btn.dataset.studentId));
     });
+
+    $(".assignment-students-table")?.addEventListener("click", (e) => {
+      const sortBtn = e.target.closest("[data-sort-key]");
+      if (!sortBtn) return;
+      toggleColumnSort(sortBtn.dataset.sortKey);
+      learnersPager.reset();
+      if (lastDetailUid) renderDetail(lastDetailUid);
+    });
+
+    $("#learnersStatusKey")?.addEventListener("click", (e) => {
+      const pill = e.target.closest("[data-status-sort]");
+      if (!pill) return;
+      toggleStatusSort(pill.dataset.statusSort);
+      learnersPager.reset();
+      if (lastDetailUid) renderDetail(lastDetailUid);
+    });
   }
 
-  // learner extremes shown on the assignment Overview panel
   function renderHighlights(row, completedLearners) {
     const el = $("#assignmentHighlights");
     if (!el) return;
@@ -653,11 +727,22 @@ export function createAssignmentsFeature(deps) {
     const byTime = [...completedLearners].sort((a, b) => (a.secondsTaken || 0) - (b.secondsTaken || 0));
     const avgNote = `Class average ${row.average == null ? "—" : row.average + "%"}`;
 
+    // when several learners tie for an extreme, show a headcount instead of picking one name at random
+    const tieLabel = (student, pool, key) => {
+      const tied = pool.filter((s) => s[key] === student[key]);
+      return tied.length > 1 ? `${tied.length} Students` : student.name;
+    };
+
+    const top = byScore[0];
+    const lowest = byScore[byScore.length - 1];
+    const fastest = byTime[0];
+    const slowest = byTime[byTime.length - 1];
+
     const cards = [
-      { cls: "top", title: "Top Performer", name: byScore[0].name, main: `${byScore[0].score}%`, note: avgNote },
-      { cls: "lowest", title: "Lowest Score", name: byScore[byScore.length - 1].name, main: `${byScore[byScore.length - 1].score}%`, note: avgNote },
-      { cls: "fastest", title: "Least Time Taken", name: byTime[0].name, main: byTime[0].timeTaken, note: `Scored ${byTime[0].score}% • ${avgNote}` },
-      { cls: "slowest", title: "Most Time Taken", name: byTime[byTime.length - 1].name, main: byTime[byTime.length - 1].timeTaken, note: `Scored ${byTime[byTime.length - 1].score}% • ${avgNote}` },
+      { cls: "top", title: "Top Performer", name: tieLabel(top, byScore, "score"), main: `${top.score}%`, note: avgNote },
+      { cls: "lowest", title: "Lowest Score", name: tieLabel(lowest, byScore, "score"), main: `${lowest.score}%`, note: avgNote },
+      { cls: "fastest", title: "Least Time Taken", name: tieLabel(fastest, byTime, "secondsTaken"), main: fastest.timeTaken, note: `Scored ${fastest.score}% • ${avgNote}` },
+      { cls: "slowest", title: "Most Time Taken", name: tieLabel(slowest, byTime, "secondsTaken"), main: slowest.timeTaken, note: `Scored ${slowest.score}% • ${avgNote}` },
     ];
 
     el.innerHTML = cards.map((c) => `
